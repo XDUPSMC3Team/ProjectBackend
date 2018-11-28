@@ -1,0 +1,25 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    show-sql: true
+    properties:
+      javax:
+        persistence:
+      hibernate:
+        format_sql: true
+  datasource:
+    platform: org.hibernate.dialect.MySQL5Dialect
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+  mail:
+    host: smtp.163.com
+    username: ericfbt@163.com
+    password: admin123
+    properties:
+      mail:
+        smtp:
+          auth: true
