@@ -29,8 +29,10 @@ public class Buyer {
 
     private String realName;    //名字
 
+    @Column(unique = true)
     private String phone;   //电话
 
+    @Column(unique = true)
     private String email;   //邮箱
 
     private String address; //地址

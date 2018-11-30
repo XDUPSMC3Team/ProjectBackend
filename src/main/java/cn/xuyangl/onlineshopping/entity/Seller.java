@@ -27,8 +27,10 @@ public class Seller {
 
     private String realName;    //姓名
 
+    @Column(unique = true)
     private String phone;
 
+    @Column(unique = true)
     private String email;
 
     private String address;

@@ -25,8 +25,10 @@ public class Admin {
 
     private String password;
 
+    @Column(unique = true)
     private String phone;
 
+    @Column(unique = true)
     private String email;
 
     private String status;
