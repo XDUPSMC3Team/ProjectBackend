@@ -37,12 +37,15 @@ public class Buyer {
 
     private String address; //地址
 
-    private int status; //状态 是否被注销
+    @Column(columnDefinition = "int default 0")
+    private Integer status; //状态 是否被注销
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createTime;   //创建时间
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updateTime;   //更新时间
 
 

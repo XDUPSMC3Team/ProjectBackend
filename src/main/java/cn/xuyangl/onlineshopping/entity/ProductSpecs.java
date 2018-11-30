@@ -32,6 +32,7 @@ public class ProductSpecs {
 
     private Integer productId;
 
+    //例如: `{"memory": "4G", "color": "red"}`
     private String detail;  //详细属性
 
     private Integer stock;  //库存

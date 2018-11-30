@@ -35,12 +35,15 @@ public class Seller {
 
     private String address;
 
-    private String status;
+    @Column(columnDefinition = "int default 0")
+    private Integer status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createTime;   //创建时间
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updateTime;   //更新时间
 
 
