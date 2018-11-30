@@ -1,6 +1,7 @@
 package cn.xuyangl.onlineshopping.utils;
 
 import cn.xuyangl.onlineshopping.VO.Result;
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
 
 /**
  * @author xjin
@@ -25,4 +26,16 @@ public class ResultUtil {
         result.setMsg(msg);
         return result;
     }
+
+    /**
+     *  根据枚举结果 构造result
+     * @param resultEnum
+     * @return
+     */
+    public static  Result error(ResultEnum resultEnum)
+    {
+        Result result = new Result(resultEnum.code,resultEnum.msg);
+        return result;
+    }
+
 }
