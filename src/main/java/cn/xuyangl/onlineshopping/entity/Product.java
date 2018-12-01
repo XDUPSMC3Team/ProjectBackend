@@ -33,6 +33,8 @@ public class Product {
     public String attributeList ;   //属性选项
     private String description;     //商品描述
 
+    private Integer status; // 商品状态 0 表示正常 1表示下架
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;   //创建时间
 

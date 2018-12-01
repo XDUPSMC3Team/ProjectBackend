@@ -2,6 +2,7 @@ package cn.xuyangl.onlineshopping.service;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.entity.Seller;
+import cn.xuyangl.onlineshopping.entity.Shop;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
@@ -25,4 +26,11 @@ public interface SellerService {
      * @return
      */
      Seller findByEmail(String email);
+
+    /**
+     *  注册一个商家
+     * @param shop
+     * @return
+     */
+     boolean registerShop(Shop shop);
 }

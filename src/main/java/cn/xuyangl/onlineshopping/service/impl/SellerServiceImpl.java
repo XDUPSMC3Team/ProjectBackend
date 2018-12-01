@@ -3,7 +3,9 @@ package cn.xuyangl.onlineshopping.service.impl;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.dao.SellerDao;
+import cn.xuyangl.onlineshopping.dao.ShopDao;
 import cn.xuyangl.onlineshopping.entity.Seller;
+import cn.xuyangl.onlineshopping.entity.Shop;
 import cn.xuyangl.onlineshopping.service.SellerService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class SellerServiceImpl implements SellerService{
 
     @Autowired
     private SellerDao sellerDao;
+
+    @Autowired
+    private ShopDao shopDao;
 
     /**
      *  seller 注册
@@ -47,5 +52,19 @@ public class SellerServiceImpl implements SellerService{
     public Seller findByEmail(String email) {
         Seller sellerByEmail = sellerDao.findSellerByEmail(email);
         return sellerByEmail;
+    }
+
+    @Override
+    public boolean registerShop(Shop shop) {
+        // 补全属性
+        shop.setStatus(0);  // 设置为受理中
+        shop.setCreateTime(LocalDateTime.now());
+        try{
+            shopDao.save(shop);
+            return true;
+        }catch (Exception e)
+        {
+            return false;
+        }
     }
 }

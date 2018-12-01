@@ -25,7 +25,7 @@ public class Shop {
     @Column(unique = true)  //唯一性约束
     private String shopName;
     private String shopDesc;
-
+    private Integer status; // 商铺状态 0 表示正在受理中 1 表示受理成功 2 表示受理失败
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createTime;

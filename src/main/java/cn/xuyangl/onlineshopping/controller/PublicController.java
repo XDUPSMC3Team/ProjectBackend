@@ -6,5 +6,8 @@ package cn.xuyangl.onlineshopping.controller;
  *
  * 不需要登录即可使用的功能，比如普通的浏览搜索等。
  */
+
 public class PublicController {
+
+
 }
