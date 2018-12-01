@@ -9,7 +9,8 @@ package cn.xuyangl.onlineshopping.VO;
 public enum  ResultEnum {
 
     AccountNotFound(1,"account is not found"),
-    PasswordIncorrect(2,"password is not correct")
+    PasswordIncorrect(2,"password is not correct"),
+    RegisterError(3,"register errors")
     ;
     public String msg;
     public Integer code;
