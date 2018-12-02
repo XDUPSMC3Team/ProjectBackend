@@ -28,7 +28,7 @@ public class Product {
     private String pic;     // 商品图片
 
     /**
-     * - attribute_list 属性选项，例如：`{"memory":["4G", "8G"], "color":["red","black", "white"]}`
+     *  attribute_list 属性选项，例如：`{"memory":["4G", "8G"], "color":["red","black", "white"]}`
      */
     public String attributeList ;   //属性选项
     private String description;     //商品描述

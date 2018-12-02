@@ -42,4 +42,8 @@ public interface ProductService {
      * @return
      */
     Result deleteProductById(Integer id);
+
+    Product findProduct(Integer id);
+
+    Page<Product> searchProduct(String key, int page, int size);
 }

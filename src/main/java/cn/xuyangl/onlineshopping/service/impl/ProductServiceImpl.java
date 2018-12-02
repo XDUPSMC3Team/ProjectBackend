@@ -84,4 +84,16 @@ public class ProductServiceImpl implements ProductService{
         productDao.saveAndFlush(one);
         return ResultUtil.success();
     }
+
+    @Override
+    public Product findProduct(Integer id) {
+        return productDao.findOne(id);
+    }
+
+    @Override
+    public Page<Product> searchProduct(String key, int page, int size) {
+        if (page<1) page = 1;
+        Pageable pageable = new PageRequest(page-1, size);
+        return productDao.findAllByNameContaining(key, pageable);
+    }
 }

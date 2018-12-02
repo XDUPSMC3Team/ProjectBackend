@@ -4,10 +4,7 @@ import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.service.ProductService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Description
@@ -35,4 +32,24 @@ public class ProductController {
     {
         return ResultUtil.success(productService.findProducts(Integer.parseInt(pageNo),Integer.parseInt(pageSize)));
     }
+
+    /**
+     * 查询单个商品具体信息
+     */
+    @GetMapping("/{productId}")
+    public Result findProduct(@PathVariable("productId") Integer id) {
+        return ResultUtil.success(productService.findProduct(id));
+    }
+
+    /**
+     * 搜索商品
+     */
+    @GetMapping("/search")
+    public Result searchProduct(@RequestParam(name = "key", required = false, defaultValue = "") String key,
+                                @RequestParam(name = "pageNo", required = false, defaultValue = "1") String pageNo,
+                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") String pageSzie)
+    {
+        return ResultUtil.success(productService.searchProduct(key, Integer.parseInt(pageNo), Integer.parseInt(pageSzie)));
+    }
+
 }
