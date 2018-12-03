@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -79,6 +80,7 @@ public class SellerController {
         }
     }
 
+
     /**
      *  商家注册
      * @param shop
@@ -87,7 +89,7 @@ public class SellerController {
      */
     @PostMapping
     @RequestMapping("/register/shop")
-    public Result registerShop(Shop shop,@CookieValue(value = "token")String token)
+    public Result registerShop(@RequestBody Shop shop,@CookieValue(value = "token")String token)
     {
         // 首先判断是否登录
         if (token==null||"".equals(token))
@@ -129,7 +131,7 @@ public class SellerController {
      */
     @PostMapping
     @RequestMapping("/product/{productId}")
-    public Result updateProduct(@PathVariable("productId")String productId,Product product)
+    public Result updateProduct(@PathVariable("productId")String productId,@RequestBody Product product)
     {
         boolean b = productService.updateProduct(Integer.parseInt(productId), product);
         if (b){
