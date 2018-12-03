@@ -43,6 +43,7 @@ public class Advertisement {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updateTime;    //广告开始时间
 
+
     @Column(columnDefinition = "int default 0")
     private Integer deleted; // 是否被删除默认是0 表示正常
 

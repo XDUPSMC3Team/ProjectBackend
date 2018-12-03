@@ -147,7 +147,7 @@ public class SellerController {
      * @return
      */
     @DeleteMapping
-    @RequestMapping("/product/{productId}")
+    @RequestMapping("/product/delete/{productId}")
     public Result deleteProduct(@PathVariable("productId")String productId)
     {
         Result result = productService.deleteProductById(Integer.parseInt(productId));
