@@ -23,3 +23,9 @@ spring:
       mail:
         smtp:
           auth: true
+ftp:
+  address: 119.23.75.180
+  port: 21
+  username: ftptest
+  password: ftptest
+  basepath: /home/ftptest/productPic

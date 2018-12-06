@@ -153,4 +153,9 @@ public class SellerController {
         Result result = productService.deleteProductById(Integer.parseInt(productId));
         return result;
     }
+
+
+    /**
+     *  管理 广告
+     */
 }
