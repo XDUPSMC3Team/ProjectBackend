@@ -65,14 +65,14 @@ public class SellerController {
 
     /**
      *  seller 登录
-     * @param email
+     * @param username
      * @param password
      * @return
      */
     @PostMapping("/login")
-    public Result login(String email, String password, HttpServletResponse response)
+    public Result login(String username, String password, HttpServletResponse response)
     {
-        Seller byEmail = sellerService.findByEmail(email);
+        Seller byEmail = sellerService.findByEmail(username);
         if (byEmail==null)
         {
             return ResultUtil.error(ResultEnum.AccountNotFound);
@@ -82,7 +82,7 @@ public class SellerController {
         {
             // 判断密码是否相等
             //将数据存入cookie中i
-            String jwtToken = JwtToken.createToken(email, byEmail.getRealName(), "seller");
+            String jwtToken = JwtToken.createToken(username, byEmail.getRealName(), "seller");
             Cookie cookie = new Cookie("token",jwtToken);
             cookie.setPath("/");
             cookie.setMaxAge(60*60*24); // 设置过期时间

@@ -49,8 +49,8 @@ public class SellerServiceImpl implements SellerService{
     }
 
     @Override
-    public Seller findByEmail(String email) {
-        Seller sellerByEmail = sellerDao.findSellerByEmail(email);
+    public Seller findByEmail(String username) {
+        Seller sellerByEmail = sellerDao.findSellerByEmailOrUsername(username,username);
         return sellerByEmail;
     }
 

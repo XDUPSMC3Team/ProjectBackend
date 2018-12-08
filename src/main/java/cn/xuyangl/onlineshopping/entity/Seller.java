@@ -21,6 +21,8 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    private String username;
+
     private String shopName;    //店名
 
     private String password;    //密码
