@@ -1,6 +1,7 @@
 package cn.xuyangl.onlineshopping.controller;
 
 import cn.xuyangl.onlineshopping.VO.Result;
+import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.entity.Buyer;
 import cn.xuyangl.onlineshopping.service.BuyerService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
@@ -19,10 +20,6 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/buyer")
 public class BuyerController {
-
-    public static final String USER_TYPE = "userType";
-    public static final String BUYER_ID = "buyerId";
-    public static final String USERNAME = "username";
 
     private BuyerService buyerService;
 
@@ -50,18 +47,15 @@ public class BuyerController {
         if (buyerInDB == null) return ResultUtil.error(1, "buyer account isn't exist.");
         Buyer buyer = buyerService.login(username, password);
         if (buyer == null) return ResultUtil.error(2, "password uncorrect.");
-        session.setAttribute(USER_TYPE, "BUYER");
-        session.setAttribute(BUYER_ID, buyer.getId());
-        session.setAttribute(USERNAME, buyer.getUsername());
+        session.setAttribute(Common.USER_TYPE, "buyer");
+        session.setAttribute(Common.BUYER_ID, buyer.getId());
+        session.setAttribute(Common.USERNAME, buyer.getUsername());
         session.setMaxInactiveInterval(3600);
         return ResultUtil.success();
     }
 
-    @GetMapping("/logout")
-    public Result logout(HttpSession session) {
-        session.removeAttribute(USER_TYPE);
-        session.removeAttribute(BUYER_ID);
-        session.removeAttribute(USERNAME);
-        return ResultUtil.success();
+    @GetMapping("/personal/test")
+    public Result test() {
+        return ResultUtil.success("enter");
     }
 }

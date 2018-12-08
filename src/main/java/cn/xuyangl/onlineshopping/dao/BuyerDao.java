@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface BuyerDao extends JpaRepository<Buyer, Integer> {
     Buyer findByUsername(String username);
+
+    Buyer findBuyerByEmail(String email);
 }

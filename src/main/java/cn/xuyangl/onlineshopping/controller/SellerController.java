@@ -16,6 +16,7 @@ import javax.management.Attribute;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -42,6 +43,9 @@ public class SellerController {
 
     @Autowired
     private AttributeValueService attributeValueService;
+
+    @Autowired
+    private BuyerService buyerService;
 
     /**
      *  seller 注册
@@ -73,7 +77,8 @@ public class SellerController {
         {
             return ResultUtil.error(ResultEnum.AccountNotFound);
         }
-        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(password))
+        // 判断用户名 密码  以及状态
+        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(password)&&byEmail.getStatus()==0)
         {
             // 判断密码是否相等
             //将数据存入cookie中i
@@ -99,11 +104,26 @@ public class SellerController {
     @RequestMapping("/register/shop")
     public Result registerShop(@RequestBody Shop shop,@CookieValue(value = "token")String token)
     {
+        String email = JwtToken.verifyToken(token).get("email").asString();
+        // 根据 email 查找 buyer 判断是否存在
+        Buyer buyer = buyerService.findByEmail(email);
+        Seller seller = sellerService.findByEmail(email);
+        if (seller==null)
+        {
+            Seller seller1 = new Seller();
+            seller.setRealName(buyer.getRealName());
+            seller.setEmail(buyer.getEmail());
+            seller.setAddress(buyer.getAddress());
+            seller.setPassword(buyer.getPassword());
+            seller.setPhone(buyer.getPhone());
+            sellerService.register(seller1);
+        }
         // 首先判断是否登录
         if (token==null||"".equals(token))
         {
             return ResultUtil.error(ResultEnum.NO_RIGHT);
         }
+
         boolean b = sellerService.registerShop(shop);
         if (b)
         {
