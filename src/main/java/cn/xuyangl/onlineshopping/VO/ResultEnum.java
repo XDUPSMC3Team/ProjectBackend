@@ -14,7 +14,9 @@ public enum  ResultEnum {
     NO_RIGHT(4,"no right!"),
     SHOP_NOT_FOUND(5,"the shop not found"),
     OPERATION_FAILURE(6,"operation failed"),
-    UPDATE_FAILED(7,"update failed")
+    UPDATE_FAILED(7,"update failed"),
+    AD_NOT_EXIST(7,"this advertisement not exists"),
+    NOT_FOUND(8,"not found")
     ;
     public String msg;
     public Integer code;

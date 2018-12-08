@@ -25,7 +25,6 @@ update_time
 @Table(name = "T_PRODUCT_SPECS")
 @Data
 public class ProductSpecs {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

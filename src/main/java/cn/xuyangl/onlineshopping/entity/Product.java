@@ -21,7 +21,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    private Integer shopId; // 商铺id
+
     private Integer categoryId;
+
+    private Double price;
 
     private String name;    //商品名称
 

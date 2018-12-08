@@ -2,6 +2,7 @@ package cn.xuyangl.onlineshopping.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
@@ -32,16 +33,18 @@ public class Advertisement {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;    //广告开始时间
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime endTime;    //广告开始时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime endTime;    //广告结束时间
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime createTime;    //广告开始时间
+    private LocalDateTime createTime;    //广告创建时间
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime updateTime;    //广告开始时间
+    private LocalDateTime updateTime;    //广告更改时间
 
 
     @Column(columnDefinition = "int default 0")
