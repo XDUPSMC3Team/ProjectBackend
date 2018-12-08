@@ -13,4 +13,6 @@ public interface BuyerService {
     Buyer login(String username, String password);
 
     Buyer findByUsername(String username);
+
+    Buyer findByEmail(String email);
 }

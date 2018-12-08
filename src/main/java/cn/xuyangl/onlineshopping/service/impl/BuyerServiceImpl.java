@@ -45,4 +45,9 @@ public class BuyerServiceImpl implements BuyerService {
     public Buyer findByUsername(String username) {
         return buyerDao.findByUsername(username);
     }
+
+    @Override
+    public Buyer findByEmail(String email) {
+        return buyerDao.findBuyerByEmail(email);
+    }
 }
