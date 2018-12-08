@@ -15,4 +15,6 @@ import java.util.List;
 @Repository
 public interface ShopDao extends JpaRepository<Shop,Integer>{
     List<Shop> findByStatus(Integer status);
+
+    Shop findById(Integer id);
 }

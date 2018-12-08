@@ -8,4 +8,5 @@ public class Common {
     public static final String USER_TYPE = "userType";  // ["buyer", "seller", "admin"]
     public static final String BUYER_ID = "buyerId";
     public static final String USERNAME = "username";
+    public static final String ADMIN_ID = "adminId";
 }

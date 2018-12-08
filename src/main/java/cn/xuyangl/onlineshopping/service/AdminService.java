@@ -14,4 +14,8 @@ public interface AdminService {
     Admin findByUsername(String username);
 
     List<Shop> newAppliedShops();
+
+    Boolean approveShop(Integer shopId);
+
+    Boolean rejectShop(Integer shopId);
 }

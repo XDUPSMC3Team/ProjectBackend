@@ -1,6 +1,8 @@
 package cn.xuyangl.onlineshopping.controller;
 
 import cn.xuyangl.onlineshopping.VO.Result;
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
+import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.entity.Admin;
 import cn.xuyangl.onlineshopping.service.AdminService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
@@ -15,10 +17,6 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/admin")
 @RestController
 public class AdminController {
-
-    private final static String USER_TYPE = "userType";
-    private final static String ADMIN_ID = "adminId";
-    private final static String USERNAME = "username";
 
     private final AdminService adminService;
 
@@ -44,25 +42,41 @@ public class AdminController {
     public Result login(String username, String password, HttpSession session) {
         Admin adminInDB = adminService.findByUsername(username);
         if (adminInDB == null) return ResultUtil.error(1, "Admin account isn't exist.");
-        Admin Admin = adminService.login(username, password);
-        if (Admin == null) return ResultUtil.error(2, "password uncorrect.");
-        session.setAttribute(USER_TYPE, "Admin");
-        session.setAttribute(ADMIN_ID, Admin.getId());
-        session.setAttribute(USERNAME, Admin.getUsername());
+        Admin admin = adminService.login(username, password);
+        if (admin == null) return ResultUtil.error(2, "password uncorrect.");
+        session.setAttribute(Common.USER_TYPE, "admin");
+        session.setAttribute(Common.ADMIN_ID, admin.getId());
+        session.setAttribute(Common.USERNAME, admin.getUsername());
         session.setMaxInactiveInterval(3600);
         return ResultUtil.success();
     }
 
     @GetMapping("/logout")
     public Result logout(HttpSession session) {
-        session.removeAttribute(USER_TYPE);
-        session.removeAttribute(ADMIN_ID);
-        session.removeAttribute(USERNAME);
+        session.removeAttribute(Common.USER_TYPE);
+        session.removeAttribute(Common.ADMIN_ID);
+        session.removeAttribute(Common.USERNAME);
         return ResultUtil.success();
     }
 
-    @GetMapping("/appliedShops")
-    public Result appliedShops() {
+    @GetMapping("/personal/appliedShops")
+    public Result appliedShops(HttpSession session) {
         return ResultUtil.success(adminService.newAppliedShops());
+    }
+
+    @PostMapping("/personal/approve")
+    public Result approve(Integer shopId, HttpSession session) {
+        if (!adminService.approveShop(shopId)) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success();
+    }
+
+    @PostMapping("/personal/reject")
+    public Result reject(Integer shopId, HttpSession session) {
+        if (!adminService.rejectShop(shopId)) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success();
     }
 }

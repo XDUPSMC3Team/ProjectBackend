@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.config;
 
+import cn.xuyangl.onlineshopping.interceptor.AdminInterceptor;
 import cn.xuyangl.onlineshopping.interceptor.BuyerInterceptor;
 import cn.xuyangl.onlineshopping.interceptor.SellerInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,20 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     private SellerInterceptor sellerInterceptor;
 
+    private AdminInterceptor adminInterceptor;
+
     @Autowired
-    public InterceptorConfig(BuyerInterceptor buyerInterceptor,SellerInterceptor sellerInterceptor) {
+    public InterceptorConfig(BuyerInterceptor buyerInterceptor,SellerInterceptor sellerInterceptor, AdminInterceptor adminInterceptor) {
         this.buyerInterceptor = buyerInterceptor;
         this.sellerInterceptor = sellerInterceptor;
+        this.adminInterceptor = adminInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(buyerInterceptor).addPathPatterns("/buyer/personal/**");
         registry.addInterceptor(sellerInterceptor).addPathPatterns("/seller/**","/product/products").excludePathPatterns("/seller/register","/seller/login");
+        registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/personal/**");
     }
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {

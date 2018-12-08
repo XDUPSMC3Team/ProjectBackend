@@ -49,4 +49,26 @@ public class AdminServiceImpl implements AdminService {
     public List<Shop> newAppliedShops() {
         return shopDAO.findByStatus(0);
     }
+
+    @Override
+    public Boolean approveShop(Integer shopId) {
+        Shop shop = shopDAO.findById(shopId);
+        if (shop == null) {
+            return false;
+        }
+        shop.setStatus(1);
+        shopDAO.saveAndFlush(shop);
+        return true;
+    }
+
+    @Override
+    public Boolean rejectShop(Integer shopId) {
+        Shop shop = shopDAO.findById(shopId);
+        if (shop == null) {
+            return false;
+        }
+        shop.setStatus(2);
+        shopDAO.saveAndFlush(shop);
+        return true;
+    }
 }
