@@ -77,7 +77,8 @@ public class SellerController {
         {
             return ResultUtil.error(ResultEnum.AccountNotFound);
         }
-        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(password))
+        // 判断用户名 密码  以及状态
+        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(password)&&byEmail.getStatus()==0)
         {
             // 判断密码是否相等
             //将数据存入cookie中i
