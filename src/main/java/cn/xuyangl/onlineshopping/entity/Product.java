@@ -25,8 +25,6 @@ public class Product {
 
     private Integer categoryId;
 
-    private Double price;
-
     private String name;    //商品名称
 
     private String pic;     // 商品图片
