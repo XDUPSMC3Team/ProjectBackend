@@ -2,22 +2,16 @@ package cn.xuyangl.onlineshopping.controller;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
-import cn.xuyangl.onlineshopping.dao.AttributeKeyDao;
 import cn.xuyangl.onlineshopping.entity.*;
+import cn.xuyangl.onlineshopping.model.LoginEntity;
 import cn.xuyangl.onlineshopping.service.*;
 import cn.xuyangl.onlineshopping.utils.JwtToken;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
-import com.auth0.jwt.interfaces.Claim;
-import com.sun.org.apache.bcel.internal.generic.I2F;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.Attribute;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.util.Map;
 
 /**
  * @Description seller 控制器
@@ -65,24 +59,23 @@ public class SellerController {
 
     /**
      *  seller 登录
-     * @param username
-     * @param password
+     * @param loginEntity
      * @return
      */
     @PostMapping("/login")
-    public Result login(String username, String password, HttpServletResponse response)
+    public Result login(@RequestBody LoginEntity loginEntity, HttpServletResponse response)
     {
-        Seller byEmail = sellerService.findByEmail(username);
+        Seller byEmail = sellerService.findByEmail(loginEntity.getUsername());
         if (byEmail==null)
         {
             return ResultUtil.error(ResultEnum.AccountNotFound);
         }
         // 判断用户名 密码  以及状态
-        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(password)&&byEmail.getStatus()==0)
+        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(loginEntity.getPassword())&&byEmail.getStatus()==0)
         {
             // 判断密码是否相等
             //将数据存入cookie中i
-            String jwtToken = JwtToken.createToken(username, byEmail.getRealName(), "seller");
+            String jwtToken = JwtToken.createToken(loginEntity.getUsername(), byEmail.getRealName(), "seller");
             Cookie cookie = new Cookie("token",jwtToken);
             cookie.setPath("/");
             cookie.setMaxAge(60*60*24); // 设置过期时间

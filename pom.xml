@@ -78,6 +78,12 @@
 		</dependency>
 
 
+		<!--javamail -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 		<!--文件上传组件-->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
