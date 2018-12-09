@@ -18,4 +18,8 @@ public interface AdminService {
     Boolean approveShop(Integer shopId);
 
     Boolean rejectShop(Integer shopId);
+
+    Shop findShop(Integer shopId);
+
+    Boolean closeShop(Integer shopId);
 }

@@ -71,4 +71,20 @@ public class AdminServiceImpl implements AdminService {
         shopDAO.saveAndFlush(shop);
         return true;
     }
+
+    @Override
+    public Shop findShop(Integer shopId) {
+        return shopDAO.findById(shopId);
+    }
+
+    @Override
+    public Boolean closeShop(Integer shopId) {
+        Shop shop = shopDAO.findById(shopId);
+        if (shop == null) {
+            return false;
+        }
+        shop.setStatus(3);
+        shopDAO.saveAndFlush(shop);
+        return true;
+    }
 }

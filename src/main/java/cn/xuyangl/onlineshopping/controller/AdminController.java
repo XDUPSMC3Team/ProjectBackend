@@ -79,4 +79,17 @@ public class AdminController {
         }
         return ResultUtil.success();
     }
+
+    @GetMapping("/personal/search")
+    public Result search(Integer shopId, HttpSession session) {
+        return ResultUtil.success(adminService.findShop(shopId));
+    }
+
+    @PostMapping("/personal/close")
+    public Result closeShop(Integer shopId, HttpSession session) {
+        if (!adminService.closeShop(shopId)) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success();
+    }
 }

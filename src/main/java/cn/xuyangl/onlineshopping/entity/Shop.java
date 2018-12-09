@@ -28,7 +28,7 @@ public class Shop {
     private String shopDesc;
     private String phone;   // 商家电话
     private String email;      // 商家邮箱
-    private Integer status; // 商铺状态 0 表示正在受理中 1 表示受理成功 2 表示受理失败
+    private Integer status; // 商铺状态 0 表示正在受理中 1 表示受理成功 2 表示受理失败 3表示被封
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createTime;
