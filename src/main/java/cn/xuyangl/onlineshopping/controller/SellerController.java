@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @Description seller 控制器
@@ -211,6 +212,16 @@ public class SellerController {
     public Result addAttributeValue(@RequestBody AttributeValue attributeValue)
     {
         attributeValueService.addAttributeValue(attributeValue);
+        return ResultUtil.success();
+    }
+
+    /**
+     * 增加多组 attributeValues
+     */
+    @RequestMapping(value = "/attributeValues",method = RequestMethod.POST)
+    public Result addAttributeValues(@RequestBody List<AttributeValue> attributeValues)
+    {
+        attributeValues.forEach(attributeValue -> attributeValueService.addAttributeValue(attributeValue));
         return ResultUtil.success();
     }
 

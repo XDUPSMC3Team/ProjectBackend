@@ -1,6 +1,6 @@
 package cn.xuyangl.onlineshopping.interceptor;
 
-import cn.xuyangl.onlineshopping.exception.SellerException;
+import cn.xuyangl.onlineshopping.exception.NoPermissionException;
 import cn.xuyangl.onlineshopping.utils.JwtToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -30,13 +30,13 @@ public class SellerInterceptor implements HandlerInterceptor{
                 String type = JwtToken.verifyToken(cookie.getValue()).get("type").asString();
                 if (!type.equals("seller"))
                 {
-                    throw new SellerException("you haven't login as a seller.");
+                    throw new NoPermissionException("you haven't login as a seller.");
                 }else{
                     return true;
                 }
             }
         }
-        throw new SellerException("you haven't login");
+        throw new NoPermissionException("you haven't login");
     }
 
     @Override
