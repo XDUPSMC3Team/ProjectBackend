@@ -1,6 +1,7 @@
 package cn.xuyangl.onlineshopping.exception;
 
 import cn.xuyangl.onlineshopping.VO.Result;
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,7 +19,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result defaultErrorHandler(HttpServletResponse response, Exception e) {
+        if (e instanceof NoPermissionException) {
+            response.setStatus(403);
+            return ResultUtil.error(ResultEnum.NO_RIGHT);
+        }
         response.setStatus(200);
-        return ResultUtil.error(1, e.getMessage());
+        return ResultUtil.error(-1, e.getMessage());
     }
 }

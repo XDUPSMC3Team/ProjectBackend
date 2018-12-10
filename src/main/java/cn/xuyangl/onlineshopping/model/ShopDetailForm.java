@@ -9,7 +9,7 @@ import lombok.Data;
  * @Date: 2018/12/3 11:15
  */
 @Data
-public class ShopDetail {
+public class ShopDetailForm {
     private String email;
     private String telephone;
 }

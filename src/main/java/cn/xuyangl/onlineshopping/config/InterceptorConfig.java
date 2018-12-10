@@ -38,8 +38,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(buyerInterceptor).addPathPatterns("/buyer/personal/**");
-        registry.addInterceptor(sellerInterceptor).addPathPatterns("/seller/**","/product/products").excludePathPatterns("/seller/register","/seller/login");
+        registry.addInterceptor(buyerInterceptor).addPathPatterns("/buyer/**").excludePathPatterns("/buyer/register", "/buyer/login");
+        registry.addInterceptor(sellerInterceptor).addPathPatterns("/seller/**").excludePathPatterns("/seller/register","/seller/login");
         registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/personal/**");
     }
     @Override

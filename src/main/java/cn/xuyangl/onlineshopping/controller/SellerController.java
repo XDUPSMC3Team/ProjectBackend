@@ -3,7 +3,7 @@ package cn.xuyangl.onlineshopping.controller;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.entity.*;
-import cn.xuyangl.onlineshopping.model.LoginEntity;
+import cn.xuyangl.onlineshopping.model.LoginForm;
 import cn.xuyangl.onlineshopping.service.*;
 import cn.xuyangl.onlineshopping.utils.JwtToken;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
@@ -59,23 +59,23 @@ public class SellerController {
 
     /**
      *  seller 登录
-     * @param loginEntity
+     * @param loginForm
      * @return
      */
     @PostMapping("/login")
-    public Result login(@RequestBody LoginEntity loginEntity, HttpServletResponse response)
+    public Result login(@RequestBody LoginForm loginForm, HttpServletResponse response)
     {
-        Seller byEmail = sellerService.findByEmail(loginEntity.getUsername());
+        Seller byEmail = sellerService.findByEmail(loginForm.getUsername());
         if (byEmail==null)
         {
             return ResultUtil.error(ResultEnum.AccountNotFound);
         }
         // 判断用户名 密码  以及状态
-        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(loginEntity.getPassword())&&byEmail.getStatus()==0)
+        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(loginForm.getPassword())&&byEmail.getStatus()==0)
         {
             // 判断密码是否相等
             //将数据存入cookie中i
-            String jwtToken = JwtToken.createToken(loginEntity.getUsername(), byEmail.getRealName(), "seller");
+            String jwtToken = JwtToken.createToken(loginForm.getUsername(), byEmail.getRealName(), "seller");
             Cookie cookie = new Cookie("token",jwtToken);
             cookie.setPath("/");
             cookie.setMaxAge(60*60*24); // 设置过期时间

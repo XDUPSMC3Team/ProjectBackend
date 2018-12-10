@@ -11,7 +11,7 @@ public enum  ResultEnum {
     AccountNotFound(1,"account is not found"),
     PasswordIncorrect(2,"password is not correct"),
     RegisterError(3,"register errors"),
-    NO_RIGHT(4,"no right!"),
+    NO_RIGHT(4,"no right"),
     SHOP_NOT_FOUND(5,"the shop not found"),
     OPERATION_FAILURE(6,"operation failed"),
     UPDATE_FAILED(7,"update failed"),

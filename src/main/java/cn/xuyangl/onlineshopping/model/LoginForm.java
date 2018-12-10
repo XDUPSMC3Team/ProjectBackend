@@ -9,7 +9,7 @@ import lombok.Data;
  * @Date: 2018/12/9 14:55
  */
 @Data
-public class LoginEntity {
+public class LoginForm {
     private String username;
     private String password;
 }

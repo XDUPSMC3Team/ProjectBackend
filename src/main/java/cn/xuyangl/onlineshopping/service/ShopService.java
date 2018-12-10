@@ -1,6 +1,6 @@
 package cn.xuyangl.onlineshopping.service;
 
-import cn.xuyangl.onlineshopping.model.ShopDetail;
+import cn.xuyangl.onlineshopping.model.ShopDetailForm;
 
 /**
  * @Description
@@ -10,5 +10,5 @@ import cn.xuyangl.onlineshopping.model.ShopDetail;
  */
 public interface ShopService {
 
-    boolean modifyShopDetail(Integer shopId,ShopDetail shopDetal);
+    boolean modifyShopDetail(Integer shopId,ShopDetailForm shopDetal);
 }

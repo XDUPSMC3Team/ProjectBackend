@@ -2,7 +2,7 @@ package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.dao.ShopDao;
 import cn.xuyangl.onlineshopping.entity.Shop;
-import cn.xuyangl.onlineshopping.model.ShopDetail;
+import cn.xuyangl.onlineshopping.model.ShopDetailForm;
 import cn.xuyangl.onlineshopping.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,20 +21,20 @@ public class ShopServiceImpl implements ShopService {
     private ShopDao shopDao;
 
     @Override
-    public boolean modifyShopDetail(Integer shopId,ShopDetail shopDetail) {
+    public boolean modifyShopDetail(Integer shopId,ShopDetailForm shopDetailForm) {
 
         Shop one = shopDao.findOne(shopId);
         if (one==null)
         {
             return false;
         }
-        if (shopDetail.getEmail()!=null&&!"".equals(shopDetail.getEmail()))
+        if (shopDetailForm.getEmail()!=null&&!"".equals(shopDetailForm.getEmail()))
         {
-            one.setEmail(shopDetail.getEmail());
+            one.setEmail(shopDetailForm.getEmail());
         }
-        if (shopDetail.getTelephone()!=null&&!"".equals(shopDetail.getTelephone()))
+        if (shopDetailForm.getTelephone()!=null&&!"".equals(shopDetailForm.getTelephone()))
         {
-            one.setPhone(shopDetail.getTelephone());
+            one.setPhone(shopDetailForm.getTelephone());
         }
         return true;
     }

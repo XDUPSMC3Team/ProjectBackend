@@ -2,7 +2,7 @@ package cn.xuyangl.onlineshopping.controller;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
-import cn.xuyangl.onlineshopping.model.ShopDetail;
+import cn.xuyangl.onlineshopping.model.ShopDetailForm;
 import cn.xuyangl.onlineshopping.service.ShopService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,14 @@ public class ShopController {
 
     /**
      *  更改商家信息 hop contacts / Email / Telephone
-     * @param shopDetail
+     * @param shopDetailForm
      * @return
      */
     @PostMapping
     @RequestMapping("/shopDetail/{shopId}")
-    public Result modifyShopDetail(@PathVariable String shopId,@RequestBody ShopDetail shopDetail)
+    public Result modifyShopDetail(@PathVariable String shopId,@RequestBody ShopDetailForm shopDetailForm)
     {
-        boolean b = shopService.modifyShopDetail(Integer.parseInt(shopId), shopDetail);
+        boolean b = shopService.modifyShopDetail(Integer.parseInt(shopId), shopDetailForm);
 
         if (b)
         {

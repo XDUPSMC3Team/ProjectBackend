@@ -1,7 +1,7 @@
 package cn.xuyangl.onlineshopping.interceptor;
 
 import cn.xuyangl.onlineshopping.consts.Common;
-import cn.xuyangl.onlineshopping.exception.NotBuyerException;
+import cn.xuyangl.onlineshopping.exception.NoPermissionException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,7 +21,7 @@ public class BuyerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         HttpSession session = httpServletRequest.getSession();
         if (session.getAttribute(Common.USER_TYPE) != "buyer" || session.getAttribute(Common.BUYER_ID) == null) {
-            throw new NotBuyerException("you haven't login as a buyer.");
+            throw new NoPermissionException("you haven't login as a buyer.");
         }
         return true;
     }

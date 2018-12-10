@@ -15,4 +15,16 @@ public interface BuyerService {
     Buyer findByUsername(String username);
 
     Buyer findByEmail(String email);
+
+    Buyer findById(Integer id);
+
+    Buyer save(Buyer buyer);
+
+    Integer collectProduct(Integer buyerId, Integer productId);
+
+    Integer collectShop(Integer buyerId, Integer shopId);
+
+    Boolean cancelCollect(Integer collectId, Integer type);
+
+
 }
