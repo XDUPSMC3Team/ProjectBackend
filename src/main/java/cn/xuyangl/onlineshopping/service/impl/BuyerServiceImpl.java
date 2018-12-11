@@ -31,7 +31,6 @@ public class BuyerServiceImpl implements BuyerService {
     @Override
     public Boolean register(Buyer buyer) {
         // TODO email check
-
         // check duplicate username
         if (buyerDao.findByUsername(buyer.getUsername()) != null)
             return false;

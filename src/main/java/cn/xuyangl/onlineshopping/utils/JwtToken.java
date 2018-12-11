@@ -18,13 +18,13 @@ import java.util.Map;
 public class JwtToken {
 
 
-    public static String createToken(String email, String userName, String type) {
+    public static String createToken(String sellerId, String userName, String type) {
         Map<String, Object> header = new HashMap<>(16);
         header.put("type", "jwt");
         header.put("alg", "HS256");
         return JWT.create()
                 .withHeader(header)
-                .withClaim("email", email)
+                .withClaim("sellerId", sellerId)
                 .withClaim("userName", userName)
                 .withClaim("type", type)
                 .sign(Algorithm.HMAC256("secret"));

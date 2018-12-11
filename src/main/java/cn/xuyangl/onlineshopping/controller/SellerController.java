@@ -6,8 +6,11 @@ import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.LoginForm;
 import cn.xuyangl.onlineshopping.service.*;
 import cn.xuyangl.onlineshopping.utils.JwtToken;
+import cn.xuyangl.onlineshopping.utils.MailUtil;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -42,6 +45,9 @@ public class SellerController {
     @Autowired
     private BuyerService buyerService;
 
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     /**
      *  seller 注册
      * @param seller
@@ -51,7 +57,6 @@ public class SellerController {
     public Result register(@RequestBody Seller seller) {
         Boolean register = sellerService.register(seller);
         if (register) {
-            sellerService.register(seller);
             return ResultUtil.success();
         } else {
             return ResultUtil.error(ResultEnum.RegisterError);
@@ -76,7 +81,7 @@ public class SellerController {
         {
             // 判断密码是否相等
             //将数据存入cookie中i
-            String jwtToken = JwtToken.createToken(loginForm.getUsername(), byEmail.getRealName(), "seller");
+            String jwtToken = JwtToken.createToken(byEmail.getId()+"", byEmail.getRealName(), "seller");
             Cookie cookie = new Cookie("token",jwtToken);
             cookie.setPath("/");
             cookie.setMaxAge(60*60*24); // 设置过期时间
@@ -87,6 +92,20 @@ public class SellerController {
         }
     }
 
+    @RequestMapping(value = "/password/{email}",method = RequestMethod.GET)
+    public Result forgetPassword(@RequestBody String email)
+    {
+        // 根据邮箱查询用户
+        Seller byEmail = sellerService.findByEmail(email);
+        if (byEmail==null)
+        {
+            return ResultUtil.error(ResultEnum.AccountNotFound);
+        }else{
+            SimpleMailMessage simpleMailMessage = MailUtil.createMessage(email, "密码找回", byEmail.getPassword());
+            javaMailSender.send(simpleMailMessage);
+            return ResultUtil.success("send success");
+        }
+    }
 
     /**
      *  商家注册
