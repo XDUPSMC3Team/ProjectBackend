@@ -1,12 +1,15 @@
 package cn.xuyangl.onlineshopping.controller;
 
 import cn.xuyangl.onlineshopping.VO.Result;
+import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.service.ProductService;
 import cn.xuyangl.onlineshopping.service.ProductSpecsService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @Description
@@ -42,7 +45,12 @@ public class ProductController {
      * 查询单个商品具体信息
      */
     @GetMapping("/{productId}")
-    public Result findProduct(@PathVariable("productId") Integer id) {
+    public Result findProduct(@PathVariable("productId") Integer id, HttpSession session) {
+        String userType = (String) session.getAttribute(Common.USER_TYPE);
+        if (userType.equals("buyer")) {
+            Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+            return ResultUtil.success(productService.findProductAsBuyer(buyerId, id));
+        }
         return ResultUtil.success(productService.findProduct(id));
     }
 

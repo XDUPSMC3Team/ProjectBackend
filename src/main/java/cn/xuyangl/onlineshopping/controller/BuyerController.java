@@ -58,7 +58,7 @@ public class BuyerController {
         session.setAttribute(Common.BUYER_ID, buyer.getId());
         session.setAttribute(Common.USERNAME, buyer.getUsername());
         session.setMaxInactiveInterval(3600);
-        return ResultUtil.success();
+        return ResultUtil.success(buyer.getId());
     }
 
     // 查看个人资料
