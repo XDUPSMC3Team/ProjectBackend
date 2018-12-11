@@ -1,6 +1,8 @@
 package cn.xuyangl.onlineshopping.dao;
 
 import cn.xuyangl.onlineshopping.entity.Shop;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +19,6 @@ public interface ShopDao extends JpaRepository<Shop,Integer>{
     List<Shop> findByStatus(Integer status);
 
     Shop findById(Integer id);
+
+    Page<Shop> findAllByIdIn(List<Integer> shopIds, Pageable pageable);
 }

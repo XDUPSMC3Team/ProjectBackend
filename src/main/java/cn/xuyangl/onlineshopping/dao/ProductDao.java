@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @Description
  * @Author: lxy
@@ -19,4 +21,6 @@ public interface ProductDao extends JpaRepository<Product,Integer>{
     Page<Product> findAll(Pageable pageable);
 
     Page<Product> findAllByNameContaining(String keyWord, Pageable pageable);
+
+    Page<Product> findAllByIdIn(List<Integer> productIds, Pageable pageable);
 }

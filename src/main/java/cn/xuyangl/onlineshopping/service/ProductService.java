@@ -46,4 +46,7 @@ public interface ProductService {
     Product findProduct(Integer id);
 
     Page<Product> searchProduct(String key, int page, int size);
+
+    // 查询用户收藏的商品列表
+    Page<Product> viewCollectedProduct(Integer buyerId, int page, int size);
 }

@@ -1,6 +1,8 @@
 package cn.xuyangl.onlineshopping.service;
 
+import cn.xuyangl.onlineshopping.entity.Shop;
 import cn.xuyangl.onlineshopping.model.ShopDetailForm;
+import org.springframework.data.domain.Page;
 
 /**
  * @Description
@@ -11,4 +13,7 @@ import cn.xuyangl.onlineshopping.model.ShopDetailForm;
 public interface ShopService {
 
     boolean modifyShopDetail(Integer shopId,ShopDetailForm shopDetal);
+
+    // 查看用户收藏的商铺列表
+    Page<Shop> viewCollectedShop(Integer buyerId, int page, int size);
 }

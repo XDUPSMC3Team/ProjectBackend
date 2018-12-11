@@ -7,12 +7,13 @@ import cn.xuyangl.onlineshopping.entity.Buyer;
 import cn.xuyangl.onlineshopping.model.BuyerProfileForm;
 import cn.xuyangl.onlineshopping.model.LoginForm;
 import cn.xuyangl.onlineshopping.service.BuyerService;
+import cn.xuyangl.onlineshopping.service.ProductService;
+import cn.xuyangl.onlineshopping.service.ShopService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -24,10 +25,14 @@ import javax.servlet.http.HttpSession;
 public class BuyerController {
 
     private BuyerService buyerService;
+    private ProductService productService;
+    private ShopService shopService;
 
     @Autowired
-    BuyerController(BuyerService buyerService) {
+    public BuyerController(BuyerService buyerService, ProductService productService, ShopService shopService) {
         this.buyerService = buyerService;
+        this.productService = productService;
+        this.shopService = shopService;
     }
 
     @PostMapping("/register")
@@ -72,16 +77,20 @@ public class BuyerController {
 
     // 查看已收藏的商品
     @GetMapping("/collectProd")
-    public Result viewCollectedProd(HttpSession session) {
+    public Result viewCollectedProd(@RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+                                    @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                    HttpSession session) {
         Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
-        return null;
+        return ResultUtil.success(productService.viewCollectedProduct(buyerId, pageNo, pageSize));
     }
 
     // 查看已收藏的店铺
     @GetMapping("/collectShop")
-    public Result viewCollectedShop(HttpSession session) {
+    public Result viewCollectedShop(@RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+                                    @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                    HttpSession session) {
         Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
-        return null;
+        return ResultUtil.success(shopService.viewCollectedShop(buyerId, pageNo, pageSize));
     }
 
     // 收藏商品

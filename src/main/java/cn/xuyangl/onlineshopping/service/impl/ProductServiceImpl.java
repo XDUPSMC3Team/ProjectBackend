@@ -2,8 +2,10 @@ package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
+import cn.xuyangl.onlineshopping.dao.ProductCollectDao;
 import cn.xuyangl.onlineshopping.dao.ProductDao;
 import cn.xuyangl.onlineshopping.entity.Product;
+import cn.xuyangl.onlineshopping.entity.ProductCollect;
 import cn.xuyangl.onlineshopping.service.ProductService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,10 +28,14 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService{
 
-
+    private ProductDao productDao;
+    private ProductCollectDao productCollectDao;
 
     @Autowired
-    private ProductDao productDao;
+    public ProductServiceImpl(ProductDao productDao, ProductCollectDao productCollectDao) {
+        this.productDao = productDao;
+        this.productCollectDao = productCollectDao;
+    }
 
     @Override
     public Page<Product> findProducts(int pageNum, int pageSize) {
@@ -95,5 +102,16 @@ public class ProductServiceImpl implements ProductService{
         if (page<1) page = 1;
         Pageable pageable = new PageRequest(page-1, size);
         return productDao.findAllByNameContaining(key, pageable);
+    }
+
+    @Override
+    public Page<Product> viewCollectedProduct(Integer buyerId, int page, int size) {
+        List<ProductCollect> pcs = productCollectDao.findAllByBuyerId(buyerId);
+        List<Integer> prodIds = new ArrayList<>();
+        for (ProductCollect pc : pcs) {
+            prodIds.add(pc.getProductId());
+        }
+        Pageable pageable = new PageRequest(page, size);
+        return productDao.findAllByIdIn(prodIds, pageable);
     }
 }
