@@ -8,6 +8,7 @@ import cn.xuyangl.onlineshopping.entity.Seller;
 import cn.xuyangl.onlineshopping.entity.Shop;
 import cn.xuyangl.onlineshopping.service.SellerService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
+import groovy.util.IFileNameFinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,18 +35,23 @@ public class SellerServiceImpl implements SellerService{
      * @return
      */
     @Override
-    public Boolean register(Seller seller) {
+    public Result register(Seller seller) {
 
+        Seller sellerByUsername = sellerDao.findSellerByUsername(seller.getUsername());
+        if (sellerByUsername!=null)
+        {
+            return ResultUtil.error(ResultEnum.RegisterUsernameAlreadyExist);
+        }
+        if (sellerDao.findSellerByEmail(seller.getEmail())!=null)
+        {
+            return ResultUtil.error(ResultEnum.RegisterEmailAlreadyExist);
+        }
         // 补充默认属性的值
         seller.setStatus(0);    // 表示为正常用户
         seller.setCreateTime(LocalDateTime.now());
-        try{
-            sellerDao.save(seller);
-            return true;
-        }catch (Exception e)
-        {
-            return false;
-        }
+        // 查找用户是否存在
+        sellerDao.save(seller);
+        return ResultUtil.success();
     }
 
     @Override

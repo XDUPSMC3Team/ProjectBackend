@@ -2,6 +2,7 @@ package cn.xuyangl.onlineshopping.controller;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
+import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.LoginForm;
 import cn.xuyangl.onlineshopping.service.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -55,12 +57,7 @@ public class SellerController {
      */
     @PostMapping("/register")
     public Result register(@RequestBody Seller seller) {
-        Boolean register = sellerService.register(seller);
-        if (register) {
-            return ResultUtil.success();
-        } else {
-            return ResultUtil.error(ResultEnum.RegisterError);
-        }
+        return sellerService.register(seller);
     }
 
     /**
@@ -69,7 +66,7 @@ public class SellerController {
      * @return
      */
     @PostMapping("/login")
-    public Result login(@RequestBody LoginForm loginForm, HttpServletResponse response)
+    public Result login(@RequestBody LoginForm loginForm, HttpSession session)
     {
         Seller byEmail = sellerService.findByEmail(loginForm.getUsername());
         if (byEmail==null)
@@ -81,12 +78,10 @@ public class SellerController {
         {
             // 判断密码是否相等
             //将数据存入cookie中i
-            String jwtToken = JwtToken.createToken(byEmail.getId()+"", byEmail.getRealName(), "seller");
-            Cookie cookie = new Cookie("token",jwtToken);
-            cookie.setPath("/");
-            cookie.setMaxAge(60*60*24); // 设置过期时间
-            response.addCookie(cookie);
-            return ResultUtil.success();
+            session.setAttribute(Common.USER_TYPE, "seller");
+            session.setAttribute(Common.BUYER_ID, byEmail.getId());
+            session.setAttribute(Common.USERNAME, byEmail.getUsername());
+            return ResultUtil.success(byEmail.getId());
         }else{
             return ResultUtil.error(ResultEnum.PasswordIncorrect);
         }

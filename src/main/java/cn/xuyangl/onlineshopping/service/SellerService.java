@@ -18,7 +18,7 @@ public interface SellerService {
      * @param seller
      * @return
      */
-     Boolean register(Seller seller);
+     Result register(Seller seller);
 
     /**
      *  根据邮箱查询seller

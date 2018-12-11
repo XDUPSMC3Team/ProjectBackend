@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Description
@@ -34,5 +35,15 @@ public class ProductSpecsServiceImpl implements ProductSpecsService{
         productSpecs.setCreateTime(LocalDateTime.now());
         productSpecs.setUpdateTime(LocalDateTime.now());
         productSpecsDao.save(productSpecs);
+    }
+
+
+    /**
+     *  查询所有的商品详情
+     * @return
+     */
+    @Override
+    public List<ProductSpecs> findAll() {
+        return productSpecsDao.findAll();
     }
 }

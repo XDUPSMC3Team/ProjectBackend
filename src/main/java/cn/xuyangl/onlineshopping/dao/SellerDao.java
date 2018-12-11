@@ -17,4 +17,19 @@ public interface SellerDao extends JpaRepository<Seller,Integer>{
      * @return
      */
     Seller findSellerByEmailOrUsername(String email,String username);
+
+
+    /**
+     *  根据用户查找该用户
+     * @param username
+     * @return
+     */
+    Seller findSellerByUsername(String username);
+
+    /**
+     *  根据邮箱查找该用户
+     * @param email
+     * @return
+     */
+    Seller findSellerByEmail(String email);
 }

@@ -9,4 +9,5 @@ public class Common {
     public static final String BUYER_ID = "buyerId";
     public static final String USERNAME = "username";
     public static final String ADMIN_ID = "adminId";
+    public static final String SELLER_ID = "sellerId";
 }

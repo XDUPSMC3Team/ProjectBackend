@@ -2,6 +2,8 @@ package cn.xuyangl.onlineshopping.service;
 
 import cn.xuyangl.onlineshopping.entity.ProductSpecs;
 
+import java.util.List;
+
 /**
  * @Description
  * @Author: lxy
@@ -15,4 +17,10 @@ public interface ProductSpecsService {
      * @param productSpecs
      */
     void addProductSpecs(ProductSpecs productSpecs);
+
+    /**
+     *  查询所有的商品信息
+     * @return
+     */
+    List<ProductSpecs> findAll();
 }
