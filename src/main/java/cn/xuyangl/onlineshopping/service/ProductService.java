@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service;
 
+import cn.xuyangl.onlineshopping.VO.ProductVO;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.entity.Product;
 import org.springframework.data.domain.Page;
@@ -49,4 +50,6 @@ public interface ProductService {
 
     // 查询用户收藏的商品列表
     Page<Product> viewCollectedProduct(Integer buyerId, int page, int size);
+
+    ProductVO findProductAsBuyer(Integer buyerId, Integer productId);
 }

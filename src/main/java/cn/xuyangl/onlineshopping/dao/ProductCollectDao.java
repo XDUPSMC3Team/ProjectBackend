@@ -12,4 +12,6 @@ import java.util.List;
 public interface ProductCollectDao extends JpaRepository<ProductCollect, Integer> {
 
     List<ProductCollect> findAllByBuyerId(Integer buyerId);
+
+    ProductCollect findByBuyerIdAndProductId(Integer buyerId, Integer productId);
 }

@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.ProductVO;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.dao.ProductCollectDao;
@@ -8,6 +9,7 @@ import cn.xuyangl.onlineshopping.entity.Product;
 import cn.xuyangl.onlineshopping.entity.ProductCollect;
 import cn.xuyangl.onlineshopping.service.ProductService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -113,5 +115,19 @@ public class ProductServiceImpl implements ProductService{
         }
         Pageable pageable = new PageRequest(page, size);
         return productDao.findAllByIdIn(prodIds, pageable);
+    }
+
+    @Override
+    public ProductVO findProductAsBuyer(Integer buyerId, Integer productId) {
+        Product product = productDao.findOne(productId);
+        ProductCollect pc = productCollectDao.findByBuyerIdAndProductId(buyerId, productId);
+        Integer collectId = 0;
+        if (pc != null) {
+            collectId = pc.getId();
+        }
+        ProductVO productVO = new ProductVO();
+        BeanUtils.copyProperties(product, productVO);
+        productVO.setCollectId(collectId);
+        return productVO;
     }
 }
