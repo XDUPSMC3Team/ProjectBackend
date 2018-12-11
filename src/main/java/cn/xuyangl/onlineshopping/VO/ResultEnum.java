@@ -8,6 +8,7 @@ package cn.xuyangl.onlineshopping.VO;
  */
 public enum  ResultEnum {
 
+    Success(0, "success"),
     AccountNotFound(1,"account is not found"),
     PasswordIncorrect(2,"password is not correct"),
     RegisterError(3,"register errors"),
@@ -16,7 +17,10 @@ public enum  ResultEnum {
     OPERATION_FAILURE(6,"operation failed"),
     UPDATE_FAILED(7,"update failed"),
     AD_NOT_EXIST(7,"this advertisement not exists"),
-    NOT_FOUND(8,"not found")
+    NOT_FOUND(8,"not found"),
+    RegisterEmptyError(9, "username, password, email can't be empty."),
+    RegisterUsernameAlreadyExist(10, "the username has been registered."),
+    RegisterEmailAlreadyExist(11, "the email has been registered.")
     ;
     public String msg;
     public Integer code;

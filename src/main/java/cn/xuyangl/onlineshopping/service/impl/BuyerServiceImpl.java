@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.dao.BuyerDao;
 import cn.xuyangl.onlineshopping.dao.ProductCollectDao;
 import cn.xuyangl.onlineshopping.dao.ShopCollectDao;
@@ -29,14 +30,14 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
-    public Boolean register(Buyer buyer) {
+    public ResultEnum register(Buyer buyer) {
         // TODO email check
 
-        // check duplicate username
-        if (buyerDao.findByUsername(buyer.getUsername()) != null)
-            return false;
+        // check duplicate username and email
+        if (buyerDao.findByUsername(buyer.getUsername()) != null) return ResultEnum.RegisterUsernameAlreadyExist;
+        if (buyerDao.findByEmail(buyer.getEmail()) != null) return ResultEnum.RegisterEmailAlreadyExist;
         buyerDao.saveAndFlush(buyer);
-        return true;
+        return ResultEnum.Success;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Override
     public Buyer findByEmail(String email) {
-        return buyerDao.findBuyerByEmail(email);
+        return buyerDao.findByEmail(email);
     }
 
     @Override

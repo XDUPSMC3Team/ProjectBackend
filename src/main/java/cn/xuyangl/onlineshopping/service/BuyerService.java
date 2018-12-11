@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service;
 
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.entity.Buyer;
 
 /**
@@ -8,7 +9,7 @@ import cn.xuyangl.onlineshopping.entity.Buyer;
  */
 public interface BuyerService {
 
-    Boolean register(Buyer buyer);
+    ResultEnum register(Buyer buyer);
 
     Buyer login(String username, String password);
 

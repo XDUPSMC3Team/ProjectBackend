@@ -37,10 +37,14 @@ public class BuyerController {
 
     @PostMapping("/register")
     public Result register(@RequestBody Buyer buyer) {
-        if (buyerService.register(buyer)) {
+        if (buyer.getUsername() == null || buyer.getPassword() == null || buyer.getEmail() == null) {
+            return ResultUtil.error(ResultEnum.RegisterEmptyError);
+        }
+        ResultEnum resultEnum = buyerService.register(buyer);
+        if (resultEnum.code == 0) {
             return ResultUtil.success("Welcome, " + buyer.getUsername());
         } else {
-            return ResultUtil.error(ResultEnum.RegisterError);
+            return ResultUtil.error(resultEnum);
         }
     }
 
