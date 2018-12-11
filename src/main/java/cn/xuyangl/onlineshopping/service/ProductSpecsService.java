@@ -1,6 +1,8 @@
 package cn.xuyangl.onlineshopping.service;
 
 import cn.xuyangl.onlineshopping.entity.ProductSpecs;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -22,5 +24,12 @@ public interface ProductSpecsService {
      *  查询所有的商品信息
      * @return
      */
-    List<ProductSpecs> findAll();
+    Page<ProductSpecs> findAll(int pageNum, int pageSize);
+
+    /**
+     *  根据productId  查询 productSpecs
+     * @param productId
+     * @return
+     */
+    List<ProductSpecs> findAllByProductId(String productId);
 }

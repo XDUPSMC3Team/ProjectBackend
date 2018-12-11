@@ -60,4 +60,24 @@ public class ShopServiceImpl implements ShopService {
         Pageable pageable = new PageRequest(page, size);
         return shopDao.findAllByIdIn(shopIds, pageable);
     }
+
+
+    /**
+     *  查询所有 的shop
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Page<Shop> findAllShops(int pageNum, int pageSize) {
+
+        //对pageNum 进行 规范判断
+        if (pageNum<1)
+        {
+            pageNum = 1;
+        }
+        // 构建pageRequest
+        Pageable pageable = new PageRequest(pageNum-1,pageSize);
+        return shopDao.findAll(pageable);
+    }
 }

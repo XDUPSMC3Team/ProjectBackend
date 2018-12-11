@@ -2,13 +2,16 @@ package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.dao.ProductSpecsDao;
 import cn.xuyangl.onlineshopping.entity.ProductSpecs;
-import cn.xuyangl.onlineshopping.service.ProductService;
 import cn.xuyangl.onlineshopping.service.ProductSpecsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 
 /**
  * @Description
@@ -43,7 +46,19 @@ public class ProductSpecsServiceImpl implements ProductSpecsService{
      * @return
      */
     @Override
-    public List<ProductSpecs> findAll() {
-        return productSpecsDao.findAll();
+    public Page<ProductSpecs> findAll(int pageNum, int pageSize) {
+        //对pageNum 进行 规范判断
+        if (pageNum<1)
+        {
+            pageNum = 1;
+        }
+        // 构建pageRequest
+        Pageable pageable = new PageRequest(pageNum-1,pageSize);
+        return productSpecsDao.findAll(pageable);
+    }
+
+    @Override
+    public List<ProductSpecs> findAllByProductId(String productId) {
+        return productSpecsDao.findAllByProductId(Integer.parseInt(productId));
     }
 }

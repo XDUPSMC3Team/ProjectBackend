@@ -2,8 +2,10 @@ package cn.xuyangl.onlineshopping.controller;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.service.ProductService;
+import cn.xuyangl.onlineshopping.service.ProductSpecsService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,6 +20,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductSpecsService productSpecsService;
 
     /**
      *  分页查询所有的product
@@ -50,6 +55,23 @@ public class ProductController {
                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") String pageSzie)
     {
         return ResultUtil.success(productService.searchProduct(key, Integer.parseInt(pageNo), Integer.parseInt(pageSzie)));
+    }
+
+    /**
+     *  根据productId 查询所有 productSpecs
+     * @param productId
+     * @return
+     */
+    @GetMapping("/productSpecs/{productId}")
+    public Result findAllProductSpecs(@PathVariable String productId) {
+        return ResultUtil.success(productSpecsService.findAllByProductId(productId));
+    }
+
+    @GetMapping("/productSpecs")
+    public Result findAllProductSpecs(@RequestParam(name = "pageNo",required = false,defaultValue = "0") String pageNo
+            , @RequestParam(name="pageSize",required = false,defaultValue = "10")String  pageSize)
+    {
+        return ResultUtil.success(productSpecsService.findAll(Integer.parseInt(pageNo),Integer.parseInt(pageSize)));
     }
 
 }
