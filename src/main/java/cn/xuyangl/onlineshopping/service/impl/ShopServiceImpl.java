@@ -47,6 +47,7 @@ public class ShopServiceImpl implements ShopService {
         {
             one.setPhone(shopDetailForm.getTelephone());
         }
+        shopDao.save(one);
         return true;
     }
 
