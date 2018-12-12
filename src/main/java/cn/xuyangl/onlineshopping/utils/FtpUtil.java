@@ -55,11 +55,16 @@ public class FtpUtil {
     {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        File file = new File(LOCAL_PATH + simpleDateFormat.format(now) + name);
+        if (!file.exists())
+        {
+            file.mkdirs();
+        }
         try {
             InputStream inputStream = multipartFile.getInputStream();
             byte[] bytes = new byte[1024];
             int index;
-            FileOutputStream fileOutputStream = new FileOutputStream(new File(LOCAL_PATH+simpleDateFormat.format(now)+name));
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
             while ((index=inputStream.read(bytes))!=-1)
             {
                 fileOutputStream.write(bytes,0,index);
