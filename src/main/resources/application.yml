@@ -24,7 +24,7 @@ spring:
         smtp:
           auth: true
 ftp:
-  address: http://119.23.75.180
+  address: 119.23.75.180
   port: 21
   username: ftptest
   password: ftptest

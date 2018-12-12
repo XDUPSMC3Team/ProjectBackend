@@ -88,8 +88,8 @@ public class SellerController {
         }
     }
 
-    @RequestMapping(value = "/password/{email}",method = RequestMethod.GET)
-    public Result forgetPassword(@RequestBody String email)
+    @RequestMapping(value = "/password",method = RequestMethod.GET)
+    public Result forgetPassword(@RequestParam("email") String email)
     {
         // 根据邮箱查询用户
         Seller byEmail = sellerService.findByEmail(email);
@@ -97,7 +97,7 @@ public class SellerController {
         {
             return ResultUtil.error(ResultEnum.AccountNotFound);
         }else{
-            SimpleMailMessage simpleMailMessage = MailUtil.createMessage(email, "密码找回", byEmail.getPassword());
+            SimpleMailMessage simpleMailMessage = MailUtil.createMessage(email, "主题：密码找回", "您的密码为："+byEmail.getPassword());
             javaMailSender.send(simpleMailMessage);
             return ResultUtil.success("send success");
         }

@@ -17,8 +17,7 @@ import java.util.List;
 @Repository
 public interface ProductDao extends JpaRepository<Product,Integer>{
 
-    @Override
-    Page<Product> findAll(Pageable pageable);
+    Page<Product> findAllByStatus(Pageable pageable,int status);
 
     Page<Product> findAllByNameContaining(String keyWord, Pageable pageable);
 

@@ -1,6 +1,8 @@
 package cn.xuyangl.onlineshopping.utils;
 
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * @Description

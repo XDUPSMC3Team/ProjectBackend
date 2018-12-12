@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService{
         }
         // 构建pageRequest
         Pageable pageable = new PageRequest(pageNum-1,pageSize);
-        return productDao.findAll(pageable);
+        return productDao.findAllByStatus(pageable,0);
     }
 
     /**
