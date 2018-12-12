@@ -4,6 +4,7 @@ import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.entity.Admin;
+import cn.xuyangl.onlineshopping.model.LoginForm;
 import cn.xuyangl.onlineshopping.service.AdminService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +40,10 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public Result login(String username, String password, HttpSession session) {
-        Admin adminInDB = adminService.findByUsername(username);
+    public Result login(LoginForm loginForm, HttpSession session) {
+        Admin adminInDB = adminService.findByUsername(loginForm.getUsername());
         if (adminInDB == null) return ResultUtil.error(1, "Admin account isn't exist.");
-        Admin admin = adminService.login(username, password);
+        Admin admin = adminService.login(loginForm.getUsername(), loginForm.getPassword());
         if (admin == null) return ResultUtil.error(2, "password uncorrect.");
         session.setAttribute(Common.USER_TYPE, "admin");
         session.setAttribute(Common.ADMIN_ID, admin.getId());
