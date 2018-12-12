@@ -73,8 +73,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Shop findShop(Integer shopId) {
+    public Shop findShopById(Integer shopId) {
         return shopDAO.findById(shopId);
+    }
+
+    @Override
+    public List<Shop> findShopByName(String name) {
+        return shopDAO.findByShopNameContaining(name);
     }
 
     @Override

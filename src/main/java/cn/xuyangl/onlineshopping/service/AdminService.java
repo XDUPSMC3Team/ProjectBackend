@@ -19,7 +19,9 @@ public interface AdminService {
 
     Boolean rejectShop(Integer shopId);
 
-    Shop findShop(Integer shopId);
+    Shop findShopById(Integer shopId);
+
+    List<Shop> findShopByName(String name);
 
     Boolean closeShop(Integer shopId);
 }
