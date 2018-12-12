@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService{
         }
         // 构建pageRequest
         Pageable pageable = new PageRequest(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id"));
-        return productDao.findAll(pageable);
+        return productDao.findAllByStatus(0, pageable);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ProductServiceImpl implements ProductService{
      */
     @Override
     public List<Product> findProductsByShopId(String shopId) {
-        return productDao.findAllByShopId(Integer.parseInt(shopId));
+        return productDao.findAllByShopIdAndStatus(Integer.parseInt(shopId), 0);
     }
 
     /**
@@ -151,7 +151,7 @@ public class ProductServiceImpl implements ProductService{
     public Page<Product> searchProduct(String key, int page, int size) {
         if (page<0) page = 0;
         Pageable pageable = new PageRequest(page, size, new Sort(Sort.Direction.DESC, "id"));
-        return productDao.findAllByNameContaining(key, pageable);
+        return productDao.findAllByNameContainingAndStatus(key,0, pageable);
     }
 
     @Override
