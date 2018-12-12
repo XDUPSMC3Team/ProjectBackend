@@ -82,9 +82,10 @@ public class ProductController {
         return ResultUtil.success(productSpecsService.findAll(Integer.parseInt(pageNo),Integer.parseInt(pageSize)));
     }
 
-    @PostMapping("/productSpecs/detail")
-    public Result findProductSpecs(@RequestBody String detail)
+    @GetMapping("/productSpecs/detail")
+    public Result findProductSpecs(@RequestParam("detail") String detail)
     {
+        System.out.println(detail);
         return ResultUtil.success(productSpecsService.findProductsSpecs(detail));
     }
 
