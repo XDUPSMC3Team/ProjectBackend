@@ -8,10 +8,7 @@ import cn.xuyangl.onlineshopping.model.LoginForm;
 import cn.xuyangl.onlineshopping.service.AdminService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,13 +24,12 @@ public class AdminController {
     }
 
     @PostMapping("/register")
-    public Result register(String email, String username, String password) {
-        Admin admin = new Admin();
-        admin.setEmail(email);
-        admin.setUsername(username);
-        admin.setPassword(password);
+    public Result register(@RequestBody Admin admin) {
+        if (admin.getUsername() == null || admin.getPassword() == null || admin.getEmail() == null) {
+            return ResultUtil.error(ResultEnum.RegisterEmptyError);
+        }
         if (adminService.register(admin)) {
-            return ResultUtil.success("Welcome, " + username);
+            return ResultUtil.success("Welcome, " + admin.getUsername());
         } else {
             return ResultUtil.error(1, "the username you detected has been register.");
         }
@@ -66,7 +62,7 @@ public class AdminController {
     }
 
     @PostMapping("/personal/approve")
-    public Result approve(Integer shopId, HttpSession session) {
+    public Result approve(@RequestParam(name = "shopId") Integer shopId, HttpSession session) {
         if (!adminService.approveShop(shopId)) {
             return ResultUtil.error(ResultEnum.NOT_FOUND);
         }
@@ -74,20 +70,20 @@ public class AdminController {
     }
 
     @PostMapping("/personal/reject")
-    public Result reject(Integer shopId, HttpSession session) {
+    public Result reject(@RequestParam(name = "shopId") Integer shopId, HttpSession session) {
         if (!adminService.rejectShop(shopId)) {
             return ResultUtil.error(ResultEnum.NOT_FOUND);
         }
         return ResultUtil.success();
     }
 
-    @GetMapping("/personal/search")
-    public Result search(Integer shopId, HttpSession session) {
+    @GetMapping("/personal/search/{shopId}")
+    public Result search(@PathVariable("shopId") Integer shopId, HttpSession session) {
         return ResultUtil.success(adminService.findShop(shopId));
     }
 
     @PostMapping("/personal/close")
-    public Result closeShop(Integer shopId, HttpSession session) {
+    public Result closeShop(@RequestParam(name = "shopId") Integer shopId, HttpSession session) {
         if (!adminService.closeShop(shopId)) {
             return ResultUtil.error(ResultEnum.NOT_FOUND);
         }
