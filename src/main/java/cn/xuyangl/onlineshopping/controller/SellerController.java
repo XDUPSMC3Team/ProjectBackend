@@ -14,8 +14,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -49,6 +47,9 @@ public class SellerController {
 
     @Autowired
     private JavaMailSender javaMailSender;
+
+    @Autowired
+    private  ShopService shopService;
 
     /**
      *  seller 注册
@@ -105,32 +106,30 @@ public class SellerController {
     /**
      *  商家注册
      * @param shop
-     * @param token
      * @return
      */
     @PostMapping
     @RequestMapping("/register/shop")
-    public Result registerShop(@RequestBody Shop shop,@CookieValue(value = "token")String token)
+    public Result registerShop(@RequestBody Shop shop)
     {
-        String email = JwtToken.verifyToken(token).get("email").asString();
         // 根据 email 查找 buyer 判断是否存在
-        Buyer buyer = buyerService.findByEmail(email);
-        Seller seller = sellerService.findByEmail(email);
-        if (seller==null)
-        {
-            Seller seller1 = new Seller();
-            seller.setRealName(buyer.getRealName());
-            seller.setEmail(buyer.getEmail());
-            seller.setAddress(buyer.getAddress());
-            seller.setPassword(buyer.getPassword());
-            seller.setPhone(buyer.getPhone());
-            sellerService.register(seller1);
-        }
+//        Buyer buyer = buyerService.findByEmail(email);
+//        Seller seller = sellerService.findByEmail(email);
+//        if (seller==null)
+//        {
+//            Seller seller1 = new Seller();
+//            seller.setRealName(buyer.getRealName());
+//            seller.setEmail(buyer.getEmail());
+//            seller.setAddress(buyer.getAddress());
+//            seller.setPassword(buyer.getPassword());
+//            seller.setPhone(buyer.getPhone());
+//            sellerService.register(seller1);
+//        }
         // 首先判断是否登录
-        if (token==null||"".equals(token))
-        {
-            return ResultUtil.error(ResultEnum.NO_RIGHT);
-        }
+//        if (token==null||"".equals(token))
+//        {
+//            return ResultUtil.error(ResultEnum.NO_RIGHT);
+//        }
 
         boolean b = sellerService.registerShop(shop);
         if (b)
@@ -150,13 +149,25 @@ public class SellerController {
     @RequestMapping("/product")
     public Result addProduct(@RequestBody Product product)
     {
-        boolean b = productService.addProduct(product);
-        if (b)
+        ResultEnum resultEnum = productService.addProduct(product);
+        if (resultEnum.code==0)
         {
             return ResultUtil.success();
         }else{
-            return ResultUtil.error(ResultEnum.OPERATION_FAILURE);
+            return ResultUtil.error(resultEnum);
         }
+    }
+
+    /**
+     * 根据 shopId 查询 product
+     * @param shopId
+     * @return
+     */
+    @PostMapping
+    @RequestMapping("/products/{shopId}")
+    public Result addProduct(@PathVariable("shopId") String  shopId)
+    {
+        return ResultUtil.success(productService.findProductsByShopId(shopId));
     }
 
     /**
@@ -201,7 +212,7 @@ public class SellerController {
      * @return
      */
     @RequestMapping(value = "/attributeKey",method = RequestMethod.POST)
-    public Result addAttributeKey(@RequestBody Attributekey attributekey)
+    public Result addAttributeKey(@RequestBody AttributeKey attributekey)
     {
         attributeKeyService.addAttributeKey(attributekey);
         return ResultUtil.success();
@@ -259,5 +270,16 @@ public class SellerController {
     {
         productSpecsService.addProductSpecs(productSpecs);
         return ResultUtil.success();
+    }
+
+    /**
+     *  根据sellerId  查询 shop 商铺信息
+     * @param sellerId
+     * @return
+     */
+    @RequestMapping(value = "/shop/{sellerId}",method = RequestMethod.GET)
+    public Result findShopById(@PathVariable("sellerId")String sellerId)
+    {
+        return ResultUtil.success(shopService.findShopById(sellerId));
     }
 }

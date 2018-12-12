@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name ="T_ATTR_KEY")
 @Data
-public class Attributekey {
+public class AttributeKey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -20,4 +20,6 @@ public interface ShopService {
 
     // 查询所有的商铺信息
     Page<Shop> findAllShops(int pageNum, int pageSize);
+
+    Shop findShopById(String sellerId);
 }

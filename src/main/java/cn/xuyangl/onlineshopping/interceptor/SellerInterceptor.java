@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.interceptor;
 
+import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.exception.NoPermissionException;
 import cn.xuyangl.onlineshopping.utils.JwtToken;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @Description
@@ -21,22 +23,11 @@ public class SellerInterceptor implements HandlerInterceptor{
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie:cookies)
-        {
-            if (cookie.getName().equals("token"))
-            {
-                // 说明cookie 存在
-                String type = JwtToken.verifyToken(cookie.getValue()).get("type").asString();
-                if (!type.equals("seller"))
-                {
-                    throw new NoPermissionException("you haven't login as a seller.");
-                }else{
-                    return true;
-                }
-            }
+        HttpSession session = httpServletRequest.getSession();
+        if (!session.getAttribute(Common.USER_TYPE).equals("seller") || session.getAttribute(Common.BUYER_ID) == null) {
+            throw new NoPermissionException("you haven't login as a seller.");
         }
-        throw new NoPermissionException("you haven't login");
+        return true;
     }
 
     @Override

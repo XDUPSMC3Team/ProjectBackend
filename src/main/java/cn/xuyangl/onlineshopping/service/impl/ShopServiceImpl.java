@@ -80,4 +80,14 @@ public class ShopServiceImpl implements ShopService {
         Pageable pageable = new PageRequest(pageNum-1,pageSize);
         return shopDao.findAll(pageable);
     }
+
+    /**
+     *  根据 sellerId 查询shop
+     * @param sellerId
+     * @return
+     */
+    @Override
+    public Shop findShopById(String sellerId) {
+        return shopDao.findShopBySellerId(Integer.parseInt(sellerId));
+    }
 }
