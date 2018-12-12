@@ -36,8 +36,9 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public Result login(LoginForm loginForm, HttpSession session) {
+    public Result login(@RequestBody LoginForm loginForm, HttpSession session) {
         Admin adminInDB = adminService.findByUsername(loginForm.getUsername());
+        System.out.println(loginForm.getUsername());
         if (adminInDB == null) return ResultUtil.error(1, "Admin account isn't exist.");
         Admin admin = adminService.login(loginForm.getUsername(), loginForm.getPassword());
         if (admin == null) return ResultUtil.error(2, "password uncorrect.");
