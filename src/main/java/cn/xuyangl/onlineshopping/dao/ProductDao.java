@@ -17,11 +17,12 @@ import java.util.List;
 @Repository
 public interface ProductDao extends JpaRepository<Product,Integer>{
 
-    Page<Product> findAllByStatus(Pageable pageable,int status);
 
-    Page<Product> findAllByNameContaining(String keyWord, Pageable pageable);
+    Page<Product> findAllByStatus(Integer status, Pageable pageable);
+
+    Page<Product> findAllByNameContainingAndStatus(String keyWord, Integer status, Pageable pageable);
 
     Page<Product> findAllByIdIn(List<Integer> productIds, Pageable pageable);
 
-    List<Product> findAllByShopId(Integer shopId);
+    List<Product> findAllByShopIdAndStatus(Integer shopId, Integer status);
 }

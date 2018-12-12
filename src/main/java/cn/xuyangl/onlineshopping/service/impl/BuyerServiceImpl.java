@@ -41,7 +41,7 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Override
     public Buyer login(String username, String password) {
-        Buyer buyer = buyerDao.findByUsername(username);
+        Buyer buyer = buyerDao.findByUsernameOrEmail(username, username);
         if (password.equals(buyer.getPassword())) {
             return buyer;
         } else {

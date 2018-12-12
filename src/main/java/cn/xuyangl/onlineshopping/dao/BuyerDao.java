@@ -13,4 +13,6 @@ public interface BuyerDao extends JpaRepository<Buyer, Integer> {
     Buyer findById(Integer id);
 
     Buyer findByEmail(String email);
+
+    Buyer findByUsernameOrEmail(String username, String email);
 }
