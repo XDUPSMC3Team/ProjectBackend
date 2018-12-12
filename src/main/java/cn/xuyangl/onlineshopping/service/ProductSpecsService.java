@@ -32,4 +32,6 @@ public interface ProductSpecsService {
      * @return
      */
     List<ProductSpecs> findAllByProductId(String productId);
+
+    ProductSpecs findProductsSpecs(String detail);
 }

@@ -61,4 +61,14 @@ public class ProductSpecsServiceImpl implements ProductSpecsService{
     public List<ProductSpecs> findAllByProductId(String productId) {
         return productSpecsDao.findAllByProductId(Integer.parseInt(productId));
     }
+
+    /**
+     *  根据 detail 查找 ProductSpecs
+     * @param detail
+     * @return
+     */
+    @Override
+    public ProductSpecs findProductsSpecs(String detail) {
+        return productSpecsDao.findByDetail(detail);
+    }
 }
