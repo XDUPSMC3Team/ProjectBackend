@@ -19,8 +19,8 @@ public class FtpUtil {
 
     final static String REMOTE_RELATIVE_PATH = "http://119.23.75.180/";
 
-//    final static String LOCAL_PATH = "/home/ftptest/productPic/";
-    final static String LOCAL_PATH = "/Users/mac/Downloads/";
+    final static String LOCAL_PATH = "/home/ftptest/productPic/";
+//    final static String LOCAL_PATH = "/Users/mac/Downloads/";
 
     public static String uploadFile(MultipartFile multipartFile, String address, int port,
                                      String username, String password, String basePath, String name, int fileType) {
