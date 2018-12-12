@@ -78,9 +78,9 @@ public class AdminController {
         return ResultUtil.success();
     }
 
-    @GetMapping("/personal/search/{shopId}")
-    public Result search(@PathVariable("shopId") Integer shopId, HttpSession session) {
-        return ResultUtil.success(adminService.findShop(shopId));
+    @GetMapping("/personal/search/{shopName}")
+    public Result search(@PathVariable("shopName") String shopName, HttpSession session) {
+        return ResultUtil.success(adminService.findShopByName(shopName));
     }
 
     @PostMapping("/personal/close/{shopId}")
