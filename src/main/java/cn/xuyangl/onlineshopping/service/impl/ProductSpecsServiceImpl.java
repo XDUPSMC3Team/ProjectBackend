@@ -68,7 +68,7 @@ public class ProductSpecsServiceImpl implements ProductSpecsService{
      * @return
      */
     @Override
-    public ProductSpecs findProductsSpecs(String detail) {
-        return productSpecsDao.findByDetail(detail);
+    public ProductSpecs findProductsSpecsByDetailAndProductId(String detail, String productId) {
+        return productSpecsDao.findByDetailAndProductId(detail,Integer.parseInt(productId));
     }
 }

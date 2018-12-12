@@ -33,5 +33,5 @@ public interface ProductSpecsService {
      */
     List<ProductSpecs> findAllByProductId(String productId);
 
-    ProductSpecs findProductsSpecs(String detail);
+    ProductSpecs findProductsSpecsByDetailAndProductId(String detail,String productId);
 }

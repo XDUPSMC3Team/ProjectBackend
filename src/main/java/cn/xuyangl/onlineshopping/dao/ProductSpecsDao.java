@@ -22,6 +22,6 @@ public interface ProductSpecsDao extends JpaRepository<ProductSpecs,Integer>{
      */
     List<ProductSpecs> findAllByProductId(int productId);
 
-    ProductSpecs findByDetail(String detail);
+    ProductSpecs findByDetailAndProductId(String detail,int productID);
 
 }
