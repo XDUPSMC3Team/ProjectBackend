@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.json.JSONObject;
 import java.time.LocalDateTime;
@@ -54,12 +55,12 @@ public class ProductServiceImpl implements ProductService{
     public Page<Product> findProducts(int pageNum, int pageSize) {
 
         //对pageNum 进行 规范判断
-        if (pageNum<1)
+        if (pageNum<0)
         {
-            pageNum = 1;
+            pageNum = 0;
         }
         // 构建pageRequest
-        Pageable pageable = new PageRequest(pageNum-1,pageSize);
+        Pageable pageable = new PageRequest(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id"));
         return productDao.findAll(pageable);
     }
 
@@ -148,8 +149,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Page<Product> searchProduct(String key, int page, int size) {
-        if (page<1) page = 1;
-        Pageable pageable = new PageRequest(page-1, size);
+        if (page<0) page = 0;
+        Pageable pageable = new PageRequest(page, size, new Sort(Sort.Direction.DESC, "id"));
         return productDao.findAllByNameContaining(key, pageable);
     }
 
@@ -160,7 +161,7 @@ public class ProductServiceImpl implements ProductService{
         for (ProductCollect pc : pcs) {
             prodIds.add(pc.getProductId());
         }
-        Pageable pageable = new PageRequest(page, size);
+        Pageable pageable = new PageRequest(page, size, new Sort(Sort.Direction.DESC, "id"));
         return productDao.findAllByIdIn(prodIds, pageable);
     }
 

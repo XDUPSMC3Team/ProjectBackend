@@ -59,7 +59,7 @@ public class ProductController {
      */
     @GetMapping("/search")
     public Result searchProduct(@RequestParam(name = "key", required = false, defaultValue = "") String key,
-                                @RequestParam(name = "pageNo", required = false, defaultValue = "1") String pageNo,
+                                @RequestParam(name = "pageNo", required = false, defaultValue = "0") String pageNo,
                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") String pageSzie)
     {
         return ResultUtil.success(productService.searchProduct(key, Integer.parseInt(pageNo), Integer.parseInt(pageSzie)));
