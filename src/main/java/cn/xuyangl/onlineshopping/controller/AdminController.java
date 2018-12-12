@@ -61,16 +61,16 @@ public class AdminController {
         return ResultUtil.success(adminService.newAppliedShops());
     }
 
-    @PostMapping("/personal/approve")
-    public Result approve(@RequestParam(name = "shopId") Integer shopId, HttpSession session) {
+    @PostMapping("/personal/approve/{shopId}")
+    public Result approve(@PathVariable(name = "shopId") Integer shopId, HttpSession session) {
         if (!adminService.approveShop(shopId)) {
             return ResultUtil.error(ResultEnum.NOT_FOUND);
         }
         return ResultUtil.success();
     }
 
-    @PostMapping("/personal/reject")
-    public Result reject(@RequestParam(name = "shopId") Integer shopId, HttpSession session) {
+    @PostMapping("/personal/reject/{shopId}")
+    public Result reject(@PathVariable(name = "shopId") Integer shopId, HttpSession session) {
         if (!adminService.rejectShop(shopId)) {
             return ResultUtil.error(ResultEnum.NOT_FOUND);
         }
@@ -82,8 +82,8 @@ public class AdminController {
         return ResultUtil.success(adminService.findShop(shopId));
     }
 
-    @PostMapping("/personal/close")
-    public Result closeShop(@RequestParam(name = "shopId") Integer shopId, HttpSession session) {
+    @PostMapping("/personal/close/{shopId}")
+    public Result closeShop(@PathVariable(name = "shopId") Integer shopId, HttpSession session) {
         if (!adminService.closeShop(shopId)) {
             return ResultUtil.error(ResultEnum.NOT_FOUND);
         }
