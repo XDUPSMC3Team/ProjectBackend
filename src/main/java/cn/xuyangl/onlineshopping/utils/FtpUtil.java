@@ -2,6 +2,7 @@ package cn.xuyangl.onlineshopping.utils;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.nntp.NNTP;
+import org.aspectj.util.FileUtil;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
@@ -18,7 +19,8 @@ public class FtpUtil {
 
     final static String REMOTE_RELATIVE_PATH = "http://119.23.75.180/";
 
-    final static String LOCAL_PATH = "/home/ftptest/productPic/";
+//    final static String LOCAL_PATH = "/home/ftptest/productPic/";
+    final static String LOCAL_PATH = "/Users/mac/Downloads/";
 
     public static String uploadFile(MultipartFile multipartFile, String address, int port,
                                      String username, String password, String basePath, String name, int fileType) {
@@ -55,10 +57,20 @@ public class FtpUtil {
     {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        File file = new File(LOCAL_PATH + simpleDateFormat.format(now) + name);
+        File file = new File(LOCAL_PATH + simpleDateFormat.format(now) +"/"+name);
+
         if (!file.exists())
         {
-            file.mkdirs();
+            File parentFile =file.getParentFile();
+            if (!parentFile.exists())
+            {
+                parentFile.mkdirs();
+            }
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         try {
             InputStream inputStream = multipartFile.getInputStream();
