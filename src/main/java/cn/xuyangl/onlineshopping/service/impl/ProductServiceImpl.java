@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService{
      */
     @Override
     public ResultEnum addProduct(Product product) {
-
+        System.out.println(product.getPic());
         // 补充商品属性
         product.setCreateTime(LocalDateTime.now());
         product.setUpdateTime(LocalDateTime.now());
@@ -99,7 +99,9 @@ public class ProductServiceImpl implements ProductService{
                 // 根据名称查找 attributeKey
                 return ResultEnum.AccountNotFound;
             }
-            String[] values = (String[])jsonObject.get(key);
+            String value = jsonObject.get(key).toString();
+            value = value.substring(1,value.length()-1);
+            String[] values = value.split(",");
             for (String s:values)
             {
                 // 根据id 添加 value值
