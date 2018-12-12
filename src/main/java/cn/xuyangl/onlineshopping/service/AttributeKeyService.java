@@ -1,6 +1,6 @@
 package cn.xuyangl.onlineshopping.service;
 
-import cn.xuyangl.onlineshopping.entity.Attributekey;
+import cn.xuyangl.onlineshopping.entity.AttributeKey;
 
 import java.util.List;
 
@@ -16,12 +16,14 @@ public interface AttributeKeyService {
      *  增加一条 attributekey
      * @param attributekey
      */
-    void addAttributeKey(Attributekey attributekey);
+    void addAttributeKey(AttributeKey attributekey);
 
     /**
      *  根据分类 id 查找所有的 属性key
      * @param categoryId
      * @return
      */
-    List<Attributekey> findByCategoryId(Integer categoryId);
+    List<AttributeKey> findByCategoryId(Integer categoryId);
+
+    AttributeKey findByName(String name);
 }

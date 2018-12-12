@@ -8,7 +8,6 @@ import cn.xuyangl.onlineshopping.entity.Seller;
 import cn.xuyangl.onlineshopping.entity.Shop;
 import cn.xuyangl.onlineshopping.service.SellerService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
-import groovy.util.IFileNameFinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +64,7 @@ public class SellerServiceImpl implements SellerService{
         // 补全属性
         shop.setStatus(0);  // 设置为受理中
         shop.setCreateTime(LocalDateTime.now());
+        shop.setUpdateTime(LocalDateTime.now());
         try{
             shopDao.save(shop);
             return true;

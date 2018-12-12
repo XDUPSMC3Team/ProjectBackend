@@ -23,20 +23,28 @@ public class PublicController {
 
     /**
      *  登出
-     * @param cookie
      * @param response
      * @return
      */
     @GetMapping("/logout")
-    public Result logout(@CookieValue(name = "token")Cookie cookie, HttpServletResponse response, HttpSession session)
+    public Result logout(HttpServletResponse response, HttpSession session)
     {
         // 清除session
         session.removeAttribute(Common.USER_TYPE);
-        session.removeAttribute(Common.BUYER_ID);
         session.removeAttribute(Common.USERNAME);
+        if (session.getAttribute(Common.BUYER_ID)!=null)
+        {
+            session.removeAttribute(Common.BUYER_ID);
+        }
+        if (session.getAttribute(Common.SELLER_ID)!=null)
+        {
+            session.removeAttribute(Common.SELLER_ID);
+        }
+        if (session.getAttribute(Common.ADMIN_ID)!=null)
+        {
+            session.removeAttribute(Common.ADMIN_ID);
+        }
         // 清除cookie
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
         return ResultUtil.success();
     }
 

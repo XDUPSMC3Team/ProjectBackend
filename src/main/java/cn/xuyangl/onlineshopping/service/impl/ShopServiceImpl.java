@@ -47,6 +47,7 @@ public class ShopServiceImpl implements ShopService {
         {
             one.setPhone(shopDetailForm.getTelephone());
         }
+        shopDao.save(one);
         return true;
     }
 
@@ -79,5 +80,15 @@ public class ShopServiceImpl implements ShopService {
         // 构建pageRequest
         Pageable pageable = new PageRequest(pageNum-1,pageSize);
         return shopDao.findAll(pageable);
+    }
+
+    /**
+     *  根据 sellerId 查询shop
+     * @param sellerId
+     * @return
+     */
+    @Override
+    public Shop findShopById(String sellerId) {
+        return shopDao.findShopBySellerId(Integer.parseInt(sellerId));
     }
 }

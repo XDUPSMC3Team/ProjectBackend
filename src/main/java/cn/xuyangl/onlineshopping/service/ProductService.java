@@ -2,6 +2,7 @@ package cn.xuyangl.onlineshopping.service;
 
 import cn.xuyangl.onlineshopping.VO.ProductVO;
 import cn.xuyangl.onlineshopping.VO.Result;
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.entity.Product;
 import org.springframework.data.domain.Page;
 
@@ -23,12 +24,14 @@ public interface ProductService {
      */
     Page<Product> findProducts(int pageNum, int pageSize);
 
+    List<Product> findProductsByShopId(String shopId);
+
     /**
      *  添加商品
      * @param product
      * @return
      */
-    boolean addProduct(Product product);
+    ResultEnum addProduct(Product product);
 
     /**
      *  更新商品数据

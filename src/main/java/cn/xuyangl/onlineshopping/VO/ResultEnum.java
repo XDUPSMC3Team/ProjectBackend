@@ -20,7 +20,8 @@ public enum  ResultEnum {
     NOT_FOUND(8,"not found"),
     RegisterEmptyError(9, "username, password, email can't be empty."),
     RegisterUsernameAlreadyExist(10, "the username has been registered."),
-    RegisterEmailAlreadyExist(11, "the email has been registered.")
+    RegisterEmailAlreadyExist(11, "the email has been registered."),
+    AttributeKeyNotFound(12,"this attributeKey not found")
     ;
     public String msg;
     public Integer code;

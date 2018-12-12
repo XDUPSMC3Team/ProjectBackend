@@ -5,8 +5,13 @@ import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.dao.ProductCollectDao;
 import cn.xuyangl.onlineshopping.dao.ProductDao;
+import cn.xuyangl.onlineshopping.dao.ShopDao;
+import cn.xuyangl.onlineshopping.entity.AttributeKey;
+import cn.xuyangl.onlineshopping.entity.AttributeValue;
 import cn.xuyangl.onlineshopping.entity.Product;
 import cn.xuyangl.onlineshopping.entity.ProductCollect;
+import cn.xuyangl.onlineshopping.service.AttributeKeyService;
+import cn.xuyangl.onlineshopping.service.AttributeValueService;
 import cn.xuyangl.onlineshopping.service.ProductService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.BeanUtils;
@@ -14,11 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
+import org.json.JSONObject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,8 +35,14 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService{
 
+    @Autowired
     private ProductDao productDao;
+    @Autowired
     private ProductCollectDao productCollectDao;
+    @Autowired
+    private AttributeKeyService attributeKeyService;
+    @Autowired
+    private AttributeValueService attributeValueService;
 
     @Autowired
     public ProductServiceImpl(ProductDao productDao, ProductCollectDao productCollectDao) {
@@ -52,20 +63,54 @@ public class ProductServiceImpl implements ProductService{
         return productDao.findAll(pageable);
     }
 
+    /**
+     *  根据 shopId 查询所有的products
+     * @param shopId
+     * @return
+     */
     @Override
-    public boolean addProduct(Product product) {
+    public List<Product> findProductsByShopId(String shopId) {
+        return productDao.findAllByShopId(Integer.parseInt(shopId));
+    }
+
+    /**
+     *  添加一个商品主类
+     * @param product
+     * @return
+     */
+    @Override
+    public ResultEnum addProduct(Product product) {
 
         // 补充商品属性
         product.setCreateTime(LocalDateTime.now());
         product.setUpdateTime(LocalDateTime.now());
         product.setStatus(0);   //表示正常
-        try{
-            productDao.save(product);
-            return true;
-        }catch (Exception e)
+        // Todo
+        String attributeList = product.getAttributeList();
+        //{"memory":["4G", "8G"], "color":["red","black", "white"]}
+        JSONObject jsonObject = new JSONObject(attributeList);
+        Iterator<String> keys = jsonObject.keys();
+        while (keys.hasNext())
         {
-            return false;
+            String key = keys.next();
+            AttributeKey byName = attributeKeyService.findByName(key);
+            if (byName==null)
+            {
+                // 根据名称查找 attributeKey
+                return ResultEnum.AccountNotFound;
+            }
+            String[] values = (String[])jsonObject.get(key);
+            for (String s:values)
+            {
+                // 根据id 添加 value值
+                AttributeValue attributeValue = new AttributeValue();
+                attributeValue.setAttributeKeyId(byName.getId());
+                attributeValue.setAttributeValue(s);
+                attributeValueService.addAttributeValue(attributeValue);
+            }
         }
+        productDao.save(product);
+        return ResultEnum.Success;
     }
 
     @Override

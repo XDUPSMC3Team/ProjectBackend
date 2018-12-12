@@ -37,5 +37,4 @@ public class ResultUtil {
         Result result = new Result(resultEnum.code,resultEnum.msg);
         return result;
     }
-
 }
