@@ -71,24 +71,32 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Override
     public Integer collectProduct(Integer buyerId, Integer productId) {
-        ProductCollect productCollect = new ProductCollect();
-        productCollect.setBuyerId(buyerId);
-        productCollect.setProductId(productId);
-        productCollect.setCreateTime(LocalDateTime.now());
-        productCollect.setUpdateTime(LocalDateTime.now());
-        ProductCollect pc = productCollectDao.saveAndFlush(productCollect);
-        return pc.getId();
+        ProductCollect pcInDb = productCollectDao.findByBuyerIdAndProductId(buyerId, productId);
+        if (pcInDb == null) {
+            ProductCollect productCollect = new ProductCollect();
+            productCollect.setBuyerId(buyerId);
+            productCollect.setProductId(productId);
+            productCollect.setCreateTime(LocalDateTime.now());
+            productCollect.setUpdateTime(LocalDateTime.now());
+            ProductCollect pc = productCollectDao.saveAndFlush(productCollect);
+            return pc.getId();
+        }
+        return pcInDb.getId();
     }
 
     @Override
     public Integer collectShop(Integer buyerId, Integer shopId) {
-        ShopCollect shopCollect = new ShopCollect();
-        shopCollect.setBuyerId(buyerId);
-        shopCollect.setShopId(shopId);
-        shopCollect.setCreateTime(LocalDateTime.now());
-        shopCollect.setUpdateTime(LocalDateTime.now());
-        ShopCollect sc = shopCollectDao.saveAndFlush(shopCollect);
-        return sc.getId();
+        ShopCollect scInDb = shopCollectDao.findByBuyerIdAndShopId(buyerId, shopId);
+        if (scInDb == null) {
+            ShopCollect shopCollect = new ShopCollect();
+            shopCollect.setBuyerId(buyerId);
+            shopCollect.setShopId(shopId);
+            shopCollect.setCreateTime(LocalDateTime.now());
+            shopCollect.setUpdateTime(LocalDateTime.now());
+            ShopCollect sc = shopCollectDao.saveAndFlush(shopCollect);
+            return sc.getId();
+        }
+        return scInDb.getId();
     }
 
     @Override
