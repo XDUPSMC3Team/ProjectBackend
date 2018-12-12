@@ -43,6 +43,8 @@ public class FtpServiceImpl implements FtpService{
         String ext = originName.split("\\.")[1];
         String prefix = UUID.randomUUID().toString();
         String name = prefix+"."+ext;
-        return FtpUtil.uploadFile(multipartFile,ADDRESS,PORT,USERNAME,PASSWORD,BASEPATH, name, FTPClient.BINARY_FILE_TYPE);
+//        return FtpUtil.uploadFile(multipartFile,ADDRESS,PORT,USERNAME,PASSWORD,BASEPATH, name, FTPClient.BINARY_FILE_TYPE);
+        return FtpUtil.uploadLocalFile(multipartFile,BASEPATH,name);
     }
+
 }

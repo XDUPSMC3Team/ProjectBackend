@@ -1,10 +1,12 @@
 package cn.xuyangl.onlineshopping.utils;
 
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.nntp.NNTP;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.io.*;
 
 /**
  * @Description
@@ -15,6 +17,8 @@ import java.util.Date;
 public class FtpUtil {
 
     final static String REMOTE_RELATIVE_PATH = "http://119.23.75.180/";
+
+    final static String LOCAL_PATH = "/home/ftptest/productPic/";
 
     public static String uploadFile(MultipartFile multipartFile, String address, int port,
                                      String username, String password, String basePath, String name, int fileType) {
@@ -46,5 +50,25 @@ public class FtpUtil {
             e.printStackTrace();
             return null;
         }
+    }
+    public static String uploadLocalFile(MultipartFile multipartFile,String basePath,String name)
+    {
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            InputStream inputStream = multipartFile.getInputStream();
+            byte[] bytes = new byte[1024];
+            int index;
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(LOCAL_PATH+simpleDateFormat.format(now)+name));
+            while ((index=inputStream.read(bytes))!=-1)
+            {
+                fileOutputStream.write(bytes,0,index);
+                fileOutputStream.flush();
+            }
+            return REMOTE_RELATIVE_PATH+simpleDateFormat.format(now)+"/"+name;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
