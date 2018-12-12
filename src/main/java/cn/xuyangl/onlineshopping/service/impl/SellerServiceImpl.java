@@ -63,7 +63,7 @@ public class SellerServiceImpl implements SellerService{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SimpleMailMessage register_success = MailUtil.createMessage(seller.getEmail(), "【注册成功】", "Welcome to our website!");
+                SimpleMailMessage register_success = MailUtil.createMessage(seller.getEmail(), "【注册成功】", "Congratulations\n. You have successfully registered us. Have a shopping experience.");
                 javaMailSender.send(register_success);
             }
         }).start();
