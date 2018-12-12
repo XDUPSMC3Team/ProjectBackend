@@ -256,7 +256,7 @@ public class SellerController {
      * @return
      */
     @RequestMapping(value = "/attributeValue/{attributeKey}",method = RequestMethod.GET)
-    public Result findAttributeValueById(@PathVariable("attributekey")String attributeKey)
+    public Result findAttributeValueById(@PathVariable("attributeKey")String attributeKey)
     {
         return ResultUtil.success(attributeValueService.findByAttributeKey(Integer.parseInt(attributeKey)));
     }
