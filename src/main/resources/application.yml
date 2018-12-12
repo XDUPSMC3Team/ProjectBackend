@@ -22,7 +22,13 @@ spring:
     properties:
       mail:
         smtp:
+          ssl:
+            enable: true
+            socketFactory:
+              fallback: false
+              class: com.fintech.modules.base.util.mail.MailSSLSocketFactory
           auth: true
+    port: 465
 ftp:
   address: 119.23.75.180
   port: 21
