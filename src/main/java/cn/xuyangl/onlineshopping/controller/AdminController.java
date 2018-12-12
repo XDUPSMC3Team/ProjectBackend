@@ -8,10 +8,7 @@ import cn.xuyangl.onlineshopping.model.LoginForm;
 import cn.xuyangl.onlineshopping.service.AdminService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,13 +24,12 @@ public class AdminController {
     }
 
     @PostMapping("/register")
-    public Result register(String email, String username, String password) {
-        Admin admin = new Admin();
-        admin.setEmail(email);
-        admin.setUsername(username);
-        admin.setPassword(password);
+    public Result register(@RequestBody Admin admin) {
+        if (admin.getUsername() == null || admin.getPassword() == null || admin.getEmail() == null) {
+            return ResultUtil.error(ResultEnum.RegisterEmptyError);
+        }
         if (adminService.register(admin)) {
-            return ResultUtil.success("Welcome, " + username);
+            return ResultUtil.success("Welcome, " + admin.getUsername());
         } else {
             return ResultUtil.error(1, "the username you detected has been register.");
         }
