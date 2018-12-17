@@ -111,4 +111,12 @@ public class AdminController {
         }
         return ResultUtil.success(buyer);
     }
+
+    @PostMapping("/personal/product/off/{productId}")
+    public Result offShelves(@PathVariable("productId") Integer productId, HttpSession session) {
+        if (adminService.offShelves(productId)) {
+            return ResultUtil.success();
+        }
+        return ResultUtil.error(ResultEnum.NOT_FOUND);
+    }
 }

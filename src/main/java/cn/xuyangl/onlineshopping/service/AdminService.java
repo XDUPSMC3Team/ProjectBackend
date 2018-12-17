@@ -30,4 +30,6 @@ public interface AdminService {
     OrderVO findOrderById(Integer id);
 
     Buyer findCustomerByUsername(String username);
+
+    Boolean offShelves(Integer productId);
 }

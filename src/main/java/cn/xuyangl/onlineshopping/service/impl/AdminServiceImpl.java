@@ -18,14 +18,16 @@ public class AdminServiceImpl implements AdminService {
     private final OrderMasterDAO orderMasterDAO;
     private final OrderDetailDAO orderDetailDAO;
     private final BuyerDao buyerDao;
+    private final ProductDao productDao;
 
     @Autowired
-    public AdminServiceImpl(AdminDAO adminDAO, ShopDao shopDAO, OrderMasterDAO orderMasterDAO, OrderDetailDAO orderDetailDAO, BuyerDao buyerDao) {
+    public AdminServiceImpl(AdminDAO adminDAO, ShopDao shopDAO, OrderMasterDAO orderMasterDAO, OrderDetailDAO orderDetailDAO, BuyerDao buyerDao, ProductDao productDao) {
         this.adminDAO = adminDAO;
         this.shopDAO = shopDAO;
         this.orderMasterDAO = orderMasterDAO;
         this.orderDetailDAO = orderDetailDAO;
         this.buyerDao = buyerDao;
+        this.productDao = productDao;
     }
 
     @Override
@@ -124,5 +126,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Buyer findCustomerByUsername(String username) {
         return buyerDao.findByUsername(username);
+    }
+
+    @Override
+    public Boolean offShelves(Integer productId) {
+        Product product = productDao.findById(productId);
+        if (product == null) {
+            return false;
+        }
+        product.setStatus(1);
+        productDao.saveAndFlush(product);
+        return true;
     }
 }
