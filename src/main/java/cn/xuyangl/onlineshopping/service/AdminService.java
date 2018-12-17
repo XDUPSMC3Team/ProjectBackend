@@ -1,6 +1,7 @@
 package cn.xuyangl.onlineshopping.service;
 
 
+import cn.xuyangl.onlineshopping.VO.OrderVO;
 import cn.xuyangl.onlineshopping.entity.Admin;
 import cn.xuyangl.onlineshopping.entity.Shop;
 
@@ -24,4 +25,6 @@ public interface AdminService {
     List<Shop> findShopByName(String name);
 
     Boolean closeShop(Integer shopId);
+
+    OrderVO findOrderById(Integer id);
 }

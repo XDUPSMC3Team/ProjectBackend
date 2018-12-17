@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.controller;
 
+import cn.xuyangl.onlineshopping.VO.OrderVO;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.consts.Common;
@@ -89,5 +90,14 @@ public class AdminController {
             return ResultUtil.error(ResultEnum.NOT_FOUND);
         }
         return ResultUtil.success();
+    }
+
+    @GetMapping("/personal/order/search/{orderId}")
+    public Result searchOrder(@PathVariable("orderId") Integer orderId, HttpSession session) {
+        OrderVO vo = adminService.findOrderById(orderId);
+        if (vo == null) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success(vo);
     }
 }
