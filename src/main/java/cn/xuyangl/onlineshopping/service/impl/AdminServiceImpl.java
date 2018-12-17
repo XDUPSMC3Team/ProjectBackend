@@ -1,14 +1,8 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.OrderVO;
-import cn.xuyangl.onlineshopping.dao.AdminDAO;
-import cn.xuyangl.onlineshopping.dao.OrderDetailDAO;
-import cn.xuyangl.onlineshopping.dao.OrderMasterDAO;
-import cn.xuyangl.onlineshopping.dao.ShopDao;
-import cn.xuyangl.onlineshopping.entity.Admin;
-import cn.xuyangl.onlineshopping.entity.OrderDetail;
-import cn.xuyangl.onlineshopping.entity.OrderMaster;
-import cn.xuyangl.onlineshopping.entity.Shop;
+import cn.xuyangl.onlineshopping.dao.*;
+import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.service.AdminService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +17,15 @@ public class AdminServiceImpl implements AdminService {
     private final ShopDao shopDAO;
     private final OrderMasterDAO orderMasterDAO;
     private final OrderDetailDAO orderDetailDAO;
+    private final BuyerDao buyerDao;
 
     @Autowired
-    public AdminServiceImpl(AdminDAO adminDAO, ShopDao shopDAO, OrderMasterDAO orderMasterDAO, OrderDetailDAO orderDetailDAO) {
+    public AdminServiceImpl(AdminDAO adminDAO, ShopDao shopDAO, OrderMasterDAO orderMasterDAO, OrderDetailDAO orderDetailDAO, BuyerDao buyerDao) {
         this.adminDAO = adminDAO;
         this.shopDAO = shopDAO;
         this.orderMasterDAO = orderMasterDAO;
         this.orderDetailDAO = orderDetailDAO;
+        this.buyerDao = buyerDao;
     }
 
     @Override
@@ -123,5 +119,10 @@ public class AdminServiceImpl implements AdminService {
             orderVO.setPrice(orderDetail.getPrice());
         }
         return orderVO;
+    }
+
+    @Override
+    public Buyer findCustomerByUsername(String username) {
+        return buyerDao.findByUsername(username);
     }
 }

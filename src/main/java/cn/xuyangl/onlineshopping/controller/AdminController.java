@@ -4,7 +4,9 @@ import cn.xuyangl.onlineshopping.VO.OrderVO;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.consts.Common;
+import cn.xuyangl.onlineshopping.dao.BuyerDao;
 import cn.xuyangl.onlineshopping.entity.Admin;
+import cn.xuyangl.onlineshopping.entity.Buyer;
 import cn.xuyangl.onlineshopping.model.LoginForm;
 import cn.xuyangl.onlineshopping.service.AdminService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
@@ -99,5 +101,14 @@ public class AdminController {
             return ResultUtil.error(ResultEnum.NOT_FOUND);
         }
         return ResultUtil.success(vo);
+    }
+
+    @GetMapping("/personal/customer/search/{username}")
+    public Result searchUser(@PathVariable("username") String username, HttpSession session) {
+        Buyer buyer = adminService.findCustomerByUsername(username);
+        if (buyer == null) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success(buyer);
     }
 }
