@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface OrderMasterDAO extends JpaRepository<OrderMaster, Integer> {
     OrderMaster findById(Integer id);
-    List<OrderMaster> findByShopIdAAndStatus(Integer id,int status);
+    List<OrderMaster> findByShopIdAndStatus(Integer id,int status);
     List<OrderMaster> findAllByShopIdAndPayStatus(int shopId,int payStatus);
 }
