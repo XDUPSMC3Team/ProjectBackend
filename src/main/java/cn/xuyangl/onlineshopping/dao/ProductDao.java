@@ -27,4 +27,6 @@ public interface ProductDao extends JpaRepository<Product,Integer>{
     List<Product> findAllByShopIdAndStatus(Integer shopId, Integer status);
 
     Product findById(Integer id);
+
+    Page<Product> findAllByCategoryIdAndStatus(Integer categoryId, Integer status, Pageable pageable);
 }
