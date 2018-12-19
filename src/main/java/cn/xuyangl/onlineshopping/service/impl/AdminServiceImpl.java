@@ -19,15 +19,17 @@ public class AdminServiceImpl implements AdminService {
     private final OrderDetailDAO orderDetailDAO;
     private final BuyerDao buyerDao;
     private final ProductDao productDao;
+    private final SellerDao sellerDao;
 
     @Autowired
-    public AdminServiceImpl(AdminDAO adminDAO, ShopDao shopDAO, OrderMasterDAO orderMasterDAO, OrderDetailDAO orderDetailDAO, BuyerDao buyerDao, ProductDao productDao) {
+    public AdminServiceImpl(AdminDAO adminDAO, ShopDao shopDAO, OrderMasterDAO orderMasterDAO, OrderDetailDAO orderDetailDAO, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao) {
         this.adminDAO = adminDAO;
         this.shopDAO = shopDAO;
         this.orderMasterDAO = orderMasterDAO;
         this.orderDetailDAO = orderDetailDAO;
         this.buyerDao = buyerDao;
         this.productDao = productDao;
+        this.sellerDao = sellerDao;
     }
 
     @Override
@@ -136,6 +138,28 @@ public class AdminServiceImpl implements AdminService {
         }
         product.setStatus(1);
         productDao.saveAndFlush(product);
+        return true;
+    }
+
+    @Override
+    public Boolean blockUser(Integer userId) {
+        Buyer buyer = buyerDao.findById(userId);
+        if (buyer == null) {
+            return false;
+        }
+        buyer.setStatus(1);
+        buyerDao.saveAndFlush(buyer);
+        return true;
+    }
+
+    @Override
+    public Boolean blockSeller(Integer sellerId) {
+        Seller seller = sellerDao.findSellerById(sellerId);
+        if (seller == null) {
+            return false;
+        }
+        seller.setStatus(1);
+        sellerDao.saveAndFlush(seller);
         return true;
     }
 }

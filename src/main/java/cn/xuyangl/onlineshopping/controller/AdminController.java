@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequestMapping("/admin")
 @RestController
@@ -83,7 +84,11 @@ public class AdminController {
 
     @GetMapping("/personal/search/{shopName}")
     public Result search(@PathVariable("shopName") String shopName, HttpSession session) {
-        return ResultUtil.success(adminService.findShopByName(shopName));
+        List result = adminService.findShopByName(shopName);
+        if (result == null || result.size() == 0) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success(result);
     }
 
     @PostMapping("/personal/close/{shopId}")
@@ -118,5 +123,21 @@ public class AdminController {
             return ResultUtil.success();
         }
         return ResultUtil.error(ResultEnum.NOT_FOUND);
+    }
+
+    @PostMapping("/personal/customer/block/{userId}")
+    public Result blockUser(@PathVariable("userId") Integer userId, HttpSession session) {
+        if (!adminService.blockUser(userId)) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success();
+    }
+
+    @PostMapping("/personal/seller/block/{sellerId}")
+    public Result blockSeller(@PathVariable("sellerId") Integer sellerId, HttpSession session) {
+        if (!adminService.blockSeller(sellerId)) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success();
     }
 }
