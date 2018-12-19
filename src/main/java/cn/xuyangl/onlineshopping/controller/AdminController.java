@@ -124,4 +124,20 @@ public class AdminController {
         }
         return ResultUtil.error(ResultEnum.NOT_FOUND);
     }
+
+    @PostMapping("/personal/customer/block/{userId}")
+    public Result blockUser(@PathVariable("userId") Integer userId, HttpSession session) {
+        if (!adminService.blockUser(userId)) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success();
+    }
+
+    @PostMapping("/personal/seller/block/{sellerId}")
+    public Result blockSeller(@PathVariable("sellerId") Integer sellerId, HttpSession session) {
+        if (!adminService.blockSeller(sellerId)) {
+            return ResultUtil.error(ResultEnum.NOT_FOUND);
+        }
+        return ResultUtil.success();
+    }
 }

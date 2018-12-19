@@ -32,4 +32,8 @@ public interface AdminService {
     Buyer findCustomerByUsername(String username);
 
     Boolean offShelves(Integer productId);
+
+    Boolean blockUser(Integer userId);
+
+    Boolean blockSeller(Integer sellerId);
 }

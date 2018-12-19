@@ -32,4 +32,6 @@ public interface SellerDao extends JpaRepository<Seller,Integer>{
      * @return
      */
     Seller findSellerByEmail(String email);
+
+    Seller findSellerById(Integer id);
 }
