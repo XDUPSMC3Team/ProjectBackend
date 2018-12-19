@@ -91,4 +91,9 @@ public class ShopServiceImpl implements ShopService {
     public Shop findShopById(String sellerId) {
         return shopDao.findShopBySellerId(Integer.parseInt(sellerId));
     }
+
+    @Override
+    public Shop findByShopId(Integer shopid) {
+        return shopDao.findOne(shopid);
+    }
 }

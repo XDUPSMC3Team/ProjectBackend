@@ -6,7 +6,9 @@ import cn.xuyangl.onlineshopping.service.AttributeKeyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description
@@ -37,7 +39,8 @@ public class AttributeKeyServiceImpl implements AttributeKeyService{
      */
     @Override
     public List<AttributeKey> findByCategoryId(Integer categoryId) {
-        return attributeKeyDao.findAllByCategoryId(categoryId);
+        List<AttributeKey> allByCategoryId = attributeKeyDao.findAllByCategoryId(categoryId);
+        return allByCategoryId.stream().filter(attributeKey -> !attributeKey.getAttributeKey().equals("Payment")).collect(Collectors.toList());
     }
 
     /**

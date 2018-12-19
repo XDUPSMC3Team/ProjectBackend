@@ -21,7 +21,9 @@ public enum  ResultEnum {
     RegisterEmptyError(9, "username, password, email can't be empty."),
     RegisterUsernameAlreadyExist(10, "the username has been registered."),
     RegisterEmailAlreadyExist(11, "the email has been registered."),
-    AttributeKeyNotFound(12,"this attributeKey not found")
+    AttributeKeyNotFound(12,"this attributeKey not found"),
+    ProductNotFound(13,"the product is not found"),
+    OrderNotExist(14,"this order is not exist")
     ;
     public String msg;
     public Integer code;

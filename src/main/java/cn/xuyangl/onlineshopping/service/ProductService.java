@@ -38,7 +38,7 @@ public interface ProductService {
      * @param product
      * @return
      */
-    boolean updateProduct(Integer id,Product product);
+    ResultEnum updateProduct(Integer id,Product product);
 
     /**
      *  删除商品  逻辑删除

@@ -99,7 +99,7 @@ public class ProductServiceImpl implements ProductService{
             if (byName==null)
             {
                 // 根据名称查找 attributeKey
-                return ResultEnum.AccountNotFound;
+                return ResultEnum.AttributeKeyNotFound;
             }
             String value = jsonObject.get(key).toString();
             value = value.substring(1,value.length()-1);
@@ -117,15 +117,48 @@ public class ProductServiceImpl implements ProductService{
         return ResultEnum.Success;
     }
 
+    /**
+     *  更新商品
+     * @param id
+     * @param product
+     * @return
+     */
     @Override
-    public boolean updateProduct(Integer id,Product product) {
+    public ResultEnum updateProduct(Integer id,Product product) {
         // 判断该商品是否存在
         if (productDao.findOne(id)==null)
         {
-            return false;
+            return ResultEnum.ProductNotFound;
+        }
+        String attributeList = product.getAttributeList();
+        //{"memory":["4G", "8G"], "color":["red","black", "white"]}
+        JSONObject jsonObject = new JSONObject(attributeList);
+        Iterator<String> keys = jsonObject.keys();
+        while (keys.hasNext())
+        {
+            String key = keys.next();
+            AttributeKey byName = attributeKeyService.findByName(key);
+            if (byName==null)
+            {
+                // 根据名称查找 attributeKey
+                return ResultEnum.AttributeKeyNotFound;
+            }
+            String value = jsonObject.get(key).toString();
+            value = value.substring(1,value.length()-1);
+            String[] values = value.split(",");
+            // 根据 id 删除 attributeValue
+            attributeValueService.delelteByAttributeKey(byName.getId());
+            for (String s:values)
+            {
+                // 根据id 添加 value值
+                AttributeValue attributeValue = new AttributeValue();
+                attributeValue.setAttributeKeyId(byName.getId());
+                attributeValue.setAttributeValue(s);
+                attributeValueService.addAttributeValue(attributeValue);
+            }
         }
         productDao.saveAndFlush(product);
-        return true;
+        return ResultEnum.Success;
     }
 
     public Result deleteProductById(Integer id)

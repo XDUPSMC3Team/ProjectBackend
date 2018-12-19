@@ -25,4 +25,10 @@ public interface AttributeValueService {
      * @return
      */
     List<AttributeValue> findByAttributeKey(Integer id);
+
+    /**
+     *  根据 ID 删除 attributeValue
+     * @param id
+     */
+    void delelteByAttributeKey(Integer id);
 }

@@ -15,6 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -50,6 +51,9 @@ public class SellerController {
 
     @Autowired
     private  ShopService shopService;
+
+    @Autowired
+    private OrderMasterService orderMasterService;
 
     /**
      *  seller 注册
@@ -180,11 +184,29 @@ public class SellerController {
     @RequestMapping("/product/{productId}")
     public Result updateProduct(@PathVariable("productId")String productId,@RequestBody Product product)
     {
-        boolean b = productService.updateProduct(Integer.parseInt(productId), product);
-        if (b){
+       ResultEnum resultEnum = productService.updateProduct(Integer.parseInt(productId), product);
+        if (resultEnum.code==0){
             return ResultUtil.success();
         }else{
             return ResultUtil.error(ResultEnum.UPDATE_FAILED);
+        }
+    }
+
+    /**
+     *  更新商品小类
+     * @param productSpecsId
+     * @param productSpecs
+     * @return
+     */
+    @PostMapping("/productSpecs/{productSpecsId}")
+    public Result updateProductSpecs(@PathVariable("productSpecsId")Integer productSpecsId,ProductSpecs productSpecs)
+    {
+        ResultEnum resultEnum = productSpecsService.updateProductSpecs(productSpecsId, productSpecs);
+        if (resultEnum.code==0)
+        {
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.error(resultEnum);
         }
     }
 
@@ -281,5 +303,71 @@ public class SellerController {
     public Result findShopById(@PathVariable("sellerId")String sellerId)
     {
         return ResultUtil.success(shopService.findShopById(sellerId));
+    }
+
+    /**
+     *  查询 某个商店的盈利额
+     *  @param shopId
+     * @return
+     */
+    @RequestMapping(value = "/shop/income/{shopId}",method = RequestMethod.GET)
+    public Result getShopIncome(@PathVariable("shopId")Integer shopId)
+    {
+        List<OrderMaster> byShopId = orderMasterService.findByShopIdAndStatus(shopId,3);
+        Double aDouble = byShopId.stream().map(OrderMaster::getMoney).reduce(Double::sum).get();
+        return ResultUtil.success(aDouble);
+    }
+
+    /**
+     *  查看某个商铺的销售历史，即以完成订单
+     * @return
+     */
+    @RequestMapping(value = "/shop/saleHistory/{shopId}",method = RequestMethod.GET)
+    public Result getShopSaleHistory(@PathVariable("shopId")Integer shopId)
+    {
+        // 查询该商家是否存在
+        Shop byShopId = shopService.findByShopId(shopId);
+        if (byShopId==null)
+        {
+            return ResultUtil.error(ResultEnum.SHOP_NOT_FOUND);
+        }
+        return sellerService.findSaleHistory(shopId);
+    }
+
+
+    /**
+     *  查询某个商铺的所有已付款商品
+     * @param shopId
+     * @return
+     */
+    @RequestMapping(value = "/shop/payedOrder/{shopId}",method = RequestMethod.GET)
+    public Result findAllPayedOrder(@PathVariable("shopId")Integer shopId)
+    {
+        // 查询该商家是否存在
+        Shop byShopId = shopService.findByShopId(shopId);
+        if (byShopId==null)
+        {
+            return ResultUtil.error(ResultEnum.SHOP_NOT_FOUND);
+        }
+        return sellerService.findAllPayedOrder(shopId);
+    }
+
+    /**
+     *  修改以付款商品信息
+     * @param masterId
+     * @param status
+     * @return
+     */
+    @RequestMapping(value = "/shop/order/{masterId}",method = RequestMethod.POST)
+    public Result updateOrderStatus(@PathVariable("masterId")Integer masterId,@RequestParam("status")String status)
+    {
+        ResultEnum resultEnum = orderMasterService.modifyOrderStatus(masterId, Integer.parseInt(status));
+        if (resultEnum.code==0)
+        {
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.error(resultEnum);
+        }
+
     }
 }

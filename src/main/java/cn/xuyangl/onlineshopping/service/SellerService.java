@@ -1,9 +1,13 @@
 package cn.xuyangl.onlineshopping.service;
 
 import cn.xuyangl.onlineshopping.VO.Result;
+import cn.xuyangl.onlineshopping.entity.OrderDetail;
 import cn.xuyangl.onlineshopping.entity.Seller;
 import cn.xuyangl.onlineshopping.entity.Shop;
+import cn.xuyangl.onlineshopping.model.OrderData;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import java.util.List;
 
 /**
  * @Description seller 注册service
@@ -33,4 +37,18 @@ public interface SellerService {
      * @return
      */
      boolean registerShop(Shop shop);
+
+    /**
+     *  查询某个商家的所有的销售历史
+     * @param shopId
+     * @return
+     */
+     Result findSaleHistory(Integer shopId);
+
+    /**
+     *  查看所有已付款商品信息
+     * @param shopId
+     * @return
+     */
+     Result findAllPayedOrder(Integer shopId);
 }

@@ -1,5 +1,7 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.Result;
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.dao.ProductSpecsDao;
 import cn.xuyangl.onlineshopping.entity.ProductSpecs;
 import cn.xuyangl.onlineshopping.service.ProductSpecsService;
@@ -70,5 +72,19 @@ public class ProductSpecsServiceImpl implements ProductSpecsService{
     @Override
     public ProductSpecs findProductsSpecsByDetailAndProductId(String detail, String productId) {
         return productSpecsDao.findByDetailAndProductId(detail,Integer.parseInt(productId));
+    }
+
+    @Override
+    public ResultEnum updateProductSpecs(Integer id, ProductSpecs productSpecs) {
+        ProductSpecs one = productSpecsDao.findOne(id);
+        if (one==null)
+        {
+            return ResultEnum.ProductNotFound;
+        }
+        productSpecs.setCreateTime(one.getCreateTime());
+        productSpecs.setUpdateTime(LocalDateTime.now());
+        // 保存到数据库
+        productSpecsDao.saveAndFlush(productSpecs);
+        return ResultEnum.Success;
     }
 }

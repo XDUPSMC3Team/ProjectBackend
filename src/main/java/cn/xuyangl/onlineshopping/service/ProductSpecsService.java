@@ -1,5 +1,7 @@
 package cn.xuyangl.onlineshopping.service;
 
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
+import cn.xuyangl.onlineshopping.entity.Product;
 import cn.xuyangl.onlineshopping.entity.ProductSpecs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,4 +36,6 @@ public interface ProductSpecsService {
     List<ProductSpecs> findAllByProductId(String productId);
 
     ProductSpecs findProductsSpecsByDetailAndProductId(String detail,String productId);
+
+    ResultEnum updateProductSpecs(Integer id, ProductSpecs productSpecs);
 }

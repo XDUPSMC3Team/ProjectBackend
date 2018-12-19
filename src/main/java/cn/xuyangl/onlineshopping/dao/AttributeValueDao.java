@@ -19,4 +19,6 @@ public interface AttributeValueDao extends JpaRepository<AttributeValue,Integer>
      * @return
      */
     List<AttributeValue> findAllByAttributeKeyId(Integer id);
+
+    void deleteAllByAttributeKeyId(int keyId);
 }

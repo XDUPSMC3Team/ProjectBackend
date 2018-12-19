@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
 
 public interface ShopService {
 
-    boolean modifyShopDetail(Integer shopId,ShopDetailForm shopDetal);
+    boolean modifyShopDetail(Integer shopId, ShopDetailForm shopDetal);
 
     // 查看用户收藏的商铺列表
     Page<Shop> viewCollectedShop(Integer buyerId, int page, int size);
@@ -22,4 +22,6 @@ public interface ShopService {
     Page<Shop> findAllShops(int pageNum, int pageSize);
 
     Shop findShopById(String sellerId);
+
+    Shop findByShopId(Integer shopId);
 }

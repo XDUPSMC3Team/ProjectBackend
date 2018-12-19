@@ -38,4 +38,9 @@ public class AttributeValueServiceImpl implements AttributeValueService{
     public List<AttributeValue> findByAttributeKey(Integer id) {
         return attributeValueDao.findAllByAttributeKeyId(id);
     }
+
+    @Override
+    public void delelteByAttributeKey(Integer id) {
+        attributeValueDao.deleteAllByAttributeKeyId(id);
+    }
 }
