@@ -6,8 +6,10 @@ import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.entity.Buyer;
 import cn.xuyangl.onlineshopping.model.BuyerProfileForm;
 import cn.xuyangl.onlineshopping.model.LoginForm;
+import cn.xuyangl.onlineshopping.model.ProductCartForm;
 import cn.xuyangl.onlineshopping.service.BuyerService;
 import cn.xuyangl.onlineshopping.service.ProductService;
+import cn.xuyangl.onlineshopping.service.ShopCartService;
 import cn.xuyangl.onlineshopping.service.ShopService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.BeanUtils;
@@ -27,12 +29,14 @@ public class BuyerController {
     private BuyerService buyerService;
     private ProductService productService;
     private ShopService shopService;
+    private ShopCartService shopCartService;
 
     @Autowired
-    public BuyerController(BuyerService buyerService, ProductService productService, ShopService shopService) {
+    public BuyerController(BuyerService buyerService, ProductService productService, ShopService shopService, ShopCartService shopCartService) {
         this.buyerService = buyerService;
         this.productService = productService;
         this.shopService = shopService;
+        this.shopCartService = shopCartService;
     }
 
     @PostMapping("/register")
@@ -123,6 +127,36 @@ public class BuyerController {
     @DeleteMapping("/collectShop/{collectId}")
     public Result cancelCollectShop(@PathVariable("collectId") Integer collectId, HttpSession session) {
         buyerService.cancelCollect(collectId, 2);
+        return ResultUtil.success();
+    }
+
+    // 将商品加入购物车
+    @PostMapping("/addCart")
+    public Result addCart(@RequestBody ProductCartForm productCartForm, HttpSession session) {
+        Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+        shopCartService.addCart(productCartForm, buyerId);
+        return ResultUtil.success();
+    }
+
+    // 修改购物车中某商品的数量
+    @GetMapping("/updateCart/{cartId}")
+    public Result updateCart(@PathVariable("cartId") Integer cartId, @RequestParam("amount") Integer amount) {
+        if (amount < 1) return ResultUtil.error(1, "amount can't be less than 1");
+        shopCartService.updateCart(cartId, amount);
+        return ResultUtil.success();
+    }
+
+    // 浏览购物车
+    @GetMapping("/viewCart")
+    public Result viewCart(HttpSession session) {
+        Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+        return ResultUtil.success(shopCartService.viewCart(buyerId));
+    }
+
+    // 从购物车中删除
+    @DeleteMapping("/deleteCart/{cartId}")
+    public Result deleteCart(@PathVariable("cartId") Integer cartId) {
+        shopCartService.deleteCart(cartId);
         return ResultUtil.success();
     }
 }

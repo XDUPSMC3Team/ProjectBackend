@@ -24,4 +24,6 @@ public interface ProductSpecsDao extends JpaRepository<ProductSpecs,Integer>{
 
     ProductSpecs findByDetailAndProductId(String detail,int productID);
 
+    ProductSpecs findById(Integer id);
+
 }

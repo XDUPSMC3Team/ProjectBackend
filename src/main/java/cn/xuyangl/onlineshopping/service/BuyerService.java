@@ -2,6 +2,7 @@ package cn.xuyangl.onlineshopping.service;
 
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.entity.Buyer;
+import cn.xuyangl.onlineshopping.model.ProductCartForm;
 
 /**
  * @author xjin
@@ -26,6 +27,5 @@ public interface BuyerService {
     Integer collectShop(Integer buyerId, Integer shopId);
 
     Boolean cancelCollect(Integer collectId, Integer type);
-
 
 }

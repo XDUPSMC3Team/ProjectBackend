@@ -1,10 +1,9 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
-import cn.xuyangl.onlineshopping.dao.BuyerDao;
-import cn.xuyangl.onlineshopping.dao.ProductCollectDao;
-import cn.xuyangl.onlineshopping.dao.ShopCollectDao;
+import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
+import cn.xuyangl.onlineshopping.model.ProductCartForm;
 import cn.xuyangl.onlineshopping.service.BuyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +18,18 @@ import java.time.LocalDateTime;
 public class BuyerServiceImpl implements BuyerService {
 
     private BuyerDao buyerDao;
+    private ProductDao productDao;
     private ProductCollectDao productCollectDao;
     private ShopCollectDao shopCollectDao;
+    private ShopCartDao shopCartDao;
 
     @Autowired
-    BuyerServiceImpl(BuyerDao buyerDao, ProductCollectDao productCollectDao, ShopCollectDao shopCollectDao) {
+    BuyerServiceImpl(BuyerDao buyerDao, ProductCollectDao productCollectDao, ShopCollectDao shopCollectDao, ProductDao productDao, ShopCartDao shopCartDao) {
         this.buyerDao = buyerDao;
         this.productCollectDao = productCollectDao;
         this.shopCollectDao = shopCollectDao;
+        this.productDao = productDao;
+        this.shopCartDao = shopCartDao;
     }
 
     @Override
@@ -108,4 +111,5 @@ public class BuyerServiceImpl implements BuyerService {
         }
         return true;
     }
+
 }
