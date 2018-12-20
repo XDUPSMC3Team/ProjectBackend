@@ -89,6 +89,10 @@ public class ProductServiceImpl implements ProductService{
         product.setStatus(0);   //表示正常
         // Todo
         String attributeList = product.getAttributeList();
+        // 添加Payment
+        StringBuilder stringBuilder = new StringBuilder(attributeList.substring(0,attributeList.length()-1));
+        stringBuilder.append(",\"Payment\":[\"Wechat\",\"Alipay\"]}");
+        product.setAttributeList(stringBuilder.toString());
         //{"memory":["4G", "8G"], "color":["red","black", "white"]}
         JSONObject jsonObject = new JSONObject(attributeList);
         Iterator<String> keys = jsonObject.keys();
@@ -115,16 +119,16 @@ public class ProductServiceImpl implements ProductService{
         }
         // 添加payment
         AttributeKey payment = attributeKeyService.findByName("Payment");
+        String[] strings = new String[]{"Wechat","Alipay"};
         if (payment!=null)
         {
-            AttributeValue attributeValue = new AttributeValue();
-            attributeValue.setAttributeKeyId(payment.getId());
-            attributeValue.setAttributeValue("Wechat");
-            attributeValueService.addAttributeValue(attributeValue);
-            AttributeValue attributeValue1 = new AttributeValue();
-            attributeValue.setAttributeKeyId(payment.getId());
-            attributeValue.setAttributeValue("Alipay");
-            attributeValueService.addAttributeValue(attributeValue1);
+            for (String s:strings)
+            {
+                AttributeValue attributeValue = new AttributeValue();
+                attributeValue.setAttributeKeyId(payment.getId());
+                attributeValue.setAttributeValue(s);
+                attributeValueService.addAttributeValue(attributeValue);
+            }
         }
         productDao.save(product);
         return ResultEnum.Success;

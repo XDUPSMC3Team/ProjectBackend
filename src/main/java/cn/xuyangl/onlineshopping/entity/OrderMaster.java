@@ -42,6 +42,7 @@ public class OrderMaster {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private String orderNumber; //订单编号
     private Integer shopId; //店家id
     private Integer buyerId;
     private String receiverName;    //收货人姓名
