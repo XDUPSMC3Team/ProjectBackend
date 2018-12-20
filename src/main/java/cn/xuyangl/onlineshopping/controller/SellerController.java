@@ -199,7 +199,7 @@ public class SellerController {
      * @return
      */
     @PostMapping("/productSpecs/{productSpecsId}")
-    public Result updateProductSpecs(@PathVariable("productSpecsId")Integer productSpecsId,ProductSpecs productSpecs)
+    public Result updateProductSpecs(@PathVariable("productSpecsId")Integer productSpecsId,@RequestBody ProductSpecs productSpecs)
     {
         ResultEnum resultEnum = productSpecsService.updateProductSpecs(productSpecsId, productSpecs);
         if (resultEnum.code==0)

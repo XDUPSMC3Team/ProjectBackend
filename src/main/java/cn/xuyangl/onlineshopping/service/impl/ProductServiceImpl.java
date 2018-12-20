@@ -89,6 +89,10 @@ public class ProductServiceImpl implements ProductService{
         product.setStatus(0);   //表示正常
         // Todo
         String attributeList = product.getAttributeList();
+        // 添加Payment
+        StringBuilder stringBuilder = new StringBuilder(attributeList.substring(0,attributeList.length()-1));
+        stringBuilder.append(",\"Payment\":[\"Wechat\",\"Alipay\"]}");
+        product.setAttributeList(stringBuilder.toString());
         //{"memory":["4G", "8G"], "color":["red","black", "white"]}
         JSONObject jsonObject = new JSONObject(attributeList);
         Iterator<String> keys = jsonObject.keys();
@@ -113,6 +117,20 @@ public class ProductServiceImpl implements ProductService{
                 attributeValueService.addAttributeValue(attributeValue);
             }
         }
+        // 添加payment
+        AttributeKey payment = attributeKeyService.findByName("Payment");
+        String[] strings = new String[]{"Wechat","Alipay"};
+        if (payment!=null)
+        {
+            for (String s:strings)
+            {
+                AttributeValue attributeValue = new AttributeValue();
+                attributeValue.setAttributeKeyId(payment.getId());
+                attributeValue.setAttributeValue(s);
+                attributeValueService.addAttributeValue(attributeValue);
+            }
+        }
+        System.out.println(product.getAttributeList());
         productDao.save(product);
         return ResultEnum.Success;
     }
