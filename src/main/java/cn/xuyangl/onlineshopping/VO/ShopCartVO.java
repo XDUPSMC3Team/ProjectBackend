@@ -19,6 +19,7 @@ public class ShopCartVO {
     private String pic;
     private Double price;
     private Integer amount;
+    private Integer stock;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;   //创建时间

@@ -35,13 +35,18 @@ public class ShopCartServiceImpl implements ShopCartService {
     }
     @Override
     public void addCart(ProductCartForm productCartForm, Integer buyerId) {
-        ShopCart shopCart = new ShopCart();
-        shopCart.setProductId(productSpecsDao.findById(productCartForm.getSpecsId()).getProductId());
-        shopCart.setSpecsId(productCartForm.getSpecsId());
-        shopCart.setAmount(productCartForm.getAmount());
-        shopCart.setBuyerId(buyerId);
-        shopCart.setCreateTime(LocalDateTime.now());
-        shopCart.setUpdateTime(LocalDateTime.now());
+        ShopCart shopCart = shopCartDao.findBySpecsIdAndBuyerId(productCartForm.getSpecsId(), buyerId);
+        if (shopCart != null) {
+            shopCart.setAmount(shopCart.getAmount() + productCartForm.getAmount());
+            shopCart.setUpdateTime(LocalDateTime.now());
+        } else {
+            shopCart.setProductId(productSpecsDao.findById(productCartForm.getSpecsId()).getProductId());
+            shopCart.setSpecsId(productCartForm.getSpecsId());
+            shopCart.setAmount(productCartForm.getAmount());
+            shopCart.setBuyerId(buyerId);
+            shopCart.setCreateTime(LocalDateTime.now());
+            shopCart.setUpdateTime(LocalDateTime.now());
+        }
 
         shopCartDao.saveAndFlush(shopCart);
     }
@@ -69,6 +74,7 @@ public class ShopCartServiceImpl implements ShopCartService {
             scv.setPrice(price);
             scv.setDetail(detail);
             scv.setPic(product.getPic());
+            scv.setStock(ps.getStock());
             shopCartVOList.add(scv);
         }
         return shopCartVOList;

@@ -10,6 +10,7 @@ import java.util.List;
  * created on 2018/12/19 2:22 PM
  */
 public interface ShopCartDao extends JpaRepository<ShopCart, Integer> {
+
     ShopCart findBySpecsIdAndBuyerId(int specsId, int buyerId);
 
     List<ShopCart> findAllByBuyerId(int buyerId);
