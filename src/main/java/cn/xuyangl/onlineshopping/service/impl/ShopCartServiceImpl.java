@@ -40,6 +40,7 @@ public class ShopCartServiceImpl implements ShopCartService {
             shopCart.setAmount(shopCart.getAmount() + productCartForm.getAmount());
             shopCart.setUpdateTime(LocalDateTime.now());
         } else {
+            shopCart = new ShopCart();
             shopCart.setProductId(productSpecsDao.findById(productCartForm.getSpecsId()).getProductId());
             shopCart.setSpecsId(productCartForm.getSpecsId());
             shopCart.setAmount(productCartForm.getAmount());
