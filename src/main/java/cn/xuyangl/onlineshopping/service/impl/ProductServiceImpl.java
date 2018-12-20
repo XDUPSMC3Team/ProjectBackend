@@ -113,6 +113,19 @@ public class ProductServiceImpl implements ProductService{
                 attributeValueService.addAttributeValue(attributeValue);
             }
         }
+        // 添加payment
+        AttributeKey payment = attributeKeyService.findByName("Payment");
+        if (payment!=null)
+        {
+            AttributeValue attributeValue = new AttributeValue();
+            attributeValue.setAttributeKeyId(payment.getId());
+            attributeValue.setAttributeValue("Wechat");
+            attributeValueService.addAttributeValue(attributeValue);
+            AttributeValue attributeValue1 = new AttributeValue();
+            attributeValue.setAttributeKeyId(payment.getId());
+            attributeValue.setAttributeValue("Alipay");
+            attributeValueService.addAttributeValue(attributeValue1);
+        }
         productDao.save(product);
         return ResultEnum.Success;
     }
