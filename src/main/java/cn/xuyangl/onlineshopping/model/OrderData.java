@@ -16,7 +16,6 @@ import java.util.List;
 @Data
 public class OrderData {
     private Integer id;
-    private String orderNumber; //订单编号
     private Integer buyerId;
     private String receiverName;    //收货人姓名
     private Double money;   //金钱
