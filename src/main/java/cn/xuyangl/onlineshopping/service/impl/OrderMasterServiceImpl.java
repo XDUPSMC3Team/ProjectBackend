@@ -1,7 +1,7 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
-import cn.xuyangl.onlineshopping.dao.OrderMasterDAO;
+import cn.xuyangl.onlineshopping.dao.OrderMasterDao;
 import cn.xuyangl.onlineshopping.entity.OrderMaster;
 import cn.xuyangl.onlineshopping.service.OrderMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.List;
 public class OrderMasterServiceImpl implements OrderMasterService{
 
     @Autowired
-    private OrderMasterDAO orderMasterDAO;
+    private OrderMasterDao orderMasterDAO;
 
     /**
      *  根据shopId 查询OrderMaster

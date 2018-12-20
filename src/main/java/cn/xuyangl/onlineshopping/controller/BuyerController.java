@@ -7,10 +7,8 @@ import cn.xuyangl.onlineshopping.entity.Buyer;
 import cn.xuyangl.onlineshopping.model.BuyerProfileForm;
 import cn.xuyangl.onlineshopping.model.LoginForm;
 import cn.xuyangl.onlineshopping.model.ProductCartForm;
-import cn.xuyangl.onlineshopping.service.BuyerService;
-import cn.xuyangl.onlineshopping.service.ProductService;
-import cn.xuyangl.onlineshopping.service.ShopCartService;
-import cn.xuyangl.onlineshopping.service.ShopService;
+import cn.xuyangl.onlineshopping.model.SimpleOrderForm;
+import cn.xuyangl.onlineshopping.service.*;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +28,19 @@ public class BuyerController {
     private ProductService productService;
     private ShopService shopService;
     private ShopCartService shopCartService;
+    private BuyerOrderService buyerOrderService;
 
     @Autowired
-    public BuyerController(BuyerService buyerService, ProductService productService, ShopService shopService, ShopCartService shopCartService) {
+    public BuyerController(BuyerService buyerService,
+                           ProductService productService,
+                           ShopService shopService,
+                           ShopCartService shopCartService,
+                           BuyerOrderService buyerOrderService) {
         this.buyerService = buyerService;
         this.productService = productService;
         this.shopService = shopService;
         this.shopCartService = shopCartService;
+        this.buyerOrderService = buyerOrderService;
     }
 
     @PostMapping("/register")
@@ -158,5 +162,23 @@ public class BuyerController {
     public Result deleteCart(@PathVariable("cartId") Integer cartId) {
         shopCartService.deleteCart(cartId);
         return ResultUtil.success();
+    }
+
+    // 直接下单
+    @PostMapping("/order")
+    public Result order(@RequestBody SimpleOrderForm simpleOrderForm, HttpSession session){
+        Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+        if (simpleOrderForm.getAmount() <= 0) return ResultUtil.error(1, "amount can't be less than 1");
+        buyerOrderService.simpleOrder(simpleOrderForm, buyerId);
+        return ResultUtil.success();
+    }
+
+    // 从购物车下单
+    @PostMapping("/orderByCart")
+    public Result orderByCart() {
+        // 从购物车移除
+        // 减库存
+        // 生成订单
+        return null;
     }
 }

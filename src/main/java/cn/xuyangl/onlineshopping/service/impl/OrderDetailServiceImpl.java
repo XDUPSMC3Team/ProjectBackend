@@ -1,6 +1,6 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
-import cn.xuyangl.onlineshopping.dao.OrderDetailDAO;
+import cn.xuyangl.onlineshopping.dao.OrderDetailDao;
 import cn.xuyangl.onlineshopping.entity.OrderDetail;
 import cn.xuyangl.onlineshopping.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
 public class OrderDetailServiceImpl implements OrderDetailService{
 
     @Autowired
-    private OrderDetailDAO orderDetailDAO;
+    private OrderDetailDao orderDetailDao;
 
 
     /**
@@ -28,6 +28,6 @@ public class OrderDetailServiceImpl implements OrderDetailService{
      */
     @Override
     public List<OrderDetail> findOrderDetailByOrderMasterId(Integer orderMasterId) {
-        return orderDetailDAO.findAllByMasterId(orderMasterId);
+        return orderDetailDao.findAllByMasterId(orderMasterId);
     }
 }

@@ -13,20 +13,20 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    private final AdminDAO adminDAO;
+    private final AdminDao adminDao;
     private final ShopDao shopDAO;
-    private final OrderMasterDAO orderMasterDAO;
-    private final OrderDetailDAO orderDetailDAO;
+    private final OrderMasterDao orderMasterDAO;
+    private final OrderDetailDao orderDetailDao;
     private final BuyerDao buyerDao;
     private final ProductDao productDao;
     private final SellerDao sellerDao;
 
     @Autowired
-    public AdminServiceImpl(AdminDAO adminDAO, ShopDao shopDAO, OrderMasterDAO orderMasterDAO, OrderDetailDAO orderDetailDAO, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao) {
-        this.adminDAO = adminDAO;
+    public AdminServiceImpl(AdminDao adminDao, ShopDao shopDAO, OrderMasterDao orderMasterDAO, OrderDetailDao orderDetailDao, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao) {
+        this.adminDao = adminDao;
         this.shopDAO = shopDAO;
         this.orderMasterDAO = orderMasterDAO;
-        this.orderDetailDAO = orderDetailDAO;
+        this.orderDetailDao = orderDetailDao;
         this.buyerDao = buyerDao;
         this.productDao = productDao;
         this.sellerDao = sellerDao;
@@ -34,16 +34,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Boolean register(Admin admin) {
-        if (adminDAO.findByUsername(admin.getUsername()) != null) {
+        if (adminDao.findByUsername(admin.getUsername()) != null) {
             return false;
         }
-        adminDAO.saveAndFlush(admin);
+        adminDao.saveAndFlush(admin);
         return true;
     }
 
     @Override
     public Admin login(String username, String password) {
-        Admin admin = adminDAO.findByUsername(username);
+        Admin admin = adminDao.findByUsername(username);
         if (admin.getPassword().equals(password)) {
             return admin;
         }
@@ -52,7 +52,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin findByUsername(String username) {
-        return adminDAO.findByUsername(username);
+        return adminDao.findByUsername(username);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class AdminServiceImpl implements AdminService {
             return null;
         }
 
-        OrderDetail orderDetail = orderDetailDAO.findByMasterId(id);
+        OrderDetail orderDetail = orderDetailDao.findByMasterId(id);
 
         OrderVO orderVO = new OrderVO();
         BeanUtils.copyProperties(orderMaster, orderVO);
