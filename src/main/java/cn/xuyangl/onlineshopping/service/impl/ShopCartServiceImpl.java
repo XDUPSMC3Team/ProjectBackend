@@ -59,15 +59,16 @@ public class ShopCartServiceImpl implements ShopCartService {
         List<ShopCartVO> shopCartVOList = new ArrayList<>();
         List<ShopCart> shopCarts = shopCartDao.findAllByBuyerId(buyerId);
         for(ShopCart sc : shopCarts) {
-            String name = productDao.findById(sc.getProductId()).getName();
+            Product product = productDao.findById(sc.getProductId());
             ProductSpecs ps = productSpecsDao.findById(sc.getSpecsId());
             String detail = ps.getDetail();
             Double price = ps.getPrice();
             ShopCartVO scv = new ShopCartVO();
             BeanUtils.copyProperties(sc, scv);
-            scv.setName(name);
+            scv.setName(product.getName());
             scv.setPrice(price);
             scv.setDetail(detail);
+            scv.setPic(product.getPic());
             shopCartVOList.add(scv);
         }
         return shopCartVOList;

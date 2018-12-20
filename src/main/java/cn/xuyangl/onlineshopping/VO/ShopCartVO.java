@@ -16,6 +16,7 @@ public class ShopCartVO {
     private Integer specsId;
     private String name;
     private String detail;
+    private String pic;
     private Double price;
     private Integer amount;
 
