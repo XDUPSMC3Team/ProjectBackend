@@ -130,6 +130,7 @@ public class ProductServiceImpl implements ProductService{
                 attributeValueService.addAttributeValue(attributeValue);
             }
         }
+        System.out.println(product.getAttributeList());
         productDao.save(product);
         return ResultEnum.Success;
     }

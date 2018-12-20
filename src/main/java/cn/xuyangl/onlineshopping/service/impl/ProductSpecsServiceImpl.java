@@ -81,8 +81,22 @@ public class ProductSpecsServiceImpl implements ProductSpecsService{
         {
             return ResultEnum.ProductNotFound;
         }
+        System.out.println(productSpecs);
+        if (productSpecs.getDetail()==null||"".equals(productSpecs.getDetail()))
+        {
+            productSpecs.setDetail(one.getDetail());
+        }
+        if (productSpecs.getPrice()==null)
+        {
+            productSpecs.setPrice(one.getPrice());
+        }
+        if (productSpecs.getStock()==null)
+        {
+            productSpecs.setStock(one.getStock());
+        }
         productSpecs.setCreateTime(one.getCreateTime());
         productSpecs.setUpdateTime(LocalDateTime.now());
+        productSpecs.setId(one.getId());
         // 保存到数据库
         productSpecsDao.saveAndFlush(productSpecs);
         return ResultEnum.Success;
