@@ -29,6 +29,7 @@ public class OrderDetail {
     private Integer id;
     private Integer masterId;
     private Integer productId;
+    private Integer specsId;
     private String productName;
     private Integer amount;
     private Double price;
