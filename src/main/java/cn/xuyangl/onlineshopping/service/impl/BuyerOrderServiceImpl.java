@@ -1,16 +1,20 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.BuyerOrderDetailVO;
+import cn.xuyangl.onlineshopping.VO.BuyerOrderVO;
 import cn.xuyangl.onlineshopping.dao.*;
-import cn.xuyangl.onlineshopping.entity.OrderDetail;
-import cn.xuyangl.onlineshopping.entity.OrderMaster;
-import cn.xuyangl.onlineshopping.entity.Product;
-import cn.xuyangl.onlineshopping.entity.ProductSpecs;
+import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.SimpleOrderForm;
 import cn.xuyangl.onlineshopping.service.BuyerOrderService;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xjin
@@ -24,22 +28,25 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
     private OrderMasterDao orderMasterDao;
     private OrderDetailDao orderDetailDao;
     private BuyerDao buyerDao;
+    private ShopDao shopDao;
 
     public BuyerOrderServiceImpl(ProductDao productDao,
                                  ProductSpecsDao productSpecsDao,
                                  OrderMasterDao orderMasterDao,
                                  OrderDetailDao orderDetailDao,
-                                 BuyerDao buyerDao
+                                 BuyerDao buyerDao,
+                                 ShopDao shopDao
                                  ) {
         this.productDao = productDao;
         this.productSpecsDao = productSpecsDao;
         this.orderMasterDao = orderMasterDao;
         this.orderDetailDao = orderDetailDao;
         this.buyerDao = buyerDao;
+        this.shopDao = shopDao;
     }
 
     @Override
-    public void simpleOrder(SimpleOrderForm sof, Integer buyerId) {
+    public Integer simpleOrder(SimpleOrderForm sof, Integer buyerId) {
         // 减库存
         ProductSpecs ps = productSpecsDao.findById(sof.getSpecsId());
         ps.setStock(ps.getStock() - sof.getAmount());
@@ -56,7 +63,9 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
         om.setBuyerId(buyerId);
         om.setShopId(shopId);
         om.setMoney(money);
-        om.setReceiverName(buyerDao.findById(buyerId).getUsername());
+        Buyer buyer = buyerDao.findById(buyerId);
+        om.setReceiverName(buyer.getRealName());
+        om.setAddress(buyer.getAddress());
         om.setCreateTime(LocalDateTime.now());
         om.setUpdateTime(LocalDateTime.now());
         Integer masterId = orderMasterDao.saveAndFlush(om).getId();
@@ -72,10 +81,57 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
         od.setCreateTime(LocalDateTime.now());
         od.setUpdateTime(LocalDateTime.now());
         orderDetailDao.saveAndFlush(od);
+
+        return masterId;
+    }
+
+    @Override
+    public List<BuyerOrderVO> getOrderList(Integer buyerId, Integer page, Integer size) {
+        List<OrderMaster> orderMasters = orderMasterDao.findAllByBuyerId(buyerId);
+        List<BuyerOrderVO> buyerOrderVOS = new ArrayList<>();
+        for (OrderMaster om : orderMasters) {
+            BuyerOrderVO buyerOrderVO = new BuyerOrderVO();
+            BeanUtils.copyProperties(om, buyerOrderVO);
+            buyerOrderVO.setShopName(shopDao.findById(om.getShopId()).getShopName());
+            List<OrderDetail> orderDetails = orderDetailDao.findAllByMasterId(om.getId());
+            List<BuyerOrderDetailVO> buyerOrderDetailVOS = new ArrayList<>();
+            for (OrderDetail od : orderDetails) {
+                BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
+                BeanUtils.copyProperties(od, buyerOrderDetailVO);
+                buyerOrderDetailVOS.add(buyerOrderDetailVO);
+            }
+            buyerOrderVO.setOrderDetailList(buyerOrderDetailVOS);
+            buyerOrderVOS.add(buyerOrderVO);
+        }
+        return buyerOrderVOS;
+    }
+
+    @Override
+    public BuyerOrderVO getOrder(Integer orderId) {
+        OrderMaster om = orderMasterDao.findById(orderId);
+        BuyerOrderVO buyerOrderVO = new BuyerOrderVO();
+        BeanUtils.copyProperties(om, buyerOrderVO);
+        buyerOrderVO.setShopName(shopDao.findById(om.getShopId()).getShopName());
+        List<OrderDetail> orderDetails = orderDetailDao.findAllByMasterId(om.getId());
+        List<BuyerOrderDetailVO> buyerOrderDetailVOS = new ArrayList<>();
+        for (OrderDetail od : orderDetails) {
+            BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
+            BeanUtils.copyProperties(od, buyerOrderDetailVO);
+            buyerOrderDetailVOS.add(buyerOrderDetailVO);
+        }
+        buyerOrderVO.setOrderDetailList(buyerOrderDetailVOS);
+        return buyerOrderVO;
     }
 
     @Override
     public void cartOrder() {
 
+    }
+
+    @Override
+    public Boolean checkNameAndAddress(Integer buyerId) {
+        Buyer buyer = buyerDao.findById(buyerId);
+        return  !(buyer.getRealName() == null || buyer.getRealName().equals("") ||
+                buyer.getAddress() == null || buyer.getAddress().equals(""));
     }
 }

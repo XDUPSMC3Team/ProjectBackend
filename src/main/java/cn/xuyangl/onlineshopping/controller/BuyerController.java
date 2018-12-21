@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.controller;
 
+import cn.xuyangl.onlineshopping.VO.BuyerOrderVO;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.consts.Common;
@@ -12,9 +13,11 @@ import cn.xuyangl.onlineshopping.service.*;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author xjin
@@ -168,9 +171,10 @@ public class BuyerController {
     @PostMapping("/order")
     public Result order(@RequestBody SimpleOrderForm simpleOrderForm, HttpSession session){
         Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
-        if (simpleOrderForm.getAmount() <= 0) return ResultUtil.error(1, "amount can't be less than 1");
-        buyerOrderService.simpleOrder(simpleOrderForm, buyerId);
-        return ResultUtil.success();
+        if (simpleOrderForm.getAmount() <= 0) return ResultUtil.error(ResultEnum.AmountLessThanOne);
+        if (!buyerOrderService.checkNameAndAddress(buyerId)) return ResultUtil.error(ResultEnum.EmptyRealNameOrAddress);
+        Integer orderId = buyerOrderService.simpleOrder(simpleOrderForm, buyerId);
+        return ResultUtil.success(orderId);
     }
 
     // 从购物车下单
@@ -183,11 +187,27 @@ public class BuyerController {
     }
 
     // 查看我的订单列表
-    @GetMapping("/orders")
-    public Result orders(HttpSession session) {
+    @GetMapping("/order")
+    public Result orders(@RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+                         @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                         HttpSession session) {
         Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
-        return null;
+        List<BuyerOrderVO> buyerOrderVOS = buyerOrderService.getOrderList(buyerId, pageNo, pageSize);
+        return ResultUtil.success(buyerOrderVOS);
     }
 
     // 查看订单详情
+    @GetMapping("/order/{orderId}")
+    public Result getOrder(@PathVariable("orderId") Integer orderId) {
+        return ResultUtil.success(buyerOrderService.getOrder(orderId));
+    }
+
+    // 支付订单
+
+    // 确认收货
+    @PutMapping("/order/{orderId}")
+    public Result confirmOrderReceived(@PathVariable("orderId") Integer orderId) {
+        return null;
+    }
+
 }

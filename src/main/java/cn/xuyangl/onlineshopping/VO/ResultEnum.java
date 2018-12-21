@@ -23,7 +23,9 @@ public enum  ResultEnum {
     RegisterEmailAlreadyExist(11, "the email has been registered."),
     AttributeKeyNotFound(12,"this attributeKey not found"),
     ProductNotFound(13,"the product is not found"),
-    OrderNotExist(14,"this order is not exist")
+    OrderNotExist(14,"this order is not exist"),
+    AmountLessThanOne(15, "amount can't be less than 1"),
+    EmptyRealNameOrAddress(16, "real name and address can't be empty");
     ;
     public String msg;
     public Integer code;

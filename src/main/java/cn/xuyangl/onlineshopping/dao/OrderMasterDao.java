@@ -9,4 +9,5 @@ public interface OrderMasterDao extends JpaRepository<OrderMaster, Integer> {
     OrderMaster findById(Integer id);
     List<OrderMaster> findByShopIdAndStatus(Integer id,int status);
     List<OrderMaster> findAllByShopIdAndPayStatus(int shopId,int payStatus);
+    List<OrderMaster> findAllByBuyerId(Integer buyerId);
 }

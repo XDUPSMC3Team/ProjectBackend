@@ -15,6 +15,9 @@ import java.util.List;
 public class BuyerOrderVO {
     private Integer id;
     private Integer shopId;
+    private String shopName;
+    private String receiverName;
+    private String address;
     private Double money;
     private Integer status;
     private Integer payStatus;

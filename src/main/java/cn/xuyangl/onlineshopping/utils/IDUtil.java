@@ -1,4 +1,4 @@
-package cn.xuyangl.onlineshopping.service;
+package cn.xuyangl.onlineshopping.utils;
 
 import java.util.UUID;
 
