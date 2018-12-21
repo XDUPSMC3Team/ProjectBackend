@@ -183,6 +183,11 @@ public class BuyerController {
     }
 
     // 查看我的订单列表
+    @GetMapping("/orders")
+    public Result orders(HttpSession session) {
+        Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+        return null;
+    }
 
     // 查看订单详情
 }

@@ -39,7 +39,7 @@ public class Buyer {
 
     @Column(columnDefinition = "int default 0")
     // 0表示正常，1表示被拉进黑名单
-    private Integer status; //状态 是否被注销
+    private Integer status = 0; //状态 是否被注销
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
