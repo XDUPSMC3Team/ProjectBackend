@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class BuyerProfileForm {
 
-    private String realname;
+    private String realName;
     private String phone;
     private String email;
     private String address;
