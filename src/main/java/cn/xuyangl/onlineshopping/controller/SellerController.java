@@ -314,6 +314,10 @@ public class SellerController {
     public Result getShopIncome(@PathVariable("shopId")Integer shopId)
     {
         List<OrderMaster> byShopId = orderMasterService.findByShopIdAndStatus(shopId,3);
+        if (byShopId==null||byShopId.size()==0)
+        {
+            return ResultUtil.success(0);
+        }
         Double aDouble = byShopId.stream().map(OrderMaster::getMoney).reduce(Double::sum).get();
         return ResultUtil.success(aDouble);
     }
