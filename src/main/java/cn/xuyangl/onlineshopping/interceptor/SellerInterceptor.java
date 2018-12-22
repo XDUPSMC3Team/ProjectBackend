@@ -24,7 +24,7 @@ public class SellerInterceptor implements HandlerInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         HttpSession session = httpServletRequest.getSession();
-        if (!(session.getAttribute(Common.USER_TYPE).equals("seller")||session.getAttribute(Common.USER_TYPE).equals("admin")) || session.getAttribute(Common.BUYER_ID) == null) {
+        if (!(session.getAttribute(Common.USER_TYPE).equals("seller")||session.getAttribute(Common.USER_TYPE).equals("admin"))) {
             throw new NoPermissionException("you haven't login as a seller.");
         }
         return true;

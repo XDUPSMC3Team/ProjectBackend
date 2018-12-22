@@ -86,7 +86,7 @@ public class SellerController {
             // 判断密码是否相等
             //将数据存入cookie中i
             session.setAttribute(Common.USER_TYPE, "seller");
-            session.setAttribute(Common.BUYER_ID, byEmail.getId());
+            session.setAttribute(Common.SELLER_ID, byEmail.getId());
             session.setAttribute(Common.USERNAME, byEmail.getUsername());
             return ResultUtil.success(byEmail.getId());
         }else{
