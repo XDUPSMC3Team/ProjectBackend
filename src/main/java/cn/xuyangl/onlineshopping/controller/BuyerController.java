@@ -92,20 +92,16 @@ public class BuyerController {
 
     // 查看已收藏的商品
     @GetMapping("/collectProd")
-    public Result viewCollectedProd(@RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo,
-                                    @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                                    HttpSession session) {
+    public Result viewCollectedProd(HttpSession session) {
         Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
-        return ResultUtil.success(productService.viewCollectedProduct(buyerId, pageNo, pageSize));
+        return ResultUtil.success(productService.viewCollectedProduct(buyerId));
     }
 
     // 查看已收藏的店铺
     @GetMapping("/collectShop")
-    public Result viewCollectedShop(@RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo,
-                                    @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                                    HttpSession session) {
+    public Result viewCollectedShop(HttpSession session) {
         Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
-        return ResultUtil.success(shopService.viewCollectedShop(buyerId, pageNo, pageSize));
+        return ResultUtil.success(shopService.viewCollectedShop(buyerId));
     }
 
     // 收藏商品

@@ -2,6 +2,7 @@ package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.BuyerOrderDetailVO;
 import cn.xuyangl.onlineshopping.VO.BuyerOrderVO;
+import cn.xuyangl.onlineshopping.VO.StatusEnum;
 import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.SimpleOrderForm;
@@ -154,7 +155,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
     @Override
     public void confirmOrder(Integer orderId) {
         OrderMaster om = orderMasterDao.findById(orderId);
-        om.setStatus(2);
+        om.setStatus(StatusEnum.Received.code);
         om.setUpdateTime(LocalDateTime.now());
         orderMasterDao.saveAndFlush(om);
     }

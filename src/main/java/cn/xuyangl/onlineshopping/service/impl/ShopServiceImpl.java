@@ -64,14 +64,21 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Page<Shop> viewCollectedShop(Integer buyerId, int page, int size) {
+    public List<ShopVO> viewCollectedShop(Integer buyerId) {
         List<ShopCollect> scs = shopCollectDao.findAllByBuyerId(buyerId);
         List<Integer> shopIds = new ArrayList<>();
         for (ShopCollect sc : scs) {
             shopIds.add(sc.getShopId());
         }
-        Pageable pageable = new PageRequest(page, size);
-        return shopDao.findAllByIdIn(shopIds, pageable);
+        List<Shop> shops = shopDao.findAllByIdIn(shopIds);
+        List<ShopVO> shopVOS = new ArrayList<>();
+        for (Shop shop : shops) {
+            ShopVO shopVO = new ShopVO();
+            BeanUtils.copyProperties(shop, shopVO);
+            shopVO.setCollectId(shopCollectDao.findByBuyerIdAndShopId(buyerId, shop.getId()).getId());
+            shopVOS.add(shopVO);
+        }
+        return shopVOS;
     }
 
 

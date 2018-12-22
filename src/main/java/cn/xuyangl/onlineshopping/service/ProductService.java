@@ -53,7 +53,7 @@ public interface ProductService {
     Page<Product> searchProduct(String key, int page, int size);
 
     // 查询用户收藏的商品列表
-    Page<Product> viewCollectedProduct(Integer buyerId, int page, int size);
+    List<ProductVO> viewCollectedProduct(Integer buyerId);
 
     // 作为买家查看商品，有收藏字段
     ProductVO findProductAsBuyer(Integer buyerId, Integer productId);
