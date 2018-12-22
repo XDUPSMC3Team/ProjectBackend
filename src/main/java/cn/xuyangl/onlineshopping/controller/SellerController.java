@@ -2,6 +2,7 @@ package cn.xuyangl.onlineshopping.controller;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
+import cn.xuyangl.onlineshopping.VO.StatusEnum;
 import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.LoginForm;
@@ -9,6 +10,7 @@ import cn.xuyangl.onlineshopping.service.*;
 import cn.xuyangl.onlineshopping.utils.JwtToken;
 import cn.xuyangl.onlineshopping.utils.MailUtil;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -313,7 +315,7 @@ public class SellerController {
     @RequestMapping(value = "/shop/income/{shopId}",method = RequestMethod.GET)
     public Result getShopIncome(@PathVariable("shopId")Integer shopId)
     {
-        List<OrderMaster> byShopId = orderMasterService.findByShopIdAndStatus(shopId,3);
+        List<OrderMaster> byShopId = orderMasterService.findByShopIdAndStatus(shopId, StatusEnum.Received.code);
         if (byShopId==null||byShopId.size()==0)
         {
             return ResultUtil.success(0);
@@ -363,9 +365,17 @@ public class SellerController {
      * @return
      */
     @RequestMapping(value = "/shop/order/{masterId}",method = RequestMethod.POST)
-    public Result updateOrderStatus(@PathVariable("masterId")Integer masterId,@RequestParam("status")String status)
+    public Result updateOrderStatus(@PathVariable("masterId")Integer masterId,@RequestBody String status)
     {
-        ResultEnum resultEnum = orderMasterService.modifyOrderStatus(masterId, Integer.parseInt(status));
+        // 得到status的值
+        /**
+         * {
+         *  "status":"1"
+         * }
+         */
+        JSONObject jsonObject = new JSONObject(status);
+        String value = (String)jsonObject.get("status");
+        ResultEnum resultEnum = orderMasterService.modifyOrderStatus(masterId, Integer.parseInt(value));
         if (resultEnum.code==0)
         {
             return ResultUtil.success();

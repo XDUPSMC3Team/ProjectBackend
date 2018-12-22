@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping;
 
+import cn.xuyangl.onlineshopping.VO.StatusEnum;
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,4 +21,10 @@ public class Test {
         JSONObject jsonObject = new JSONObject(s);
         System.out.println(jsonObject.get(jsonObject.keys().next()+""));
     }
+
+    @org.junit.Test
+    public void test02(){
+        System.out.println(StatusEnum.Received.code);
+    }
+
 }
