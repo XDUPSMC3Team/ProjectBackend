@@ -12,8 +12,8 @@ import lombok.Data;
  */
 public enum StatusEnum {
 
-    OrderPlaced("已下单",0),Shipped("已发货",1),InTransit("运输中",2)
-    ,Received("已收货",3),Reviewed("已评价",4);
+    Cancelled("cancelled",-1),OrderPlaced("order placed",0),Shipped("shipped",1),InTransit("in transit",2)
+    ,Received("received",3),Reviewed("reviewed",4);
     public String  name;
     public Integer code;
     StatusEnum(String name,Integer code)
