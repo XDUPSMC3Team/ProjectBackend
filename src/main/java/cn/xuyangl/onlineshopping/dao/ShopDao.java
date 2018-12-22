@@ -20,7 +20,7 @@ public interface ShopDao extends JpaRepository<Shop,Integer>{
 
     Shop findById(Integer id);
 
-    Page<Shop> findAllByIdIn(List<Integer> shopIds, Pageable pageable);
+    List<Shop> findAllByIdIn(List<Integer> shopIds);
 
     Shop findShopBySellerId(int sellerId);
 

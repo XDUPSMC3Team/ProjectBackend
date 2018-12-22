@@ -206,14 +206,21 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Page<Product> viewCollectedProduct(Integer buyerId, int page, int size) {
+    public List<ProductVO> viewCollectedProduct(Integer buyerId) {
         List<ProductCollect> pcs = productCollectDao.findAllByBuyerId(buyerId);
         List<Integer> prodIds = new ArrayList<>();
         for (ProductCollect pc : pcs) {
             prodIds.add(pc.getProductId());
         }
-        Pageable pageable = new PageRequest(page, size, new Sort(Sort.Direction.DESC, "id"));
-        return productDao.findAllByIdIn(prodIds, pageable);
+        List<Product> products = productDao.findAllByIdIn(prodIds);
+        List<ProductVO> productVOS = new ArrayList<>();
+        for (Product product : products) {
+            ProductVO productVO = new ProductVO();
+            BeanUtils.copyProperties(product, productVO);
+            productVO.setCollectId(productCollectDao.findByBuyerIdAndProductId(buyerId, product.getId()).getId());
+            productVOS.add(productVO);
+        }
+        return productVOS;
     }
 
     @Override

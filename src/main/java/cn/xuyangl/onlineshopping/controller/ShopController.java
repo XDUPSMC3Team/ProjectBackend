@@ -2,11 +2,14 @@ package cn.xuyangl.onlineshopping.controller;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
+import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.model.ShopDetailForm;
 import cn.xuyangl.onlineshopping.service.ShopService;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @Description
@@ -45,6 +48,13 @@ public class ShopController {
         }else{
             return ResultUtil.error(ResultEnum.SHOP_NOT_FOUND);
         }
+    }
+
+    // 买家查看店铺详情页（带收藏标识）
+    @GetMapping("/{shopId}")
+    public Result buyerViewShop(@PathVariable("shopId") Integer shopId, HttpSession session) {
+        Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+        return ResultUtil.success(shopService.buyerViewShop(shopId, buyerId));
     }
 
 

@@ -22,7 +22,7 @@ public interface ProductDao extends JpaRepository<Product,Integer>{
 
     Page<Product> findAllByNameContainingAndStatus(String keyWord, Integer status, Pageable pageable);
 
-    Page<Product> findAllByIdIn(List<Integer> productIds, Pageable pageable);
+    List<Product> findAllByIdIn(List<Integer> productIds);
 
     List<Product> findAllByShopIdAndStatus(Integer shopId, Integer status);
 

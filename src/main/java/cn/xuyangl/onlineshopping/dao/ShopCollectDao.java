@@ -12,5 +12,5 @@ import java.util.List;
 public interface ShopCollectDao extends JpaRepository<ShopCollect, Integer> {
     List<ShopCollect> findAllByBuyerId(Integer buyerId);
 
-    ShopCollect findByBuyerIdAndShopId(Integer buyerId, Integer productId);
+    ShopCollect findByBuyerIdAndShopId(Integer buyerId, Integer shopId);
 }
