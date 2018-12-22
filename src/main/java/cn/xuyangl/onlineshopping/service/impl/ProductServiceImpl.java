@@ -3,13 +3,8 @@ package cn.xuyangl.onlineshopping.service.impl;
 import cn.xuyangl.onlineshopping.VO.ProductVO;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
-import cn.xuyangl.onlineshopping.dao.ProductCollectDao;
-import cn.xuyangl.onlineshopping.dao.ProductDao;
-import cn.xuyangl.onlineshopping.dao.ShopDao;
-import cn.xuyangl.onlineshopping.entity.AttributeKey;
-import cn.xuyangl.onlineshopping.entity.AttributeValue;
-import cn.xuyangl.onlineshopping.entity.Product;
-import cn.xuyangl.onlineshopping.entity.ProductCollect;
+import cn.xuyangl.onlineshopping.dao.*;
+import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.service.AttributeKeyService;
 import cn.xuyangl.onlineshopping.service.AttributeValueService;
 import cn.xuyangl.onlineshopping.service.ProductService;
@@ -36,19 +31,23 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService{
 
-    @Autowired
     private ProductDao productDao;
-    @Autowired
     private ProductCollectDao productCollectDao;
-    @Autowired
     private AttributeKeyService attributeKeyService;
-    @Autowired
     private AttributeValueService attributeValueService;
+    private ShopDao shopDao;
 
     @Autowired
-    public ProductServiceImpl(ProductDao productDao, ProductCollectDao productCollectDao) {
+    public ProductServiceImpl(ProductDao productDao,
+                              ProductCollectDao productCollectDao,
+                              AttributeKeyService attributeKeyService,
+                              AttributeValueService attributeValueService,
+                              ShopDao shopDao) {
         this.productDao = productDao;
         this.productCollectDao = productCollectDao;
+        this.attributeKeyService = attributeKeyService;
+        this.attributeValueService = attributeValueService;
+        this.shopDao = shopDao;
     }
 
     @Override
@@ -227,6 +226,9 @@ public class ProductServiceImpl implements ProductService{
         }
         ProductVO productVO = new ProductVO();
         BeanUtils.copyProperties(product, productVO);
+        Shop shop = shopDao.findById(productVO.getShopId());
+        productVO.setShopName(shop.getShopName());
+        productVO.setShopDesc(shop.getShopDesc());
         productVO.setCollectId(collectId);
         return productVO;
     }

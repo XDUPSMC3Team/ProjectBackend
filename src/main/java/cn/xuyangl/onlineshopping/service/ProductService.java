@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service;
 
+import cn.xuyangl.onlineshopping.VO.CollectProductVO;
 import cn.xuyangl.onlineshopping.VO.ProductVO;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;

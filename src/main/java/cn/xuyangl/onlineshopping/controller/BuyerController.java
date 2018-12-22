@@ -203,11 +203,24 @@ public class BuyerController {
     }
 
     // 支付订单
+    @PutMapping("/order/{orderId}/pay")
+    public Result payOrder(@PathVariable("orderId") Integer orderId) {
+        buyerOrderService.payOrder(orderId);
+        return ResultUtil.success();
+    }
+
+    // 取消订单
+    @PutMapping("/order/{orderId}/cancel")
+    public Result cancelOrder(@PathVariable("orderId") Integer orderId) {
+        buyerOrderService.cancelOrder(orderId);
+        return ResultUtil.success();
+    }
 
     // 确认收货
-    @PutMapping("/order/{orderId}")
+    @PutMapping("/order/{orderId}/confirm")
     public Result confirmOrderReceived(@PathVariable("orderId") Integer orderId) {
-        return null;
+        buyerOrderService.confirmOrder(orderId);
+        return ResultUtil.success();
     }
 
 }

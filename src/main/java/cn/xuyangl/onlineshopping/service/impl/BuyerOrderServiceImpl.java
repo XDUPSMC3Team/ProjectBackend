@@ -134,4 +134,28 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
         return  !(buyer.getRealName() == null || buyer.getRealName().equals("") ||
                 buyer.getAddress() == null || buyer.getAddress().equals(""));
     }
+
+    @Override
+    public void  payOrder(Integer orderId) {
+        OrderMaster om = orderMasterDao.findById(orderId);
+        om.setPayStatus(1);
+        om.setUpdateTime(LocalDateTime.now());
+        orderMasterDao.saveAndFlush(om);
+    }
+
+    @Override
+    public void cancelOrder(Integer orderId) {
+        OrderMaster om = orderMasterDao.findById(orderId);
+        om.setShopId(-1);
+        om.setUpdateTime(LocalDateTime.now());
+        orderMasterDao.saveAndFlush(om);
+    }
+
+    @Override
+    public void confirmOrder(Integer orderId) {
+        OrderMaster om = orderMasterDao.findById(orderId);
+        om.setStatus(2);
+        om.setUpdateTime(LocalDateTime.now());
+        orderMasterDao.saveAndFlush(om);
+    }
 }

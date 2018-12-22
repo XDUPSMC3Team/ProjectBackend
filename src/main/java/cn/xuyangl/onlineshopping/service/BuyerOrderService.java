@@ -25,4 +25,13 @@ public interface BuyerOrderService {
 
     // 检查是否填写真实姓名和地址
     Boolean checkNameAndAddress(Integer buyerId);
+
+    // 支付订单
+    void payOrder(Integer orderId);
+
+    // 取消订单
+    void cancelOrder(Integer orderId);
+
+    // 确认收货
+    void confirmOrder(Integer orderId);
 }

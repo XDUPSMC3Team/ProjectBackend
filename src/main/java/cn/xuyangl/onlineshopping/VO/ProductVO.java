@@ -15,6 +15,10 @@ public class ProductVO {
 
     private Integer shopId; // 商铺id
 
+    private String shopName;
+
+    private String shopDesc;
+
     private Integer categoryId;
 
     private String name;    //商品名称

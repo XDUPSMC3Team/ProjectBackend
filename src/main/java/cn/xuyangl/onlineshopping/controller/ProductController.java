@@ -47,7 +47,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     public Result findProduct(@PathVariable("productId") Integer id, HttpSession session) {
         String userType = (String) session.getAttribute(Common.USER_TYPE);
-        if (userType!=null&&userType.equals("buyer")) {
+        if (userType == null || userType.equals("buyer")) {
             Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
             return ResultUtil.success(productService.findProductAsBuyer(buyerId, id));
         }
