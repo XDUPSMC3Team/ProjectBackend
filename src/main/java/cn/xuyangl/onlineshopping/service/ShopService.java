@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service;
 
+import cn.xuyangl.onlineshopping.VO.ShopVO;
 import cn.xuyangl.onlineshopping.entity.Shop;
 import cn.xuyangl.onlineshopping.model.ShopDetailForm;
 import org.springframework.data.domain.Page;
@@ -24,4 +25,8 @@ public interface ShopService {
     Shop findShopById(String sellerId);
 
     Shop findByShopId(Integer shopId);
+
+    // 买家浏览店铺
+    ShopVO buyerViewShop(Integer shopId, Integer buyerId);
+
 }

@@ -1,11 +1,16 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.ShopVO;
+import cn.xuyangl.onlineshopping.dao.ProductDao;
 import cn.xuyangl.onlineshopping.dao.ShopCollectDao;
 import cn.xuyangl.onlineshopping.dao.ShopDao;
+import cn.xuyangl.onlineshopping.entity.Product;
 import cn.xuyangl.onlineshopping.entity.Shop;
 import cn.xuyangl.onlineshopping.entity.ShopCollect;
 import cn.xuyangl.onlineshopping.model.ShopDetailForm;
 import cn.xuyangl.onlineshopping.service.ShopService;
+import com.sun.scenario.effect.impl.prism.PrDrawable;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,11 +30,18 @@ import java.util.List;
 public class ShopServiceImpl implements ShopService {
 
 
-    @Autowired
     private ShopDao shopDao;
+    private ShopCollectDao shopCollectDao;
+    private ProductDao productDao;
 
     @Autowired
-    private ShopCollectDao shopCollectDao;
+    public ShopServiceImpl(ShopDao shopDao,
+                           ShopCollectDao shopCollectDao,
+                           ProductDao productDao) {
+        this.shopDao = shopDao;
+        this.shopCollectDao = shopCollectDao;
+        this.productDao = productDao;
+    }
 
     @Override
     public boolean modifyShopDetail(Integer shopId,ShopDetailForm shopDetailForm) {
@@ -95,5 +107,21 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public Shop findByShopId(Integer shopid) {
         return shopDao.findOne(shopid);
+    }
+
+    @Override
+    public ShopVO buyerViewShop(Integer shopId, Integer buyerId) {
+        Shop shop = shopDao.findOne(shopId);
+        ShopCollect sc = shopCollectDao.findByBuyerIdAndShopId(buyerId, shopId);
+        Integer collectId = 0;
+        if (sc != null) {
+            collectId = sc.getId();
+        }
+        ShopVO shopVO = new ShopVO();
+        BeanUtils.copyProperties(shop, shopVO);
+        shopVO.setCollectId(collectId);
+        List<Product> products = productDao.findAllByShopIdAndStatus(shopId, 0);
+        shopVO.setProducts(products);
+        return shopVO;
     }
 }
