@@ -88,14 +88,6 @@ public class ProductController {
         System.out.println(detail);
         return ResultUtil.success(productSpecsService.findProductsSpecsByDetailAndProductId(detail,productId));
     }
-
-    // 按照类别查看商品
-    @GetMapping("/byCategory/{categoryId}")
-    public Result findProductsByCategoryId(@PathVariable("categoryId") Integer categoryId,
-                                           @RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo,
-                                           @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize)
-    {
-        return ResultUtil.success(productService.findProductsByCategoryId(categoryId, pageNo, pageSize));
-    }
+    
 
 }
