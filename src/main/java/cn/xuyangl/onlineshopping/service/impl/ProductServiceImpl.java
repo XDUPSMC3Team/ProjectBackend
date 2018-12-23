@@ -98,7 +98,7 @@ public class ProductServiceImpl implements ProductService{
         while (keys.hasNext())
         {
             String key = keys.next();
-            AttributeKey byName = attributeKeyService.findByName(key);
+            AttributeKey byName = attributeKeyService.findByNameAndCategoryId(key,product.getCategoryId());
             if (byName==null)
             {
                 // 根据名称查找 attributeKey
@@ -109,24 +109,35 @@ public class ProductServiceImpl implements ProductService{
             String[] values = value.split(",");
             for (String s:values)
             {
-                // 根据id 添加 value值
-                AttributeValue attributeValue = new AttributeValue();
-                attributeValue.setAttributeKeyId(byName.getId());
-                attributeValue.setAttributeValue(s);
-                attributeValueService.addAttributeValue(attributeValue);
+                // 判断当前数据是否已经在数据库中
+                AttributeValue byAttributeKeyAndValue = attributeValueService.findByAttributeKeyAndValue(byName.getId(), s);
+                if (byAttributeKeyAndValue==null)
+                {
+                    // 根据id 添加 value值
+                    AttributeValue attributeValue = new AttributeValue();
+                    attributeValue.setAttributeKeyId(byName.getId());
+                    attributeValue.setAttributeValue(s);
+                    attributeValueService.addAttributeValue(attributeValue);
+                }
+
             }
         }
         // 添加payment
-        AttributeKey payment = attributeKeyService.findByName("Payment");
-        String[] strings = new String[]{"Wechat","Alipay"};
+        AttributeKey payment = attributeKeyService.findByNameAndCategoryId("Payment",product.getCategoryId());
+        String[] strings = new String[]{"\"Wechat\"","\"Alipay\""};
         if (payment!=null)
         {
             for (String s:strings)
             {
-                AttributeValue attributeValue = new AttributeValue();
-                attributeValue.setAttributeKeyId(payment.getId());
-                attributeValue.setAttributeValue(s);
-                attributeValueService.addAttributeValue(attributeValue);
+                AttributeValue byAttributeKeyAndValue = attributeValueService.findByAttributeKeyAndValue(payment.getId(), s);
+                if (byAttributeKeyAndValue==null)
+                {
+                    // 根据id 添加 value值
+                    AttributeValue attributeValue = new AttributeValue();
+                    attributeValue.setAttributeKeyId(payment.getId());
+                    attributeValue.setAttributeValue(s);
+                    attributeValueService.addAttributeValue(attributeValue);
+                }
             }
         }
         System.out.println(product.getAttributeList());
@@ -154,7 +165,7 @@ public class ProductServiceImpl implements ProductService{
         while (keys.hasNext())
         {
             String key = keys.next();
-            AttributeKey byName = attributeKeyService.findByName(key);
+            AttributeKey byName = attributeKeyService.findByNameAndCategoryId(key,product.getCategoryId());
             if (byName==null)
             {
                 // 根据名称查找 attributeKey
@@ -164,9 +175,13 @@ public class ProductServiceImpl implements ProductService{
             value = value.substring(1,value.length()-1);
             String[] values = value.split(",");
             // 根据 id 删除 attributeValue
-            attributeValueService.delelteByAttributeKey(byName.getId());
+            attributeValueService.deleteByAttributeKey(byName.getId());
             for (String s:values)
             {
+                if ("".equals(s))
+                {
+                    continue;
+                }
                 // 根据id 添加 value值
                 AttributeValue attributeValue = new AttributeValue();
                 attributeValue.setAttributeKeyId(byName.getId());

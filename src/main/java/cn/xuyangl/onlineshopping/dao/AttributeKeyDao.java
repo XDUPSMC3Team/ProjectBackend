@@ -22,5 +22,5 @@ public interface AttributeKeyDao extends JpaRepository<AttributeKey,Integer>{
      */
     List<AttributeKey> findAllByCategoryId(Integer id);
 
-    AttributeKey findByAttributeKey(String attributeKey);
+    AttributeKey findByAttributeKeyAndCategoryId(String attributeKey,Integer id);
 }

@@ -40,7 +40,12 @@ public class AttributeValueServiceImpl implements AttributeValueService{
     }
 
     @Override
-    public void delelteByAttributeKey(Integer id) {
+    public void deleteByAttributeKey(Integer id) {
         attributeValueDao.deleteAllByAttributeKeyId(id);
+    }
+
+    @Override
+    public AttributeValue findByAttributeKeyAndValue(Integer id, String attributeValue) {
+        return attributeValueDao.findByAttributeKeyIdAndAndAttributeValue(id,attributeValue);
     }
 }
