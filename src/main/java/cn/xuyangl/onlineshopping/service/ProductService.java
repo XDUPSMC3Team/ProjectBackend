@@ -58,3 +58,6 @@ public interface ProductService {
     // 作为买家查看商品，有收藏字段
     ProductVO findProductAsBuyer(Integer buyerId, Integer productId);
 }
+
+// 按照分类查看商品列表
+Page<Product> findProductsByCategoryId(Integer categoryId, int page, int size);

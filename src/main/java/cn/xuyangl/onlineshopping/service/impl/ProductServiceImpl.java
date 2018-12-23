@@ -256,3 +256,9 @@ public class ProductServiceImpl implements ProductService{
     }
 
 }
+
+@Override
+public Page<Product> findProductsByCategoryId(Integer categoryId, int page, int size) {
+Pageable pageable = new PageRequest(page, size, new Sort(Sort.Direction.DESC, "id"));
+return productDao.findAllByCategoryIdAndStatus(categoryId, 0, pageable);
+}
