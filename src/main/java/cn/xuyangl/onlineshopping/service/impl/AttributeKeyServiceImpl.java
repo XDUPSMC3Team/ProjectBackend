@@ -49,8 +49,8 @@ public class AttributeKeyServiceImpl implements AttributeKeyService{
      * @return
      */
     @Override
-    public AttributeKey findByName(String name) {
-        return attributeKeyDao.findByAttributeKey(name);
+    public AttributeKey findByNameAndCategoryId(String name,Integer id) {
+        return attributeKeyDao.findByAttributeKeyAndCategoryId(name,id);
     }
 }
 

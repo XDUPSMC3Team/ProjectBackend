@@ -25,5 +25,5 @@ public interface AttributeKeyService {
      */
     List<AttributeKey> findByCategoryId(Integer categoryId);
 
-    AttributeKey findByName(String name);
+    AttributeKey findByNameAndCategoryId(String name,Integer id);
 }

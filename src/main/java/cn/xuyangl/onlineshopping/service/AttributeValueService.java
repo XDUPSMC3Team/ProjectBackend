@@ -30,5 +30,7 @@ public interface AttributeValueService {
      *  根据 ID 删除 attributeValue
      * @param id
      */
-    void delelteByAttributeKey(Integer id);
+    void deleteByAttributeKey(Integer id);
+
+    AttributeValue findByAttributeKeyAndValue(Integer id,String attributeValue);
 }
