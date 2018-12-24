@@ -147,7 +147,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
     @Override
     public void cancelOrder(Integer orderId) {
         OrderMaster om = orderMasterDao.findById(orderId);
-        om.setShopId(-1);
+        om.setStatus(-1);
         om.setUpdateTime(LocalDateTime.now());
         orderMasterDao.saveAndFlush(om);
     }
