@@ -25,7 +25,8 @@ public enum  ResultEnum {
     ProductNotFound(13,"the product is not found"),
     OrderNotExist(14,"this order is not exist"),
     AmountLessThanOne(15, "amount can't be less than 1"),
-    EmptyRealNameOrAddress(16, "real name and address can't be empty");
+    EmptyRealNameOrAddress(16, "real name and address can't be empty"),
+    OneSellerOnlyHasOneShop(17,"one seller only has one shop")
     ;
     public String msg;
     public Integer code;

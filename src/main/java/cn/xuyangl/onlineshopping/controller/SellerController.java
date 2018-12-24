@@ -137,12 +137,12 @@ public class SellerController {
 //            return ResultUtil.error(ResultEnum.NO_RIGHT);
 //        }
 
-        boolean b = sellerService.registerShop(shop);
-        if (b)
+        ResultEnum resultEnum = sellerService.registerShop(shop);
+        if (resultEnum.code==0)
         {
             return ResultUtil.success();
         }else{
-            return ResultUtil.error(ResultEnum.RegisterError);
+            return ResultUtil.error(resultEnum);
         }
     }
 

@@ -1,6 +1,7 @@
 package cn.xuyangl.onlineshopping.service;
 
 import cn.xuyangl.onlineshopping.VO.Result;
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.entity.OrderDetail;
 import cn.xuyangl.onlineshopping.entity.Seller;
 import cn.xuyangl.onlineshopping.entity.Shop;
@@ -36,7 +37,7 @@ public interface SellerService {
      * @param shop
      * @return
      */
-     boolean registerShop(Shop shop);
+     ResultEnum registerShop(Shop shop);
 
     /**
      *  查询某个商家的所有的销售历史

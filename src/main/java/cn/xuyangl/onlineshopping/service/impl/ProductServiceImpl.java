@@ -81,7 +81,6 @@ public class ProductServiceImpl implements ProductService{
      */
     @Override
     public ResultEnum addProduct(Product product) {
-        System.out.println(product.getPic());
         // 补充商品属性
         product.setCreateTime(LocalDateTime.now());
         product.setUpdateTime(LocalDateTime.now());
@@ -89,39 +88,44 @@ public class ProductServiceImpl implements ProductService{
         // Todo
         String attributeList = product.getAttributeList();
         // 添加Payment
-        StringBuilder stringBuilder = new StringBuilder(attributeList.substring(0,attributeList.length()-1));
-        stringBuilder.append(",\"Payment\":[\"Wechat\",\"Alipay\"]}");
-        product.setAttributeList(stringBuilder.toString());
-        //{"memory":["4G", "8G"], "color":["red","black", "white"]}
-        JSONObject jsonObject = new JSONObject(attributeList);
-        Iterator<String> keys = jsonObject.keys();
-        while (keys.hasNext())
+        StringBuilder stringBuilder = new StringBuilder(attributeList.substring(0,attributeList.length()>=1?attributeList.length()-1:0));
+        if (attributeList==null||"".equals(attributeList))
         {
-            String key = keys.next();
-            AttributeKey byName = attributeKeyService.findByNameAndCategoryId(key,product.getCategoryId());
-            if (byName==null)
+            stringBuilder.append("{\"Payment\":[\"Wechat\",\"Alipay\"]}");
+        }else{
+            stringBuilder.append(",\"Payment\":[\"Wechat\",\"Alipay\"]}");
+            //{"memory":["4G", "8G"], "color":["red","black", "white"]}
+            JSONObject jsonObject = new JSONObject(attributeList);
+            Iterator<String> keys = jsonObject.keys();
+            while (keys.hasNext())
             {
-                // 根据名称查找 attributeKey
-                return ResultEnum.AttributeKeyNotFound;
-            }
-            String value = jsonObject.get(key).toString();
-            value = value.substring(1,value.length()-1);
-            String[] values = value.split(",");
-            for (String s:values)
-            {
-                // 判断当前数据是否已经在数据库中
-                AttributeValue byAttributeKeyAndValue = attributeValueService.findByAttributeKeyAndValue(byName.getId(), s);
-                if (byAttributeKeyAndValue==null)
+                String key = keys.next();
+                AttributeKey byName = attributeKeyService.findByNameAndCategoryId(key,product.getCategoryId());
+                if (byName==null)
                 {
-                    // 根据id 添加 value值
-                    AttributeValue attributeValue = new AttributeValue();
-                    attributeValue.setAttributeKeyId(byName.getId());
-                    attributeValue.setAttributeValue(s);
-                    attributeValueService.addAttributeValue(attributeValue);
+                    // 根据名称查找 attributeKey
+                    return ResultEnum.AttributeKeyNotFound;
                 }
+                String value = jsonObject.get(key).toString();
+                value = value.substring(1,value.length()-1);
+                String[] values = value.split(",");
+                for (String s:values)
+                {
+                    // 判断当前数据是否已经在数据库中
+                    AttributeValue byAttributeKeyAndValue = attributeValueService.findByAttributeKeyAndValue(byName.getId(), s);
+                    if (byAttributeKeyAndValue==null)
+                    {
+                        // 根据id 添加 value值
+                        AttributeValue attributeValue = new AttributeValue();
+                        attributeValue.setAttributeKeyId(byName.getId());
+                        attributeValue.setAttributeValue(s);
+                        attributeValueService.addAttributeValue(attributeValue);
+                    }
 
+                }
             }
         }
+        product.setAttributeList(stringBuilder.toString());
         // 添加payment
         AttributeKey payment = attributeKeyService.findByNameAndCategoryId("Payment",product.getCategoryId());
         String[] strings = new String[]{"\"Wechat\"","\"Alipay\""};
@@ -129,6 +133,7 @@ public class ProductServiceImpl implements ProductService{
         {
             for (String s:strings)
             {
+                System.out.println(s);
                 AttributeValue byAttributeKeyAndValue = attributeValueService.findByAttributeKeyAndValue(payment.getId(), s);
                 if (byAttributeKeyAndValue==null)
                 {

@@ -92,17 +92,27 @@ public class SellerServiceImpl implements SellerService{
     }
 
     @Override
-    public boolean registerShop(Shop shop) {
+    public ResultEnum registerShop(Shop shop) {
+        /**
+         *  首先查找该seller 是否已经有shop
+         *
+         */
+        Integer sellerId = shop.getSellerId();
+        Shop shopBySellerId = shopDao.findShopBySellerId(sellerId);
+        if (shopBySellerId!=null)
+        {
+            return  ResultEnum.OneSellerOnlyHasOneShop;
+        }
         // 补全属性
         shop.setStatus(0);  // 设置为受理中
         shop.setCreateTime(LocalDateTime.now());
         shop.setUpdateTime(LocalDateTime.now());
         try{
             shopDao.save(shop);
-            return true;
+            return ResultEnum.Success;
         }catch (Exception e)
         {
-            return false;
+            return ResultEnum.RegisterError;
         }
     }
 
