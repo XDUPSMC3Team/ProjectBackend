@@ -89,9 +89,9 @@ public class ProductServiceImpl implements ProductService{
         String attributeList = product.getAttributeList();
         // 添加Payment
         StringBuilder stringBuilder = new StringBuilder(attributeList.substring(0,attributeList.length()>=1?attributeList.length()-1:0));
-        if (attributeList==null||"".equals(attributeList))
+        if (attributeList==null||"{}".equals(attributeList))
         {
-            stringBuilder.append("{\"Payment\":[\"Wechat\",\"Alipay\"]}");
+            stringBuilder.append("\"Payment\":[\"Wechat\",\"Alipay\"]}");
         }else{
             stringBuilder.append(",\"Payment\":[\"Wechat\",\"Alipay\"]}");
             //{"memory":["4G", "8G"], "color":["red","black", "white"]}

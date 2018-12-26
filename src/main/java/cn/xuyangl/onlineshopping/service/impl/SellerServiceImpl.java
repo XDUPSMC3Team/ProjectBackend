@@ -99,7 +99,8 @@ public class SellerServiceImpl implements SellerService{
          */
         Integer sellerId = shop.getSellerId();
         Shop shopBySellerId = shopDao.findShopBySellerId(sellerId);
-        if (shopBySellerId!=null)
+        // 如果商铺存在，并且正常状态
+        if (shopBySellerId!=null&&(shopBySellerId.getStatus()==1||shopBySellerId.getStatus()==0))
         {
             return  ResultEnum.OneSellerOnlyHasOneShop;
         }

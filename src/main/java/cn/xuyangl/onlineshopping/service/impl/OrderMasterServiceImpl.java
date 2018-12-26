@@ -52,9 +52,15 @@ public class OrderMasterServiceImpl implements OrderMasterService{
         return ResultEnum.Success;
     }
 
+    /**
+     *  查找所有已付款订单
+     * @param shopId
+     * @param payStatus
+     * @return
+     */
 
     @Override
     public List<OrderMaster> findByShopIdAndPayStatus(Integer shopId, int payStatus) {
-        return orderMasterDAO.findAllByShopIdAndPayStatus(shopId,payStatus);
+        return orderMasterDAO.findAllByShopIdAndPayStatusAndStatusLessThan(shopId,payStatus,2);
     }
 }
