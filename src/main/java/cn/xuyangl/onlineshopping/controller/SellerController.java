@@ -80,8 +80,13 @@ public class SellerController {
         {
             return ResultUtil.error(ResultEnum.AccountNotFound);
         }
+        if (byEmail.getStatus()!=0)
+        {
+            // 账户被封
+            return ResultUtil.error(ResultEnum.AccountBlocked);
+        }
         // 判断用户名 密码  以及状态
-        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(loginForm.getPassword())&&byEmail.getStatus()==0)
+        if (byEmail.getPassword()!=null&&byEmail.getPassword().equals(loginForm.getPassword()))
         {
             // 判断密码是否相等
             //将数据存入cookie中i

@@ -26,7 +26,8 @@ public enum  ResultEnum {
     OrderNotExist(14,"this order is not exist"),
     AmountLessThanOne(15, "amount can't be less than 1"),
     EmptyRealNameOrAddress(16, "real name and address can't be empty"),
-    OneSellerOnlyHasOneShop(17,"one seller only has one shop")
+    OneSellerOnlyHasOneShop(17,"one seller only has one shop"),
+    AccountBlocked(18,"Due to your illegal action, your account has been stopped")
     ;
     public String msg;
     public Integer code;
