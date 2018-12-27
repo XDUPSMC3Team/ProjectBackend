@@ -65,11 +65,15 @@ public class BuyerController {
         if (buyerInDB == null) return ResultUtil.error(ResultEnum.AccountNotFound);
         Buyer buyer = buyerService.login(loginForm.getUsername(), loginForm.getPassword());
         if (buyer == null) return ResultUtil.error(ResultEnum.PasswordIncorrect);
-        session.setAttribute(Common.USER_TYPE, "buyer");
-        session.setAttribute(Common.BUYER_ID, buyer.getId());
-        session.setAttribute(Common.USERNAME, buyer.getUsername());
-        session.setMaxInactiveInterval(3600);
-        return ResultUtil.success(buyer.getId());
+        if (buyer.getStatus() == 0) {
+            session.setAttribute(Common.USER_TYPE, "buyer");
+            session.setAttribute(Common.BUYER_ID, buyer.getId());
+            session.setAttribute(Common.USERNAME, buyer.getUsername());
+            session.setMaxInactiveInterval(3600);
+            return ResultUtil.success(buyer.getId());
+        } else {
+            return ResultUtil.error(ResultEnum.AccountBlocked);
+        }
     }
 
     // 查看个人资料
@@ -217,6 +221,17 @@ public class BuyerController {
     public Result confirmOrderReceived(@PathVariable("orderId") Integer orderId) {
         buyerOrderService.confirmOrder(orderId);
         return ResultUtil.success();
+    }
+
+    // 找回密码
+    @GetMapping("/findPassword")
+    public Result findPassword(@RequestParam("username") String username) {
+        ResultEnum resultEnum = buyerService.findPassword(username);
+        if (resultEnum.code == 0) {
+            return ResultUtil.success(resultEnum);
+        } else {
+            return ResultUtil.error(resultEnum);
+        }
     }
 
 }

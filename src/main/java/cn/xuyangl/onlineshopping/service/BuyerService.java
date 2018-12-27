@@ -28,4 +28,6 @@ public interface BuyerService {
 
     Boolean cancelCollect(Integer collectId, Integer type);
 
+    ResultEnum findPassword(String username);
+
 }

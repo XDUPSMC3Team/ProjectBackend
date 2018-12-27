@@ -4,8 +4,12 @@ import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.ProductCartForm;
+import cn.xuyangl.onlineshopping.model.SimpleOrderForm;
 import cn.xuyangl.onlineshopping.service.BuyerService;
+import cn.xuyangl.onlineshopping.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,14 +26,21 @@ public class BuyerServiceImpl implements BuyerService {
     private ProductCollectDao productCollectDao;
     private ShopCollectDao shopCollectDao;
     private ShopCartDao shopCartDao;
+    private JavaMailSender javaMailSender;
 
     @Autowired
-    BuyerServiceImpl(BuyerDao buyerDao, ProductCollectDao productCollectDao, ShopCollectDao shopCollectDao, ProductDao productDao, ShopCartDao shopCartDao) {
+    BuyerServiceImpl(BuyerDao buyerDao,
+                     ProductCollectDao productCollectDao,
+                     ShopCollectDao shopCollectDao,
+                     ProductDao productDao,
+                     ShopCartDao shopCartDao,
+                     JavaMailSender javaMailSender) {
         this.buyerDao = buyerDao;
         this.productCollectDao = productCollectDao;
         this.shopCollectDao = shopCollectDao;
         this.productDao = productDao;
         this.shopCartDao = shopCartDao;
+        this.javaMailSender = javaMailSender;
     }
 
     @Override
@@ -112,4 +123,17 @@ public class BuyerServiceImpl implements BuyerService {
         return true;
     }
 
+    @Override
+    public ResultEnum findPassword(String username) {
+        Buyer buyer = buyerDao.findByUsernameOrEmail(username, username);
+        if (buyer == null) return ResultEnum.AccountNotFound;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SimpleMailMessage simpleMailMessage = MailUtil.createMessage(buyer.getEmail(),"【找回密码】Find Password", "Hello, You are finding your password in ParkNShop. Your password is: " + buyer.getPassword());
+                javaMailSender.send(simpleMailMessage);
+            }
+        }).start();
+        return ResultEnum.Success;
+    }
 }
