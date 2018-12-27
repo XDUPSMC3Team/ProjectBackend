@@ -47,6 +47,10 @@ public class OrderMasterServiceImpl implements OrderMasterService{
             return ResultEnum.OrderNotExist;
         }
         byId.setStatus(status);
+        if (status>=3)
+        {
+            byId.setReceiveTime(LocalDateTime.now());
+        }
         byId.setUpdateTime(LocalDateTime.now());
         orderMasterDAO.saveAndFlush(byId);
         return ResultEnum.Success;

@@ -2,14 +2,13 @@ package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
+import cn.xuyangl.onlineshopping.dao.BuyerDao;
 import cn.xuyangl.onlineshopping.dao.SellerDao;
 import cn.xuyangl.onlineshopping.dao.ShopDao;
-import cn.xuyangl.onlineshopping.entity.OrderDetail;
-import cn.xuyangl.onlineshopping.entity.OrderMaster;
-import cn.xuyangl.onlineshopping.entity.Seller;
-import cn.xuyangl.onlineshopping.entity.Shop;
+import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.OrderData;
 import cn.xuyangl.onlineshopping.model.OrderDetailData;
+import cn.xuyangl.onlineshopping.service.BuyerService;
 import cn.xuyangl.onlineshopping.service.OrderDetailService;
 import cn.xuyangl.onlineshopping.service.OrderMasterService;
 import cn.xuyangl.onlineshopping.service.SellerService;
@@ -52,6 +51,9 @@ public class SellerServiceImpl implements SellerService{
 
     @Autowired
     private OrderDetailService orderDetailService;
+
+    @Autowired
+    private BuyerService buyerService;
 
     /**
      *  seller 注册
@@ -148,7 +150,7 @@ public class SellerServiceImpl implements SellerService{
 //            orderDataList.add(orderData);
 //        }
 //        return ResultUtil.success(orderDataList);
-        return fillData(byShopId,orderDataList);
+        return fillData(shopId,byShopId,orderDataList);
     }
 
     /**
@@ -168,14 +170,21 @@ public class SellerServiceImpl implements SellerService{
         {
             return  ResultUtil.error(ResultEnum.SHOP_NOT_FOUND);
         }
-       return fillData(byShopId,orderDataList);
+       return fillData(shopId,byShopId,orderDataList);
     }
 
-    public Result fillData(List<OrderMaster> byShopId,List<OrderData> orderDataList)
+    public Result fillData(int shopId,List<OrderMaster> byShopId,List<OrderData> orderDataList)
     {
+        Shop one = shopDao.findOne(shopId);
         for (OrderMaster orderMaster: byShopId)
         {
             OrderData orderData  = new OrderData();
+            // 添加shopName字段
+            orderData.setShopName(one.getShopName());
+            Integer buyerId = orderMaster.getBuyerId();
+            Buyer byId = buyerService.findById(buyerId);
+            // 添加address 字段
+            orderData.setAddress(byId.getAddress());
             BeanUtils.copyProperties(orderMaster,orderData);
             List<OrderDetail> orderDetailByOrderMasterId = orderDetailService.findOrderDetailByOrderMasterId(orderMaster.getId());
             for (OrderDetail orderDetail:orderDetailByOrderMasterId)
