@@ -60,4 +60,7 @@ public interface ProductService {
 
     // 按照分类查看商品列表
     Page<Product> findProductsByCategoryId(Integer categoryId, int page, int size);
+
+    // 增加广告费
+    ResultEnum addAdvertisementFee(Integer productId,double fee);
 }

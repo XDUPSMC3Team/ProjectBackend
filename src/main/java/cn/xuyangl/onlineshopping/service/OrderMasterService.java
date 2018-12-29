@@ -4,6 +4,7 @@ import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.entity.OrderMaster;
 import cn.xuyangl.onlineshopping.model.OrderData;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public interface OrderMasterService {
      */
     List<OrderMaster> findByShopIdAndStatus(Integer id,int status);
 
+
     /**
      *  更改商品的状态
      * @param id
@@ -29,4 +31,16 @@ public interface OrderMasterService {
     ResultEnum modifyOrderStatus(Integer id,int status);
 
     List<OrderMaster> findByShopIdAndPayStatus(Integer is,int payStatus);
+
+    /**
+     * 0----> daily
+     * 1----> weekly
+     * 2----> montly
+     * 3-----> yearly
+     * @param shopId
+     * @param status
+     * @param date
+     * @return
+     */
+    List<List<OrderMaster>> findSaleHistoryByDate(Integer shopId, int status, Date date);
 }

@@ -2,12 +2,15 @@ package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
+import cn.xuyangl.onlineshopping.VO.StatusEnum;
 import cn.xuyangl.onlineshopping.dao.BuyerDao;
 import cn.xuyangl.onlineshopping.dao.SellerDao;
 import cn.xuyangl.onlineshopping.dao.ShopDao;
 import cn.xuyangl.onlineshopping.entity.*;
+import cn.xuyangl.onlineshopping.model.IncomeHistoryData;
 import cn.xuyangl.onlineshopping.model.OrderData;
 import cn.xuyangl.onlineshopping.model.OrderDetailData;
+import cn.xuyangl.onlineshopping.model.SaleHistoryData;
 import cn.xuyangl.onlineshopping.service.BuyerService;
 import cn.xuyangl.onlineshopping.service.OrderDetailService;
 import cn.xuyangl.onlineshopping.service.OrderMasterService;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -150,7 +154,7 @@ public class SellerServiceImpl implements SellerService{
 //            orderDataList.add(orderData);
 //        }
 //        return ResultUtil.success(orderDataList);
-        return fillData(shopId,byShopId,orderDataList);
+        return ResultUtil.success(fillData(shopId,byShopId,orderDataList));
     }
 
     /**
@@ -170,10 +174,10 @@ public class SellerServiceImpl implements SellerService{
         {
             return  ResultUtil.error(ResultEnum.SHOP_NOT_FOUND);
         }
-       return fillData(shopId,byShopId,orderDataList);
+       return ResultUtil.success(fillData(shopId,byShopId,orderDataList));
     }
 
-    public Result fillData(int shopId,List<OrderMaster> byShopId,List<OrderData> orderDataList)
+    public List<OrderData> fillData(int shopId,List<OrderMaster> byShopId,List<OrderData> orderDataList)
     {
         Shop one = shopDao.findOne(shopId);
         for (OrderMaster orderMaster: byShopId)
@@ -195,6 +199,48 @@ public class SellerServiceImpl implements SellerService{
             }
             orderDataList.add(orderData);
         }
-        return ResultUtil.success(orderDataList);
+        return orderDataList;
+    }
+
+    /**
+     *  查询某年某月某日某周的历史销售记录
+     * @param shopId
+     * @param date
+     * @return
+     */
+    @Override
+    public Result findSaleHistoryByDate(Integer shopId, Date date) {
+        List<List<OrderMaster>> saleHistoryByDate = orderMasterService.findSaleHistoryByDate(shopId, StatusEnum.Received.code, date);
+        SaleHistoryData saleHistoryData = new SaleHistoryData();
+        saleHistoryData.setDaily(fillData(shopId,saleHistoryByDate.get(0),new ArrayList<>()));
+        saleHistoryData.setWeekly(fillData(shopId,saleHistoryByDate.get(1),new ArrayList<>()));
+        saleHistoryData.setMonthly(fillData(shopId,saleHistoryByDate.get(2),new ArrayList<>()));
+        saleHistoryData.setYearly(fillData(shopId,saleHistoryByDate.get(3),new ArrayList<>()));
+        return ResultUtil.success(saleHistoryData);
+    }
+
+    @Override
+    public Result findIncomeHistoryByDate(Integer shopId, Date date) {
+        System.out.println(StatusEnum.Received.code);
+        List<List<OrderMaster>> saleHistoryByDate = orderMasterService.findSaleHistoryByDate(shopId, StatusEnum.Received.code, date);
+
+        IncomeHistoryData incomeHistoryData = new IncomeHistoryData();
+        if (saleHistoryByDate.get(0)!=null&&saleHistoryByDate.get(0).size()>0)
+        {
+            incomeHistoryData.setDaily( saleHistoryByDate.get(0).stream().map(OrderMaster::getMoney).reduce(Double::sum).get());
+        }
+        if (saleHistoryByDate.get(1)!=null&&saleHistoryByDate.get(1).size()>0)
+        {
+            incomeHistoryData.setWeekly( saleHistoryByDate.get(1).stream().map(OrderMaster::getMoney).reduce(Double::sum).get());
+        }
+        if (saleHistoryByDate.get(2)!=null&&saleHistoryByDate.get(2).size()>0)
+        {
+            incomeHistoryData.setMonthly( saleHistoryByDate.get(2).stream().map(OrderMaster::getMoney).reduce(Double::sum).get());
+        }
+        if (saleHistoryByDate.get(3)!=null&&saleHistoryByDate.get(3).size()>0)
+        {
+            incomeHistoryData.setYearly( saleHistoryByDate.get(3).stream().map(OrderMaster::getMoney).reduce(Double::sum).get());
+        }
+        return ResultUtil.success(incomeHistoryData);
     }
 }

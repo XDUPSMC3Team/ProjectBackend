@@ -1,9 +1,13 @@
 package cn.xuyangl.onlineshopping;
 
 import cn.xuyangl.onlineshopping.VO.StatusEnum;
+import cn.xuyangl.onlineshopping.utils.DateUtil;
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @Description
@@ -24,7 +28,19 @@ public class Test {
 
     @org.junit.Test
     public void test02(){
-        System.out.println(StatusEnum.Received.code);
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        System.out.println(simpleDateFormat.format(new Date()));
+//        System.out.println(StatusEnum.Received.code);
+
+        Date date = new Date();
+        System.out.println(DateUtil.getDateStartTime(date));
+        System.out.println(DateUtil.getDateEndTime(date));
+        System.out.println(DateUtil.getBeginDayOfWeek(date));
+        System.out.println(DateUtil.getEndDayOfWeek(date));
+        System.out.println(DateUtil.getBeginDayOfMonth(date));
+        System.out.println(DateUtil.getEndDayOfMonth(date));
+        System.out.println(DateUtil.getStartDayOfYear(date));
+        System.out.println(DateUtil.getEndDayOfYear(date));
     }
 
 }

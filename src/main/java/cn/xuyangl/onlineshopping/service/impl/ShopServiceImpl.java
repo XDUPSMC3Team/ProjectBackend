@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.VO.ShopVO;
 import cn.xuyangl.onlineshopping.dao.ProductDao;
 import cn.xuyangl.onlineshopping.dao.ShopCollectDao;
@@ -130,5 +131,22 @@ public class ShopServiceImpl implements ShopService {
         List<Product> products = productDao.findAllByShopIdAndStatus(shopId, 0);
         shopVO.setProducts(products);
         return shopVO;
+    }
+
+    /**
+     *  为商铺打广告
+     * @param shopId
+     * @param money
+     * @return
+     */
+    @Override
+    public ResultEnum advertise(Integer shopId, double money) {
+        // 查询shop 是否存在
+        if (shopDao.findOne(shopId)==null)
+        {
+            return ResultEnum.SHOP_NOT_FOUND;
+        }
+        shopDao.addAdmoney(shopId,money);
+        return ResultEnum.Success;
     }
 }

@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.json.JSONObject;
+
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -266,4 +268,13 @@ public class ProductServiceImpl implements ProductService{
         return productDao.findAllByCategoryIdAndStatus(categoryId, 0, pageable);
     }
 
+    @Override
+    public ResultEnum addAdvertisementFee(Integer productId, double fee) {
+        if (productDao.findOne(productId)==null)
+        {
+            return ResultEnum.ProductNotFound;
+        }
+        productDao.addAdFeeForProduct(productId,fee);
+        return ResultEnum.Success;
+    }
 }

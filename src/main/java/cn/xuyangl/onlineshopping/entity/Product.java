@@ -37,6 +37,8 @@ public class Product {
 
     private Integer status; // 商品状态 0 表示正常 1表示下架
 
+    private Double adMoney; // 广告费
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;   //创建时间
 

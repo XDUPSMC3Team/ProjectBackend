@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service;
 
+import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.VO.ShopVO;
 import cn.xuyangl.onlineshopping.entity.Shop;
 import cn.xuyangl.onlineshopping.model.ShopDetailForm;
@@ -30,5 +31,14 @@ public interface ShopService {
 
     // 买家浏览店铺
     ShopVO buyerViewShop(Integer shopId, Integer buyerId);
+
+
+    /**
+     *  为shop 打广告
+     * @param shopId
+     * @param money
+     * @return
+     */
+    ResultEnum advertise(Integer shopId,double money);
 
 }

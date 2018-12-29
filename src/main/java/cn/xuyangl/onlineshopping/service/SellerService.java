@@ -8,6 +8,7 @@ import cn.xuyangl.onlineshopping.entity.Shop;
 import cn.xuyangl.onlineshopping.model.OrderData;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,4 +53,18 @@ public interface SellerService {
      * @return
      */
      Result findAllPayedOrder(Integer shopId);
+
+
+    /**
+     *  查询每年每月每日每周的历史销售记录
+     * @param shopId
+     * @param date
+     * @return
+     */
+     Result findSaleHistoryByDate(Integer shopId, Date date);
+
+    /**
+     *  查询每年每月每日每周的营业额
+     */
+    Result findIncomeHistoryByDate(Integer shopId,Date date);
 }
