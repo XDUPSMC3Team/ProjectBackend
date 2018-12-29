@@ -1,5 +1,7 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.BuyerOrderDetailVO;
+import cn.xuyangl.onlineshopping.VO.BuyerOrderVO;
 import cn.xuyangl.onlineshopping.VO.OrderVO;
 import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
@@ -8,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -105,24 +108,19 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public OrderVO findOrderById(Integer id) {
-        OrderMaster orderMaster = orderMasterDAO.findById(id);
-
-        if (orderMaster == null) {
-            return null;
+        OrderMaster om = orderMasterDAO.findById(id);
+        OrderVO buyerOrderVO = new OrderVO();
+        BeanUtils.copyProperties(om, buyerOrderVO);
+        buyerOrderVO.setShopName(shopDAO.findById(om.getShopId()).getShopName());
+        List<OrderDetail> orderDetails = orderDetailDao.findAllByMasterId(om.getId());
+        List<BuyerOrderDetailVO> buyerOrderDetailVOS = new ArrayList<>();
+        for (OrderDetail od : orderDetails) {
+            BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
+            BeanUtils.copyProperties(od, buyerOrderDetailVO);
+            buyerOrderDetailVOS.add(buyerOrderDetailVO);
         }
-
-        OrderDetail orderDetail = orderDetailDao.findByMasterId(id);
-
-        OrderVO orderVO = new OrderVO();
-        BeanUtils.copyProperties(orderMaster, orderVO);
-
-        if (orderDetail != null) {
-            orderVO.setProductId(orderDetail.getProductId());
-            orderVO.setProductName(orderDetail.getProductName());
-            orderVO.setAmount(orderDetail.getAmount());
-            orderVO.setPrice(orderDetail.getPrice());
-        }
-        return orderVO;
+        buyerOrderVO.setOrderDataList(buyerOrderDetailVOS);
+        return buyerOrderVO;
     }
 
     @Override
