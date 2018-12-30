@@ -18,6 +18,8 @@ public class OrderData {
     private Integer id;
     private Integer buyerId;
     private String receiverName;    //收货人姓名
+    private String address; //收货人地址
+    private String shopName;    //商铺名称
     private Double money;   //金钱
     private Integer status; //订单状态
     private Integer payStatus;  //支付状态

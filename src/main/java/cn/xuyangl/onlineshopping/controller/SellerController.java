@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -387,6 +390,85 @@ public class SellerController {
         }else{
             return ResultUtil.error(resultEnum);
         }
-
     }
+
+    /**
+     *  为product打广告
+     * @return
+     */
+    @RequestMapping(value = "/product/advertisement/{productId}",method = RequestMethod.POST)
+    public Result advertiseForProduct(@PathVariable("productId")Integer productId,@RequestBody String money)
+    {
+        JSONObject jsonObject = new JSONObject(money);
+        String value = (String)jsonObject.get("money");
+        ResultEnum resultEnum = productService.addAdvertisementFee(productId, Double.parseDouble(value));
+        if (resultEnum.code==0)
+        {
+            return ResultUtil.success();
+        }
+        return ResultUtil.error(resultEnum);
+    }
+    /**
+     *  为自己的商铺打广告
+     */
+    @RequestMapping(value = "/shop/advertisement/{shopId}",method = RequestMethod.POST)
+    public Result advertiseForShop(@PathVariable("shopId")Integer shopId,@RequestBody String money)
+    {
+
+        JSONObject jsonObject = new JSONObject(money);
+        String value = (String)jsonObject.get("money");
+        ResultEnum advertise = shopService.advertise(shopId, Double.parseDouble(value));
+        if (advertise.code==0)
+        {
+            return ResultUtil.success();
+        }
+        return ResultUtil.error(advertise);
+    }
+
+    /**
+     *  查看销售历史（需分为每日，每周，每月，每年展示 | daily, weekly, monthly, yearly）
+     */
+    @RequestMapping(value = "/shop/saleHistory/date/{shopId}",method = RequestMethod.GET)
+    public Result viewSaleHistory(@PathVariable("shopId")Integer shopId,@RequestParam(value = "date",required = false)String date)
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date baseDate = null;
+        if (date==null||"".equals(date))
+        {
+            baseDate = new Date();
+        }else{
+            try {
+                baseDate = simpleDateFormat.parse(date);
+            } catch (ParseException e) {
+                return ResultUtil.error(ResultEnum.DateFormatError);
+            }
+        }
+
+        return sellerService.findSaleHistoryByDate(shopId,baseDate);
+    }
+
+    /**
+     *  查看利润(每日，每周，每月，每年)
+     */
+
+    @RequestMapping(value = "/shop/income/date/{shopId}",method = RequestMethod.GET)
+    public Result viewIncomeHistory(@PathVariable("shopId")Integer shopId,@RequestParam(value = "date",required = false)String date)
+    {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date baseDate = null;
+        if (date==null||"".equals(date))
+        {
+            baseDate = new Date();
+        }else{
+            try {
+                baseDate = simpleDateFormat.parse(date);
+            } catch (ParseException e) {
+                return ResultUtil.error(ResultEnum.DateFormatError);
+            }
+        }
+       return  sellerService.findIncomeHistoryByDate(shopId,baseDate);
+    }
+
+
 }
