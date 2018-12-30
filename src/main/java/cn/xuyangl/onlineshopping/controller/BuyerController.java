@@ -70,7 +70,7 @@ public class BuyerController {
             session.setAttribute(Common.BUYER_ID, buyer.getId());
             session.setAttribute(Common.USERNAME, buyer.getUsername());
             session.setMaxInactiveInterval(3600);
-            return ResultUtil.success(buyer.getId());
+            return ResultUtil.success(buyer.getStatus());
         } else {
             return ResultUtil.error(ResultEnum.AccountBlocked);
         }
