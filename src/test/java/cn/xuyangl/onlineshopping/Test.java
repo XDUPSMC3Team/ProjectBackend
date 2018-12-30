@@ -6,6 +6,7 @@ import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,7 +33,14 @@ public class Test {
 //        System.out.println(simpleDateFormat.format(new Date()));
 //        System.out.println(StatusEnum.Received.code);
 
-        Date date = new Date();
+        String string = "2017-12-01";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(string);
+        } catch (ParseException e) {
+
+        }
         System.out.println(DateUtil.getDateStartTime(date));
         System.out.println(DateUtil.getDateEndTime(date));
         System.out.println(DateUtil.getBeginDayOfWeek(date));

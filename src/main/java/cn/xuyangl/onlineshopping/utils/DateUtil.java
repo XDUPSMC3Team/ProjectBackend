@@ -56,6 +56,7 @@ public class DateUtil {
     public static LocalDateTime getBeginDayOfMonth(Date date)
     {
         Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         calendar.set(calendar.get(Calendar.YEAR),date.getMonth(),1);
         return getDateStartTime(calendar.getTime());
     }
@@ -66,6 +67,7 @@ public class DateUtil {
     public static LocalDateTime getEndDayOfMonth(Date date)
     {
         Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         calendar.set(calendar.get(Calendar.YEAR),date.getMonth(),1);
         // 获得该月总共有多少天
         int actualMaximum = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
