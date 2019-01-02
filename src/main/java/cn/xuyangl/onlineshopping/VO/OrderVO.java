@@ -18,7 +18,7 @@ public class OrderVO {
     private Integer status;
     private Integer payStatus;
 
-    List<BuyerOrderDetailVO> orderDataList = new ArrayList<>();
+    List<BuyerOrderDetailVO> orderDetailDataList = new ArrayList<>();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime receiveTime;  //收货时间

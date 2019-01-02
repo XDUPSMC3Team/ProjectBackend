@@ -119,7 +119,7 @@ public class AdminServiceImpl implements AdminService {
             BeanUtils.copyProperties(od, buyerOrderDetailVO);
             buyerOrderDetailVOS.add(buyerOrderDetailVO);
         }
-        buyerOrderVO.setOrderDataList(buyerOrderDetailVOS);
+        buyerOrderVO.setOrderDetailDataList(buyerOrderDetailVOS);
         return buyerOrderVO;
     }
 
