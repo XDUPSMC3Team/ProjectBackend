@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.BiddingInfoVO;
 import cn.xuyangl.onlineshopping.VO.BuyerOrderDetailVO;
 import cn.xuyangl.onlineshopping.VO.BuyerOrderVO;
 import cn.xuyangl.onlineshopping.VO.OrderVO;
@@ -159,5 +160,13 @@ public class AdminServiceImpl implements AdminService {
         seller.setStatus(1);
         sellerDao.saveAndFlush(seller);
         return true;
+    }
+
+    @Override
+    public BiddingInfoVO biddingInfo() {
+        BiddingInfoVO info = new BiddingInfoVO();
+        info.setShops(shopDAO.findTop5BiddingShops());
+        info.setProducts(productDao.findTop10BiddingProducts());
+        return info;
     }
 }

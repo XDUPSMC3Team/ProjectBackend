@@ -1,6 +1,7 @@
 package cn.xuyangl.onlineshopping.service;
 
 
+import cn.xuyangl.onlineshopping.VO.BiddingInfoVO;
 import cn.xuyangl.onlineshopping.VO.OrderVO;
 import cn.xuyangl.onlineshopping.entity.Admin;
 import cn.xuyangl.onlineshopping.entity.Buyer;
@@ -36,4 +37,6 @@ public interface AdminService {
     Boolean blockUser(Integer userId);
 
     Boolean blockSeller(Integer sellerId);
+
+    BiddingInfoVO biddingInfo();
 }
