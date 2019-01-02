@@ -39,7 +39,7 @@ public interface ProductDao extends JpaRepository<Product,Integer>{
     @Modifying
     void addAdFeeForProduct(@Param("productId")int productId,@Param("adFee")double adFee);
 
-    @Query(nativeQuery = true, value = "SELECT p FROM T_PRODUCT p ORDER BY p.adMoney DESC LIMIT 10")
+    @Query(nativeQuery = true, value = "SELECT * FROM T_PRODUCT ORDER BY adMoney DESC LIMIT 0,10")
     @Transactional
     List<Product> findTop10BiddingProducts();
 }

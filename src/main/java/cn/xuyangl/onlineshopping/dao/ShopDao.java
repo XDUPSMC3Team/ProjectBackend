@@ -36,7 +36,7 @@ public interface ShopDao extends JpaRepository<Shop,Integer>{
     void addAdmoney(@Param("shopId")Integer shopId,@Param("money")double money);
 
     // 最高的5个商店
-    @Query(nativeQuery = true, value = "SELECT s FROM T_SHOP s ORDER BY s.adMoney DESC LIMIT 5")
+    @Query(nativeQuery = true, value = "SELECT * FROM T_SHOP ORDER BY adMoney DESC LIMIT 0,5")
     @Transactional
     List<Shop> findTop5BiddingShops();
 }
