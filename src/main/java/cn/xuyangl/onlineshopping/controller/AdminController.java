@@ -150,4 +150,15 @@ public class AdminController {
     public Result saleHistory() {
         return ResultUtil.success(adminService.saleHistory());
     }
+
+    @GetMapping("/personal/exchangeRate")
+    public Result exchangeRate() {
+        return ResultUtil.success(adminService.exchangeRate());
+    }
+
+    @PostMapping("/personal/exchangeRate/{rate}")
+    public Result changeExchangeRate(@PathVariable("rate") String rate) {
+        adminService.changeExchangeRate(rate);
+        return ResultUtil.success();
+    }
 }

@@ -42,4 +42,8 @@ public interface AdminService {
     BiddingInfoVO biddingInfo();
 
     List<OrderMaster> saleHistory();
+
+    String exchangeRate();
+
+    boolean changeExchangeRate(String rate);
 }

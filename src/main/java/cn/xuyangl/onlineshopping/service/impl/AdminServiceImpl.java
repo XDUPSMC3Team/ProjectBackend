@@ -2,7 +2,6 @@ package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.BiddingInfoVO;
 import cn.xuyangl.onlineshopping.VO.BuyerOrderDetailVO;
-import cn.xuyangl.onlineshopping.VO.BuyerOrderVO;
 import cn.xuyangl.onlineshopping.VO.OrderVO;
 import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
@@ -24,9 +23,10 @@ public class AdminServiceImpl implements AdminService {
     private final BuyerDao buyerDao;
     private final ProductDao productDao;
     private final SellerDao sellerDao;
+    private final ExchangeRateDAO exchangeRateDAO;
 
     @Autowired
-    public AdminServiceImpl(AdminDao adminDao, ShopDao shopDAO, OrderMasterDao orderMasterDAO, OrderDetailDao orderDetailDao, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao) {
+    public AdminServiceImpl(AdminDao adminDao, ShopDao shopDAO, OrderMasterDao orderMasterDAO, OrderDetailDao orderDetailDao, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao, ExchangeRateDAO exchangeRateDAO) {
         this.adminDao = adminDao;
         this.shopDAO = shopDAO;
         this.orderMasterDAO = orderMasterDAO;
@@ -34,6 +34,7 @@ public class AdminServiceImpl implements AdminService {
         this.buyerDao = buyerDao;
         this.productDao = productDao;
         this.sellerDao = sellerDao;
+        this.exchangeRateDAO = exchangeRateDAO;
     }
 
     @Override
@@ -173,5 +174,30 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<OrderMaster> saleHistory() {
         return orderMasterDAO.findAllByStatus(1);
+    }
+
+    @Override
+    public String exchangeRate() {
+        List<ExchangeRate> exchangeRates = exchangeRateDAO.findAll();
+        if (exchangeRates == null || exchangeRates.size() == 0) {
+            ExchangeRate exchangeRate = new ExchangeRate();
+            exchangeRate.setExchangeRate("0.2%");
+            exchangeRateDAO.saveAndFlush(exchangeRate);
+            return "0.2%";
+        }
+        return exchangeRates.get(0).getExchangeRate();
+    }
+
+    @Override
+    public boolean changeExchangeRate(String rate) {
+        List<ExchangeRate> exchangeRates = exchangeRateDAO.findAll();
+        if (exchangeRates == null || exchangeRates.size() == 0) {
+            ExchangeRate exchangeRate = new ExchangeRate();
+            exchangeRate.setExchangeRate(rate);
+            exchangeRateDAO.saveAndFlush(exchangeRate);
+            return true;
+        }
+        exchangeRates.get(0).setExchangeRate(rate);
+        return true;
     }
 }
