@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RequestMapping("/admin")
@@ -160,5 +163,22 @@ public class AdminController {
     public Result changeExchangeRate(@PathVariable("rate") String rate) {
         adminService.changeExchangeRate(rate);
         return ResultUtil.success();
+    }
+
+    @GetMapping("/personal/incomeData")
+    public Result getIncomeData(@RequestParam(value = "date", required = false) String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date baseDate = null;
+        if (date==null||"".equals(date))
+        {
+            baseDate = new Date();
+        }else{
+            try {
+                baseDate = simpleDateFormat.parse(date);
+            } catch (ParseException e) {
+                return ResultUtil.error(ResultEnum.DateFormatError);
+            }
+        }
+        return ResultUtil.success(adminService.getIncomeData(baseDate));
     }
 }

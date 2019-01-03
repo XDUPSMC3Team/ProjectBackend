@@ -18,4 +18,18 @@ public class IncomeHistoryData {
     private Double monthly;
     private Double yearly;
 
+    public IncomeHistoryData() {
+        daily = 0.0;
+        weekly = 0.0;
+        monthly = 0.0;
+        yearly = 0.0;
+    }
+
+    public void mergeFromAnother(IncomeHistoryData another) {
+        daily += another.daily;
+        weekly += another.weekly;
+        monthly += another.monthly;
+        yearly += another.yearly;
+    }
+
 }

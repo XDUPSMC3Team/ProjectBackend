@@ -7,7 +7,9 @@ import cn.xuyangl.onlineshopping.entity.Admin;
 import cn.xuyangl.onlineshopping.entity.Buyer;
 import cn.xuyangl.onlineshopping.entity.OrderMaster;
 import cn.xuyangl.onlineshopping.entity.Shop;
+import cn.xuyangl.onlineshopping.model.IncomeHistoryData;
 
+import java.util.Date;
 import java.util.List;
 
 public interface AdminService {
@@ -46,4 +48,6 @@ public interface AdminService {
     String exchangeRate();
 
     boolean changeExchangeRate(String rate);
+
+    IncomeHistoryData getIncomeData(Date date);
 }

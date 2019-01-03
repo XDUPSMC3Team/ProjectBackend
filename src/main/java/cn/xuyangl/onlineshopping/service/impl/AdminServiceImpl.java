@@ -5,12 +5,15 @@ import cn.xuyangl.onlineshopping.VO.BuyerOrderDetailVO;
 import cn.xuyangl.onlineshopping.VO.OrderVO;
 import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
+import cn.xuyangl.onlineshopping.model.IncomeHistoryData;
 import cn.xuyangl.onlineshopping.service.AdminService;
+import cn.xuyangl.onlineshopping.service.SellerService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,9 +27,10 @@ public class AdminServiceImpl implements AdminService {
     private final ProductDao productDao;
     private final SellerDao sellerDao;
     private final ExchangeRateDAO exchangeRateDAO;
+    private final SellerService sellerService;
 
     @Autowired
-    public AdminServiceImpl(AdminDao adminDao, ShopDao shopDAO, OrderMasterDao orderMasterDAO, OrderDetailDao orderDetailDao, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao, ExchangeRateDAO exchangeRateDAO) {
+    public AdminServiceImpl(AdminDao adminDao, ShopDao shopDAO, OrderMasterDao orderMasterDAO, OrderDetailDao orderDetailDao, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao, ExchangeRateDAO exchangeRateDAO, SellerService sellerService) {
         this.adminDao = adminDao;
         this.shopDAO = shopDAO;
         this.orderMasterDAO = orderMasterDAO;
@@ -35,6 +39,7 @@ public class AdminServiceImpl implements AdminService {
         this.productDao = productDao;
         this.sellerDao = sellerDao;
         this.exchangeRateDAO = exchangeRateDAO;
+        this.sellerService = sellerService;
     }
 
     @Override
@@ -208,5 +213,15 @@ public class AdminServiceImpl implements AdminService {
         }
         exchangeRates.get(0).setExchangeRate(rate);
         return true;
+    }
+
+    @Override
+    public IncomeHistoryData getIncomeData(Date date) {
+        List<Shop> shops = shopDAO.findAll();
+        IncomeHistoryData result = new IncomeHistoryData();
+        for (Shop shop : shops) {
+            result.mergeFromAnother((IncomeHistoryData) sellerService.findIncomeHistoryByDate(shop.getId(), date).getData());
+        }
+        return result;
     }
 }
