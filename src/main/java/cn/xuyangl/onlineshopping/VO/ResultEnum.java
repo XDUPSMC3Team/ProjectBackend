@@ -28,7 +28,9 @@ public enum  ResultEnum {
     EmptyRealNameOrAddress(16, "real name and address can't be empty"),
     OneSellerOnlyHasOneShop(17,"one seller only has one shop"),
     AccountBlocked(18,"Due to your illegal action, your account has been stopped"),
-    DateFormatError(19,"date format error")
+    DateFormatError(19,"date format error"),
+    ProductNumberError(20, "please choose at least 1 product to buy."),
+    OrderNotReceived(21, "can't comment unreceived order."),
     ;
     public String msg;
     public Integer code;

@@ -46,7 +46,7 @@ public class OrderMaster {
     private Integer buyerId;
     private String receiverName;    //收货人姓名
     private String address;
-    private Double money;   //金钱
+    private Double money = 0.00;   //金钱
     private Integer status = 0; //订单状态
     private Integer payStatus = 0;  //支付状态
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

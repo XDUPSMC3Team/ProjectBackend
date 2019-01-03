@@ -5,10 +5,7 @@ import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.entity.Buyer;
-import cn.xuyangl.onlineshopping.model.BuyerProfileForm;
-import cn.xuyangl.onlineshopping.model.LoginForm;
-import cn.xuyangl.onlineshopping.model.ProductCartForm;
-import cn.xuyangl.onlineshopping.model.SimpleOrderForm;
+import cn.xuyangl.onlineshopping.model.*;
 import cn.xuyangl.onlineshopping.service.*;
 import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -179,11 +179,11 @@ public class BuyerController {
 
     // 从购物车下单
     @PostMapping("/orderByCart")
-    public Result orderByCart() {
-        // 从购物车移除
-        // 减库存
-        // 生成订单
-        return null;
+    public Result orderByCart(@RequestBody List<Integer> cartIdList, HttpSession session) {
+        Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+        if (cartIdList.size() == 0) return ResultUtil.error(ResultEnum.ProductNumberError);
+        List<Integer> orderIdList = buyerOrderService.cartOrder(cartIdList, buyerId);
+        return ResultUtil.success(orderIdList);
     }
 
     // 查看我的订单列表
@@ -223,6 +223,13 @@ public class BuyerController {
         return ResultUtil.success();
     }
 
+    // 评价订单
+    @PostMapping("/order/comment")
+    public Result commentOrder(@RequestBody CommentForm commentForm, HttpSession session) {
+        Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+        return buyerOrderService.commentOrder(commentForm, buyerId);
+    }
+
     // 找回密码
     @GetMapping("/findPassword")
     public Result findPassword(@RequestParam("username") String username) {
@@ -232,6 +239,29 @@ public class BuyerController {
         } else {
             return ResultUtil.error(resultEnum);
         }
+    }
+
+    // 历史订单查询(type 1-day/2-week/3-month/4-year)
+    @GetMapping("/order/byDate")
+    public Result viewOrderByDate(@RequestParam(value = "date", required = false) String date,
+                                  @RequestParam(value = "type", required = false) Integer type,
+                                  HttpSession session) throws ParseException {
+        Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date baseDate = null;
+        if (date == null || "".equals(date)) {
+            baseDate = new Date();
+        } else {
+            baseDate = sdf.parse(date);
+        }
+        return buyerOrderService.findOrderHistoryByDate(buyerId, baseDate, type);
+    }
+
+    // 搜索订单
+    @GetMapping("/order/search")
+    public Result searchOrder(@RequestParam("key") String key, HttpSession session) {
+        Integer buyerId = (Integer) session.getAttribute(Common.BUYER_ID);
+        return buyerOrderService.searchOrderByKeyWord(buyerId, key);
     }
 
 }
