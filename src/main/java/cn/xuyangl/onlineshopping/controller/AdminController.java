@@ -145,4 +145,9 @@ public class AdminController {
     public Result biddingInfo() {
         return ResultUtil.success(adminService.biddingInfo());
     }
+
+    @GetMapping("/personal/saleHistory")
+    public Result saleHistory() {
+        return ResultUtil.success(adminService.saleHistory());
+    }
 }

@@ -169,4 +169,9 @@ public class AdminServiceImpl implements AdminService {
         info.setProducts(productDao.findTop10BiddingProducts());
         return info;
     }
+
+    @Override
+    public List<OrderMaster> saleHistory() {
+        return orderMasterDAO.findAllByStatus(1);
+    }
 }
