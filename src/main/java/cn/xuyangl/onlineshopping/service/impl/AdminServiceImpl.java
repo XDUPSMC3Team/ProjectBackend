@@ -167,7 +167,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<OrderVO> saleHistory() {
-        List<OrderMaster> orderMasters = orderMasterDAO.findAllByStatus(1);
+        List<OrderMaster> orderMasters = orderMasterDAO.findAllByStatus(3);
         List<OrderVO> result = new ArrayList<>(orderMasters.size());
         for (OrderMaster om : orderMasters) {
             result.add(buildOrderVO(om));
@@ -196,7 +196,7 @@ public class AdminServiceImpl implements AdminService {
         if (exchangeRates == null || exchangeRates.size() == 0) {
             ExchangeRate exchangeRate = new ExchangeRate();
             exchangeRate.setExchangeRate("0.2%");
-            exchangeRateDAO.saveAndFlush(exchangeRate);
+            exchangeRateDAO.save(exchangeRate);
             return "0.2%";
         }
         return exchangeRates.get(0).getExchangeRate();
@@ -208,7 +208,7 @@ public class AdminServiceImpl implements AdminService {
         if (exchangeRates == null || exchangeRates.size() == 0) {
             ExchangeRate exchangeRate = new ExchangeRate();
             exchangeRate.setExchangeRate(rate);
-            exchangeRateDAO.saveAndFlush(exchangeRate);
+            exchangeRateDAO.save(exchangeRate);
             return true;
         }
         exchangeRates.get(0).setExchangeRate(rate);
