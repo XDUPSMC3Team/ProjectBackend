@@ -111,18 +111,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public OrderVO findOrderById(Integer id) {
         OrderMaster om = orderMasterDAO.findById(id);
-        OrderVO buyerOrderVO = new OrderVO();
-        BeanUtils.copyProperties(om, buyerOrderVO);
-        buyerOrderVO.setShopName(shopDAO.findById(om.getShopId()).getShopName());
-        List<OrderDetail> orderDetails = orderDetailDao.findAllByMasterId(om.getId());
-        List<BuyerOrderDetailVO> buyerOrderDetailVOS = new ArrayList<>();
-        for (OrderDetail od : orderDetails) {
-            BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
-            BeanUtils.copyProperties(od, buyerOrderDetailVO);
-            buyerOrderDetailVOS.add(buyerOrderDetailVO);
-        }
-        buyerOrderVO.setOrderDetailDataList(buyerOrderDetailVOS);
-        return buyerOrderVO;
+        return buildOrderVO(om);
     }
 
     @Override
@@ -172,8 +161,28 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<OrderMaster> saleHistory() {
-        return orderMasterDAO.findAllByStatus(1);
+    public List<OrderVO> saleHistory() {
+        List<OrderMaster> orderMasters = orderMasterDAO.findAllByStatus(1);
+        List<OrderVO> result = new ArrayList<>(orderMasters.size());
+        for (OrderMaster om : orderMasters) {
+            result.add(buildOrderVO(om));
+        }
+        return result;
+    }
+
+    private OrderVO buildOrderVO(OrderMaster om) {
+        OrderVO buyerOrderVO = new OrderVO();
+        BeanUtils.copyProperties(om, buyerOrderVO);
+        buyerOrderVO.setShopName(shopDAO.findById(om.getShopId()).getShopName());
+        List<OrderDetail> orderDetails = orderDetailDao.findAllByMasterId(om.getId());
+        List<BuyerOrderDetailVO> buyerOrderDetailVOS = new ArrayList<>();
+        for (OrderDetail od : orderDetails) {
+            BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
+            BeanUtils.copyProperties(od, buyerOrderDetailVO);
+            buyerOrderDetailVOS.add(buyerOrderDetailVO);
+        }
+        buyerOrderVO.setOrderDetailDataList(buyerOrderDetailVOS);
+        return buyerOrderVO;
     }
 
     @Override
