@@ -2,16 +2,18 @@ package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.BiddingInfoVO;
 import cn.xuyangl.onlineshopping.VO.BuyerOrderDetailVO;
-import cn.xuyangl.onlineshopping.VO.BuyerOrderVO;
 import cn.xuyangl.onlineshopping.VO.OrderVO;
 import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
+import cn.xuyangl.onlineshopping.model.IncomeHistoryData;
 import cn.xuyangl.onlineshopping.service.AdminService;
+import cn.xuyangl.onlineshopping.service.SellerService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,9 +26,11 @@ public class AdminServiceImpl implements AdminService {
     private final BuyerDao buyerDao;
     private final ProductDao productDao;
     private final SellerDao sellerDao;
+    private final ExchangeRateDAO exchangeRateDAO;
+    private final SellerService sellerService;
 
     @Autowired
-    public AdminServiceImpl(AdminDao adminDao, ShopDao shopDAO, OrderMasterDao orderMasterDAO, OrderDetailDao orderDetailDao, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao) {
+    public AdminServiceImpl(AdminDao adminDao, ShopDao shopDAO, OrderMasterDao orderMasterDAO, OrderDetailDao orderDetailDao, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao, ExchangeRateDAO exchangeRateDAO, SellerService sellerService) {
         this.adminDao = adminDao;
         this.shopDAO = shopDAO;
         this.orderMasterDAO = orderMasterDAO;
@@ -34,6 +38,8 @@ public class AdminServiceImpl implements AdminService {
         this.buyerDao = buyerDao;
         this.productDao = productDao;
         this.sellerDao = sellerDao;
+        this.exchangeRateDAO = exchangeRateDAO;
+        this.sellerService = sellerService;
     }
 
     @Override
@@ -110,18 +116,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public OrderVO findOrderById(Integer id) {
         OrderMaster om = orderMasterDAO.findById(id);
-        OrderVO buyerOrderVO = new OrderVO();
-        BeanUtils.copyProperties(om, buyerOrderVO);
-        buyerOrderVO.setShopName(shopDAO.findById(om.getShopId()).getShopName());
-        List<OrderDetail> orderDetails = orderDetailDao.findAllByMasterId(om.getId());
-        List<BuyerOrderDetailVO> buyerOrderDetailVOS = new ArrayList<>();
-        for (OrderDetail od : orderDetails) {
-            BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
-            BeanUtils.copyProperties(od, buyerOrderDetailVO);
-            buyerOrderDetailVOS.add(buyerOrderDetailVO);
-        }
-        buyerOrderVO.setOrderDetailDataList(buyerOrderDetailVOS);
-        return buyerOrderVO;
+        return buildOrderVO(om);
     }
 
     @Override
@@ -168,5 +163,65 @@ public class AdminServiceImpl implements AdminService {
         info.setShops(shopDAO.findTop5BiddingShops());
         info.setProducts(productDao.findTop10BiddingProducts());
         return info;
+    }
+
+    @Override
+    public List<OrderVO> saleHistory() {
+        List<OrderMaster> orderMasters = orderMasterDAO.findAllByStatus(3);
+        List<OrderVO> result = new ArrayList<>(orderMasters.size());
+        for (OrderMaster om : orderMasters) {
+            result.add(buildOrderVO(om));
+        }
+        return result;
+    }
+
+    private OrderVO buildOrderVO(OrderMaster om) {
+        OrderVO buyerOrderVO = new OrderVO();
+        BeanUtils.copyProperties(om, buyerOrderVO);
+        buyerOrderVO.setShopName(shopDAO.findById(om.getShopId()).getShopName());
+        List<OrderDetail> orderDetails = orderDetailDao.findAllByMasterId(om.getId());
+        List<BuyerOrderDetailVO> buyerOrderDetailVOS = new ArrayList<>();
+        for (OrderDetail od : orderDetails) {
+            BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
+            BeanUtils.copyProperties(od, buyerOrderDetailVO);
+            buyerOrderDetailVOS.add(buyerOrderDetailVO);
+        }
+        buyerOrderVO.setOrderDetailDataList(buyerOrderDetailVOS);
+        return buyerOrderVO;
+    }
+
+    @Override
+    public String exchangeRate() {
+        List<ExchangeRate> exchangeRates = exchangeRateDAO.findAll();
+        if (exchangeRates == null || exchangeRates.size() == 0) {
+            ExchangeRate exchangeRate = new ExchangeRate();
+            exchangeRate.setExchangeRate("2%");
+            exchangeRateDAO.save(exchangeRate);
+            return "2%";
+        }
+        return exchangeRates.get(0).getExchangeRate();
+    }
+
+    @Override
+    public boolean changeExchangeRate(String rate) {
+        List<ExchangeRate> exchangeRates = exchangeRateDAO.findAll();
+        if (exchangeRates == null || exchangeRates.size() == 0) {
+            ExchangeRate exchangeRate = new ExchangeRate();
+            exchangeRate.setExchangeRate(rate);
+            exchangeRateDAO.save(exchangeRate);
+            return true;
+        }
+        exchangeRates.get(0).setExchangeRate(rate);
+        return true;
+    }
+
+    @Override
+    public IncomeHistoryData getIncomeData(Date date) {
+        List<Shop> shops = shopDAO.findAll();
+        IncomeHistoryData result = new IncomeHistoryData();
+        for (Shop shop : shops) {
+            result.mergeFromAnother((IncomeHistoryData) sellerService.findIncomeHistoryByDate(shop.getId(), date).getData());
+        }
+        return result;
     }
 }

@@ -17,4 +17,5 @@ public interface OrderMasterDao extends JpaRepository<OrderMaster, Integer> {
     List<OrderMaster> findAllByBuyerIdAndCreateTimeBetween(Integer buyerId, LocalDateTime start, LocalDateTime end);
 
     List<OrderMaster> findAllByIdIn(List<Integer> ids);
+    List<OrderMaster> findAllByStatus(int status);
 }

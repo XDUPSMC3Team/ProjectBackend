@@ -241,6 +241,10 @@ public class SellerServiceImpl implements SellerService{
         {
             incomeHistoryData.setYearly( saleHistoryByDate.get(3).stream().map(OrderMaster::getMoney).reduce(Double::sum).get());
         }
+        if (saleHistoryByDate.get(4)!=null&&saleHistoryByDate.get(4).size()>0)
+        {
+            incomeHistoryData.setAll( saleHistoryByDate.get(4).stream().map(OrderMaster::getMoney).reduce(Double::sum).get());
+        }
         return ResultUtil.success(incomeHistoryData);
     }
 }
