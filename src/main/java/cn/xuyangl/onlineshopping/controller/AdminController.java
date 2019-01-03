@@ -161,7 +161,7 @@ public class AdminController {
 
     @PostMapping("/personal/changeExchangeRate/{rate}")
     public Result changeExchangeRate(@PathVariable("rate") String rate) {
-        adminService.changeExchangeRate(rate);
+        adminService.changeExchangeRate(rate + "%");
         return ResultUtil.success();
     }
 
