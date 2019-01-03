@@ -195,9 +195,9 @@ public class AdminServiceImpl implements AdminService {
         List<ExchangeRate> exchangeRates = exchangeRateDAO.findAll();
         if (exchangeRates == null || exchangeRates.size() == 0) {
             ExchangeRate exchangeRate = new ExchangeRate();
-            exchangeRate.setExchangeRate("0.2%");
+            exchangeRate.setExchangeRate("2%");
             exchangeRateDAO.save(exchangeRate);
-            return "0.2%";
+            return "2%";
         }
         return exchangeRates.get(0).getExchangeRate();
     }
