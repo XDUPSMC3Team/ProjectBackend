@@ -1,6 +1,7 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
 import cn.xuyangl.onlineshopping.VO.*;
+import cn.xuyangl.onlineshopping.consts.Common;
 import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.CommentForm;
@@ -182,6 +183,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
             BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
             BeanUtils.copyProperties(od, buyerOrderDetailVO);
             buyerOrderDetailVO.setOrderDetailId(od.getId());
+            buyerOrderDetailVO.setCommentContent(commentDao.findByOrderDetailId(od.getId()).getContent());
             buyerOrderDetailVOS.add(buyerOrderDetailVO);
         }
         buyerOrderVO.setOrderDetailList(buyerOrderDetailVOS);
@@ -223,7 +225,9 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
     public Result commentOrder(CommentForm commentForm, Integer buyerId) {
         OrderDetail od = orderDetailDao.findById(commentForm.getOrderDetailId());
         OrderMaster om = orderMasterDao.findById(od.getMasterId());
-        if (om.getStatus() < 3) return ResultUtil.error(ResultEnum.AmountLessThanOne);
+        Comment co = commentDao.findByBuyerIdAndOrderDetailId(buyerId, commentForm.getOrderDetailId());
+        if (co != null) return ResultUtil.error(ResultEnum.RepeatedComment);
+        if (om.getStatus() < 3) return ResultUtil.error(ResultEnum.OrderNotReceived);
         if (!om.getBuyerId().equals(buyerId)) return ResultUtil.error(ResultEnum.NO_RIGHT);
         Comment comment = new Comment();
         comment.setBuyerId(buyerId);
@@ -232,6 +236,10 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
         comment.setOrderDetailId(od.getId());
         comment.setContent(commentForm.getContent());
         commentDao.saveAndFlush(comment);
+        // 简单设置
+        om.setStatus(StatusEnum.Reviewed.code);
+        orderMasterDao.saveAndFlush(om);
+
         return ResultUtil.success();
     }
 
@@ -290,6 +298,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
             for (OrderDetail od : orderDetails) {
                 BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
                 BeanUtils.copyProperties(od, buyerOrderDetailVO);
+                buyerOrderDetailVO.setOrderDetailId(od.getId());
+                buyerOrderDetailVO.setCommentContent(commentDao.findByOrderDetailId(od.getId()).getContent());
                 buyerOrderDetailVOS.add(buyerOrderDetailVO);
             }
             buyerOrderVO.setOrderDetailList(buyerOrderDetailVOS);
