@@ -8,7 +8,7 @@ import lombok.Data;
  * @Emailaddress 1187697635@qq.com
  * @Date: 2018/12/22 15:18
  *
- * status 订单状态（0已下单/1已发货/2运输中/3已收货/4已评价/5退货中/6退货成功）
+ * status 订单状态（0已下单/1已发货/2运输中/3已收货/4已评价）
  */
 public enum StatusEnum {
 

@@ -1,5 +1,6 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.CommentVO;
 import cn.xuyangl.onlineshopping.VO.ProductVO;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
@@ -38,18 +39,24 @@ public class ProductServiceImpl implements ProductService{
     private AttributeKeyService attributeKeyService;
     private AttributeValueService attributeValueService;
     private ShopDao shopDao;
+    private CommentDao commentDao;
+    private BuyerDao buyerDao;
 
     @Autowired
     public ProductServiceImpl(ProductDao productDao,
                               ProductCollectDao productCollectDao,
                               AttributeKeyService attributeKeyService,
                               AttributeValueService attributeValueService,
-                              ShopDao shopDao) {
+                              ShopDao shopDao,
+                              CommentDao commentDao,
+                              BuyerDao buyerDao) {
         this.productDao = productDao;
         this.productCollectDao = productCollectDao;
         this.attributeKeyService = attributeKeyService;
         this.attributeValueService = attributeValueService;
         this.shopDao = shopDao;
+        this.commentDao = commentDao;
+        this.buyerDao = buyerDao;
     }
 
     @Override
@@ -259,6 +266,18 @@ public class ProductServiceImpl implements ProductService{
         productVO.setShopName(shop.getShopName());
         productVO.setShopDesc(shop.getShopDesc());
         productVO.setCollectId(collectId);
+        // 该商品的评论列表
+        List<Comment> comments = commentDao.findAllByProductId(productId);
+        List<CommentVO> commentVOS = new ArrayList<>();
+        for (Comment comment : comments) {
+            String username = buyerDao.findById(comment.getBuyerId()).getUsername();
+            String commentContent = comment.getContent();
+            CommentVO commentVO = new CommentVO();
+            commentVO.setUsername(username);
+            commentVO.setCommentContent(commentContent);
+            commentVOS.add(commentVO);
+        }
+        productVO.setCommentList(commentVOS);
         return productVO;
     }
 

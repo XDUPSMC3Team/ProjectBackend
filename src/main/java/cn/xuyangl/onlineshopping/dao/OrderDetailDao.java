@@ -9,4 +9,8 @@ public interface OrderDetailDao extends JpaRepository<OrderDetail, Integer> {
     OrderDetail findByMasterId(Integer masterId);
 
     List<OrderDetail> findAllByMasterId(Integer masterId);
+
+    OrderDetail findById(Integer id);
+
+    List<OrderDetail> findAllByMasterIdAndProductNameContaining(Integer masterId, String key);
 }

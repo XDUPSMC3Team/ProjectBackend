@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xjin
@@ -39,4 +41,6 @@ public class ProductVO {
     private LocalDateTime updateTime;   //更新时间
 
     private Integer collectId; // 收藏唯一标识，为0表示当前用户未收藏该商品
+
+    List<CommentVO> commentList = new ArrayList<>();
 }

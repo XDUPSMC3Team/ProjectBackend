@@ -18,4 +18,5 @@ public interface ShopCartService {
     List<ShopCartVO> viewCart(Integer buyerId);
 
     void deleteCart(Integer cartId);
+
 }

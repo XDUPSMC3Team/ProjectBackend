@@ -8,8 +8,11 @@ import lombok.Data;
  */
 @Data
 public class BuyerOrderDetailVO {
+    private Integer orderDetailId;
     private Integer productId;
     private String productName;
     private Double price;
     private Integer amount;
+
+    private String commentContent = "";
 }
