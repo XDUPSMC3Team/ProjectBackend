@@ -17,6 +17,7 @@ import java.io.*;
  */
 public class FtpUtil {
 
+//    final static String REMOTE_RELATIVE_PATH = "http://localhost:8080/";
     final static String REMOTE_RELATIVE_PATH = "http://119.23.75.180/";
 
     final static String LOCAL_PATH = "/home/ftptest/productPic/";

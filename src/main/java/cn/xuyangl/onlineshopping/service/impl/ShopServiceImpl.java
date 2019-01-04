@@ -176,6 +176,8 @@ public class ShopServiceImpl implements ShopService {
         {
             return ResultUtil.error(ResultEnum.MoneyNotEnough);
         }
+        one.setAccount(one.getAccount()-withdrawData.getMoney());
+        shopDao.saveAndFlush(one);
         WithdrawalRecord withdrawalRecord = new WithdrawalRecord();
         withdrawalRecord.setAccount(withdrawData.getAccountId());
         withdrawalRecord.setCreateTime(LocalDateTime.now());
