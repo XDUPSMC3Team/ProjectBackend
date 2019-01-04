@@ -2,7 +2,7 @@ spring:
   jpa:
     hibernate:
 #      ddl-auto: update
-      naming:git ad
+      naming:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy
     show-sql: true
     properties:
