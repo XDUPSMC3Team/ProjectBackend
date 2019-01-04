@@ -3,10 +3,7 @@ package cn.xuyangl.onlineshopping.service;
 
 import cn.xuyangl.onlineshopping.VO.BiddingInfoVO;
 import cn.xuyangl.onlineshopping.VO.OrderVO;
-import cn.xuyangl.onlineshopping.entity.Admin;
-import cn.xuyangl.onlineshopping.entity.Buyer;
-import cn.xuyangl.onlineshopping.entity.OrderMaster;
-import cn.xuyangl.onlineshopping.entity.Shop;
+import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.IncomeHistoryData;
 
 import java.util.Date;
@@ -53,5 +50,7 @@ public interface AdminService {
 
     String getBalance();
 
-    boolean withdraw(int money, String alipayId);
+    boolean withdraw(int money, String alipayId, String adminName);
+
+    List<WithdrawHistory> withdrawHistory();
 }

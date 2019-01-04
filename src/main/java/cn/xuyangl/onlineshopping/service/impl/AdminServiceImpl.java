@@ -252,7 +252,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean withdraw(int money, String alipayId) {
+    public boolean withdraw(int money, String alipayId, String adminName) {
         List<Balance> balances = balanceDAO.findAll();
         Balance balance;
         if (balances == null || balances.size() == 0) {
@@ -270,7 +270,13 @@ public class AdminServiceImpl implements AdminService {
         WithdrawHistory withdrawHistory = new WithdrawHistory();
         withdrawHistory.setCount(money);
         withdrawHistory.setAlipayId(alipayId);
+        withdrawHistory.setAdminName(adminName);
         withdrawHistoryDAO.saveAndFlush(withdrawHistory);
         return true;
+    }
+
+    @Override
+    public List<WithdrawHistory> withdrawHistory() {
+        return withdrawHistoryDAO.findAll();
     }
 }
