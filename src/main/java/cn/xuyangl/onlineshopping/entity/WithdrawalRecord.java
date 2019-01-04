@@ -10,36 +10,24 @@ import java.time.LocalDateTime;
  * @Description
  * @Author: lxy
  * @Emailaddress 1187697635@qq.com
- * @Date: 2018/11/28 21:05
+ * @Date: 2019/1/4 20:58
  */
 @Entity
-@Table(name = "T_ADMINISTRATOR")
+@Table(name = "T_WITHDRAWAL_RECORD")
 @Data
-public class Admin {
+public class WithdrawalRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String username;
+    private String name;    // 名称
 
-    private String password;
+    private String account;   //提款账户
 
-    @Column(unique = true)
-    private String phone;
-
-    @Column(unique = true)
-    private String email;
-
-    @Column(columnDefinition = "int default 0")
-    private Integer status;
+    private Double money;   // 提款金额
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createTime;   //创建时间
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime updateTime;   //更新时间
-
 }

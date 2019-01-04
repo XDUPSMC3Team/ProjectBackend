@@ -4,7 +4,6 @@ import cn.xuyangl.onlineshopping.VO.OrderVO;
 import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.consts.Common;
-import cn.xuyangl.onlineshopping.dao.BuyerDao;
 import cn.xuyangl.onlineshopping.entity.Admin;
 import cn.xuyangl.onlineshopping.entity.Buyer;
 import cn.xuyangl.onlineshopping.model.LoginForm;
@@ -180,5 +179,24 @@ public class AdminController {
             }
         }
         return ResultUtil.success(adminService.getIncomeData(baseDate));
+    }
+
+    @GetMapping("/personal/balance")
+    public Result getBalance() {
+        return ResultUtil.success(adminService.getBalance());
+    }
+
+    @PostMapping("/personal/withdraw/{admin}/{alipayId}/{money}")
+    public Result withDraw(@PathVariable("admin") String adminName,@PathVariable("alipayId") String alipayId,@PathVariable("money") String money) {
+        if (adminService.withdraw(Integer.parseInt(money), alipayId, adminName)) {
+            return ResultUtil.success();
+        } else {
+            return ResultUtil.error(ResultEnum.BalanceNotEnough);
+        }
+    }
+
+    @GetMapping("/personal/withdrawHistory")
+    public Result getWithdrawHistory() {
+        return ResultUtil.success(adminService.withdrawHistory());
     }
 }

@@ -223,8 +223,26 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product findProduct(Integer id) {
-        return productDao.findOne(id);
+    public ProductVO findProduct(Integer productId) {
+        Product product = productDao.findOne(productId);
+        ProductVO productVO = new ProductVO();
+        BeanUtils.copyProperties(product, productVO);
+        Shop shop = shopDao.findById(productVO.getShopId());
+        productVO.setShopName(shop.getShopName());
+        productVO.setShopDesc(shop.getShopDesc());
+        // 该商品的评论列表
+        List<Comment> comments = commentDao.findAllByProductId(productId);
+        List<CommentVO> commentVOS = new ArrayList<>();
+        for (Comment comment : comments) {
+            String username = buyerDao.findById(comment.getBuyerId()).getUsername();
+            String commentContent = comment.getContent();
+            CommentVO commentVO = new CommentVO();
+            commentVO.setUsername(username);
+            commentVO.setCommentContent(commentContent);
+            commentVOS.add(commentVO);
+        }
+        productVO.setCommentList(commentVOS);
+        return productVO;
     }
 
     @Override
@@ -280,6 +298,7 @@ public class ProductServiceImpl implements ProductService{
         productVO.setCommentList(commentVOS);
         return productVO;
     }
+
 
     @Override
     public Page<Product> findProductsByCategoryId(Integer categoryId, int page, int size) {

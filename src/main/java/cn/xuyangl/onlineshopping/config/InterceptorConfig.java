@@ -40,7 +40,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(buyerInterceptor).addPathPatterns("/buyer/**").excludePathPatterns("/buyer/register", "/buyer/login","/buyer/order/**","/buyer/findPassword","/buyer/orderByCart");
         registry.addInterceptor(sellerInterceptor).addPathPatterns("/seller/**").excludePathPatterns("/seller/register","/seller/login");
-        registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/personal/**");
+        registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/personal/**").excludePathPatterns("/admin/personal/biddingInfo");
     }
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {

@@ -247,4 +247,19 @@ public class SellerServiceImpl implements SellerService{
         }
         return ResultUtil.success(incomeHistoryData);
     }
+
+    /**
+     *  根据shopId 查询账户余额
+     * @param shopId
+     * @return
+     */
+    @Override
+    public Result findAccountByShopId(Integer shopId) {
+        Shop one = shopDao.findOne(shopId);
+        if (one==null)
+        {
+            return ResultUtil.error(ResultEnum.SHOP_NOT_FOUND);
+        }
+        return ResultUtil.success(one.getAccount());
+    }
 }

@@ -1,15 +1,18 @@
 package cn.xuyangl.onlineshopping.service.impl;
 
+import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.VO.ShopVO;
 import cn.xuyangl.onlineshopping.dao.ProductDao;
 import cn.xuyangl.onlineshopping.dao.ShopCollectDao;
 import cn.xuyangl.onlineshopping.dao.ShopDao;
-import cn.xuyangl.onlineshopping.entity.Product;
-import cn.xuyangl.onlineshopping.entity.Shop;
-import cn.xuyangl.onlineshopping.entity.ShopCollect;
+import cn.xuyangl.onlineshopping.dao.WithdrawalRecordDao;
+import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.ShopDetailForm;
+import cn.xuyangl.onlineshopping.model.WithdrawData;
 import cn.xuyangl.onlineshopping.service.ShopService;
+import cn.xuyangl.onlineshopping.service.WithdrawalRecordService;
+import cn.xuyangl.onlineshopping.utils.ResultUtil;
 import com.sun.scenario.effect.impl.prism.PrDrawable;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,14 +38,17 @@ public class ShopServiceImpl implements ShopService {
     private ShopDao shopDao;
     private ShopCollectDao shopCollectDao;
     private ProductDao productDao;
+    private WithdrawalRecordDao withdrawalRecordDao;
+
 
     @Autowired
     public ShopServiceImpl(ShopDao shopDao,
                            ShopCollectDao shopCollectDao,
-                           ProductDao productDao) {
+                           ProductDao productDao,WithdrawalRecordDao withdrawalRecordDao) {
         this.shopDao = shopDao;
         this.shopCollectDao = shopCollectDao;
         this.productDao = productDao;
+        this.withdrawalRecordDao = withdrawalRecordDao;
     }
 
     @Override
@@ -148,5 +155,35 @@ public class ShopServiceImpl implements ShopService {
         }
         shopDao.addAdmoney(shopId,money);
         return ResultEnum.Success;
+    }
+
+
+    /**
+     *  取款
+     * @param withdrawData
+     * @return
+     */
+    @Override
+    public Result withdraw(WithdrawData withdrawData) {
+        /**
+         *  首先查询到该shop
+         */
+        Shop one = shopDao.findOne(withdrawData.getShopId());
+        /**
+         * 判断提款金额是否大于账户余额
+         */
+        if (one.getAccount()<withdrawData.getMoney())
+        {
+            return ResultUtil.error(ResultEnum.MoneyNotEnough);
+        }
+        one.setAccount(one.getAccount()-withdrawData.getMoney());
+        shopDao.saveAndFlush(one);
+        WithdrawalRecord withdrawalRecord = new WithdrawalRecord();
+        withdrawalRecord.setAccount(withdrawData.getAccountId());
+        withdrawalRecord.setCreateTime(LocalDateTime.now());
+        withdrawalRecord.setMoney(withdrawData.getMoney());
+        withdrawalRecord.setName(one.getShopName());
+        withdrawalRecordDao.save(withdrawalRecord);
+        return ResultUtil.success();
     }
 }

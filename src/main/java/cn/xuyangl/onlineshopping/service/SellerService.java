@@ -67,4 +67,12 @@ public interface SellerService {
      *  查询每年每月每日每周的营业额
      */
     Result findIncomeHistoryByDate(Integer shopId,Date date);
+
+    /**
+     *  根据shopId 查询账户余额
+     * @param shopId
+     * @return
+     */
+    Result findAccountByShopId(Integer shopId);
+
 }

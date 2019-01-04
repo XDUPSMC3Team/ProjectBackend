@@ -1,9 +1,11 @@
 package cn.xuyangl.onlineshopping.service;
 
+import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.VO.ShopVO;
 import cn.xuyangl.onlineshopping.entity.Shop;
 import cn.xuyangl.onlineshopping.model.ShopDetailForm;
+import cn.xuyangl.onlineshopping.model.WithdrawData;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -40,5 +42,12 @@ public interface ShopService {
      * @return
      */
     ResultEnum advertise(Integer shopId,double money);
+
+    /**
+     *  提款
+     * @param withdrawData
+     * @return
+     */
+    Result withdraw(WithdrawData withdrawData);
 
 }
