@@ -208,10 +208,12 @@ public class AdminServiceImpl implements AdminService {
         if (exchangeRates == null || exchangeRates.size() == 0) {
             ExchangeRate exchangeRate = new ExchangeRate();
             exchangeRate.setExchangeRate(rate);
-            exchangeRateDAO.save(exchangeRate);
+            exchangeRateDAO.saveAndFlush(exchangeRate);
             return true;
         }
-        exchangeRates.get(0).setExchangeRate(rate);
+        ExchangeRate targetRate = exchangeRates.get(0);
+        targetRate.setExchangeRate(rate);
+        exchangeRateDAO.saveAndFlush(targetRate);
         return true;
     }
 
