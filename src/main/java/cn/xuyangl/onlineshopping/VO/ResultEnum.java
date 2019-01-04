@@ -31,7 +31,8 @@ public enum  ResultEnum {
     DateFormatError(19,"date format error"),
     ProductNumberError(20, "please choose at least 1 product to buy."),
     OrderNotReceived(21, "can't comment unreceived order."),
-    RepeatedComment(22, "you have comment this order.")
+    RepeatedComment(22, "you have comment this order."),
+    BalanceNotEnough(23, "you don't have enough money.");
     ;
     public String msg;
     public Integer code;

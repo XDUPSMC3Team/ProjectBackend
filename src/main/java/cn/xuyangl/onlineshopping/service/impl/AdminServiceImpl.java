@@ -28,9 +28,11 @@ public class AdminServiceImpl implements AdminService {
     private final SellerDao sellerDao;
     private final ExchangeRateDAO exchangeRateDAO;
     private final SellerService sellerService;
+    private final BalanceDAO balanceDAO;
+    private final WithdrawHistoryDAO withdrawHistoryDAO;
 
     @Autowired
-    public AdminServiceImpl(AdminDao adminDao, ShopDao shopDAO, OrderMasterDao orderMasterDAO, OrderDetailDao orderDetailDao, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao, ExchangeRateDAO exchangeRateDAO, SellerService sellerService) {
+    public AdminServiceImpl(AdminDao adminDao, ShopDao shopDAO, OrderMasterDao orderMasterDAO, OrderDetailDao orderDetailDao, BuyerDao buyerDao, ProductDao productDao, SellerDao sellerDao, ExchangeRateDAO exchangeRateDAO, SellerService sellerService, BalanceDAO balanceDAO, WithdrawHistoryDAO withdrawHistoryDAO) {
         this.adminDao = adminDao;
         this.shopDAO = shopDAO;
         this.orderMasterDAO = orderMasterDAO;
@@ -40,6 +42,8 @@ public class AdminServiceImpl implements AdminService {
         this.sellerDao = sellerDao;
         this.exchangeRateDAO = exchangeRateDAO;
         this.sellerService = sellerService;
+        this.balanceDAO = balanceDAO;
+        this.withdrawHistoryDAO = withdrawHistoryDAO;
     }
 
     @Override
@@ -196,7 +200,7 @@ public class AdminServiceImpl implements AdminService {
         if (exchangeRates == null || exchangeRates.size() == 0) {
             ExchangeRate exchangeRate = new ExchangeRate();
             exchangeRate.setExchangeRate("2%");
-            exchangeRateDAO.save(exchangeRate);
+            exchangeRateDAO.saveAndFlush(exchangeRate);
             return "2%";
         }
         return exchangeRates.get(0).getExchangeRate();
@@ -225,5 +229,48 @@ public class AdminServiceImpl implements AdminService {
             result.mergeFromAnother((IncomeHistoryData) sellerService.findIncomeHistoryByDate(shop.getId(), date).getData());
         }
         return result;
+    }
+
+    @Override
+    public String getBalance() {
+        List<Balance> balances = balanceDAO.findAll();
+        if (balances == null || balances.size() == 0) {
+            return initDefaultBalance().getBalance().toString();
+        }
+        return balances.get(0).getBalance().toString();
+    }
+
+    private Balance initDefaultBalance() {
+        Balance balance = new Balance();
+        IncomeHistoryData incomeHistoryData = getIncomeData(new Date());
+        String exchangeRate = exchangeRate();
+        String substring = exchangeRate.substring(0, exchangeRate.indexOf("%"));
+        double exchangeRateDoubleValue = Double.parseDouble(substring) / 100;
+        balance.setBalance((int) (incomeHistoryData.getAll() * exchangeRateDoubleValue));
+        balanceDAO.saveAndFlush(balance);
+        return balance;
+    }
+
+    @Override
+    public boolean withdraw(int money, String alipayId) {
+        List<Balance> balances = balanceDAO.findAll();
+        Balance balance;
+        if (balances == null || balances.size() == 0) {
+            balance = initDefaultBalance();
+        } else {
+            balance = balances.get(0);
+        }
+
+        if (balance.getBalance() < money) {
+            return false;
+        }
+
+        balance.setBalance(balance.getBalance() - money);
+        balanceDAO.saveAndFlush(balance);
+        WithdrawHistory withdrawHistory = new WithdrawHistory();
+        withdrawHistory.setCount(money);
+        withdrawHistory.setAlipayId(alipayId);
+        withdrawHistoryDAO.saveAndFlush(withdrawHistory);
+        return true;
     }
 }

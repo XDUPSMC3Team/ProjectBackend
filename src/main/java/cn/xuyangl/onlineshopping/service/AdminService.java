@@ -50,4 +50,8 @@ public interface AdminService {
     boolean changeExchangeRate(String rate);
 
     IncomeHistoryData getIncomeData(Date date);
+
+    String getBalance();
+
+    boolean withdraw(int money, String alipayId);
 }

@@ -181,4 +181,18 @@ public class AdminController {
         }
         return ResultUtil.success(adminService.getIncomeData(baseDate));
     }
+
+    @GetMapping("/personal/balance")
+    public Result getBalance() {
+        return ResultUtil.success(adminService.getBalance());
+    }
+
+    @PostMapping("/personal/withdraw/{alipayId}/{money}")
+    public Result withDraw(@PathVariable("alipayId") String alipayId, @PathVariable("money") String money) {
+        if (adminService.withdraw(Integer.parseInt(money), alipayId)) {
+            return ResultUtil.success();
+        } else {
+            return ResultUtil.error(ResultEnum.BalanceNotEnough);
+        }
+    }
 }

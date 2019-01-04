@@ -42,6 +42,4 @@ public class Admin {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updateTime;   //更新时间
 
-
-
 }
