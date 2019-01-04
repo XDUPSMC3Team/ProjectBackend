@@ -299,7 +299,10 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
                 BuyerOrderDetailVO buyerOrderDetailVO = new BuyerOrderDetailVO();
                 BeanUtils.copyProperties(od, buyerOrderDetailVO);
                 buyerOrderDetailVO.setOrderDetailId(od.getId());
-                buyerOrderDetailVO.setCommentContent(commentDao.findByOrderDetailId(od.getId()).getContent());
+                Comment comment = commentDao.findByOrderDetailId(od.getId());
+                if (comment != null) {
+                    buyerOrderDetailVO.setCommentContent(comment.getContent());
+                }
                 buyerOrderDetailVOS.add(buyerOrderDetailVO);
             }
             buyerOrderVO.setOrderDetailList(buyerOrderDetailVOS);

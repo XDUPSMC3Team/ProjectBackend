@@ -14,5 +14,5 @@ public class BuyerOrderDetailVO {
     private Double price;
     private Integer amount;
 
-    private String commentContent;
+    private String commentContent = "";
 }
