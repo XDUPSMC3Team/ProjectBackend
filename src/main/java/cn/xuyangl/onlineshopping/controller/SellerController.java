@@ -4,8 +4,10 @@ import cn.xuyangl.onlineshopping.VO.Result;
 import cn.xuyangl.onlineshopping.VO.ResultEnum;
 import cn.xuyangl.onlineshopping.VO.StatusEnum;
 import cn.xuyangl.onlineshopping.consts.Common;
+import cn.xuyangl.onlineshopping.dao.ShopDao;
 import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.LoginForm;
+import cn.xuyangl.onlineshopping.model.WithdrawData;
 import cn.xuyangl.onlineshopping.service.*;
 import cn.xuyangl.onlineshopping.utils.JwtToken;
 import cn.xuyangl.onlineshopping.utils.MailUtil;
@@ -59,6 +61,9 @@ public class SellerController {
 
     @Autowired
     private OrderMasterService orderMasterService;
+
+    @Autowired
+    private WithdrawalRecordService withdrawalRecordService;
 
     /**
      *  seller 注册
@@ -468,6 +473,48 @@ public class SellerController {
             }
         }
        return  sellerService.findIncomeHistoryByDate(shopId,baseDate);
+    }
+
+    /**
+     *  查询账户余额
+     * @param shopId
+     * @return
+     */
+    @RequestMapping(value = "/shop/account/{shopId}",method = RequestMethod.GET)
+    public Result findAccount(@PathVariable("shopId")Integer shopId)
+    {
+        return sellerService.findAccountByShopId(shopId);
+    }
+
+    /**
+     *  提款
+     * @return
+     */
+    @RequestMapping(value = "/shop/account/withdraw",method = RequestMethod.POST)
+    public Result withdraw(@RequestBody WithdrawData withdrawData)
+    {
+        Integer shopId = withdrawData.getShopId();
+        if (shopService.findByShopId(shopId)==null)
+        {
+            return ResultUtil.error(ResultEnum.SHOP_NOT_FOUND);
+        }
+        return shopService.withdraw(withdrawData);
+    }
+
+    /**
+     * 查询所有的提款记录
+     * @param shopId
+     * @return
+     */
+    @RequestMapping(value = "/shop/withdraw/{shopId}",method = RequestMethod.GET)
+    public Result viewWithdrawalRecord(@PathVariable("shopId")Integer shopId)
+    {
+        Shop byShopId = shopService.findByShopId(shopId);
+        if (byShopId==null)
+        {
+            return ResultUtil.error(ResultEnum.SHOP_NOT_FOUND);
+        }
+        return ResultUtil.success(withdrawalRecordService.viewWithdrawalRecord(byShopId.getShopName()));
     }
 
 

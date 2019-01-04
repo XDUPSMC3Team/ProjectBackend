@@ -39,4 +39,12 @@ public interface ShopDao extends JpaRepository<Shop,Integer>{
     @Query(nativeQuery = true, value = "SELECT * FROM t_shop ORDER BY ad_money DESC LIMIT 0,5")
     @Transactional
     List<Shop> findTop5BiddingShops();
+
+    /**
+     *  增加账户金额
+     */
+    @Query(value = "update Shop as s set s.account = s.account + :account where s.id = :shopId")
+    @Modifying
+    @Transactional
+    void addAccount(@Param("shopId")Integer shopId,@Param("account")double money);
 }

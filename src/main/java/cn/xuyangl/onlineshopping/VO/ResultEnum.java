@@ -32,7 +32,8 @@ public enum  ResultEnum {
     ProductNumberError(20, "please choose at least 1 product to buy."),
     OrderNotReceived(21, "can't comment unreceived order."),
     RepeatedComment(22, "you have comment this order."),
-    BalanceNotEnough(23, "you don't have enough money.");
+    BalanceNotEnough(23, "you don't have enough money."),
+    MoneyNotEnough(24,"withdraw money is bigger than account");
     ;
     public String msg;
     public Integer code;
