@@ -18,16 +18,16 @@ import java.io.*;
 public class FtpUtil {
 
     // OS
-    final static String REMOTE_RELATIVE_PATH = "/Users/mac/Downloads/images/";
+//    final static String REMOTE_RELATIVE_PATH = "/Users/mac/Downloads/images/";
     // window
 //    final static String REMOTE_RELATIVE_PATH = "/images/";
     // 远程
-//    final static String REMOTE_RELATIVE_PATH = "http://119.23.75.180/";
+    final static String REMOTE_RELATIVE_PATH = "http://119.23.75.180/";
 
     // 服务器
-//    final static String LOCAL_PATH = "/home/ftptest/productPic/";
+    final static String LOCAL_PATH = "/home/ftptest/productPic/";
     // mac os
-    final static String LOCAL_PATH = "/Users/mac/Downloads/images/";
+//    final static String LOCAL_PATH = "/Users/mac/Downloads/images/";
     // windows
 //    final static String LOCAL_PATH = "D:/images/";
 
