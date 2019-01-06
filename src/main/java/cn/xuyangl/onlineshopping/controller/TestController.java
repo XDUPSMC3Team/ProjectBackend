@@ -31,9 +31,11 @@ public class TestController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         String timeStr = sdf.format(now);
         String filePath = savePath + dbName + timeStr + ".sql";
+        System.out.println("fileName:"+filePath);
         Process process = Runtime.getRuntime().exec(
                 "/bin/sh mysqldump -u root -p1234 " + dbName + " > " + filePath
         );
+        System.out.println("success dump sql.");
 
         File file = new File(filePath);
         if (file.exists()) {
