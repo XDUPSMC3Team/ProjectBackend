@@ -38,7 +38,7 @@ public class TestController {
                 "/bin/sh mysqldump -u root -p1234 " + dbName + " > " + filePath
         );
         System.out.println("success dump sql.");
-        return null;
+        return ResultUtil.success();
 
 //        File file = new File(filePath);
 //        if (file.exists()) {
