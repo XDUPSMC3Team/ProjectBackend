@@ -17,11 +17,19 @@ import java.io.*;
  */
 public class FtpUtil {
 
-//    final static String REMOTE_RELATIVE_PATH = "file:///Users/mac/Downloads/images/";
+    // OS
+//    final static String REMOTE_RELATIVE_PATH = "/Users/mac/Downloads/images/";
+    // window
+//    final static String REMOTE_RELATIVE_PATH = "/images/";
+    // 远程
     final static String REMOTE_RELATIVE_PATH = "http://119.23.75.180/";
 
+    // 服务器
     final static String LOCAL_PATH = "/home/ftptest/productPic/";
+    // mac os
 //    final static String LOCAL_PATH = "/Users/mac/Downloads/images/";
+    // windows
+//    final static String LOCAL_PATH = "D:/images/";
 
     public static String uploadFile(MultipartFile multipartFile, String address, int port,
                                      String username, String password, String basePath, String name, int fileType) {
