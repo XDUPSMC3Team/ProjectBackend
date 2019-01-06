@@ -33,7 +33,8 @@ public enum  ResultEnum {
     OrderNotReceived(21, "can't comment unreceived order."),
     RepeatedComment(22, "you have comment this order."),
     BalanceNotEnough(23, "you don't have enough money."),
-    MoneyNotEnough(24,"withdraw money is bigger than account");
+    MoneyNotEnough(24,"withdraw money is bigger than account"),
+    FileDonotExist(25, "file doesn't exist;");
     ;
     public String msg;
     public Integer code;
