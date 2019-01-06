@@ -25,7 +25,7 @@ public class TestController {
 
     @GetMapping("/backup")
     @ResponseBody
-    public Result databaseBackUp(HttpServletResponse response) throws IOException {
+    public Result databaseBackUp(HttpServletResponse response){
         // 生成备份SQL
         String savePath = "/root/test/";
         String dbName = "shopping";
@@ -34,9 +34,36 @@ public class TestController {
         String timeStr = sdf.format(now);
         String filePath = savePath + dbName + timeStr + ".sql";
         System.out.println("fileName:"+filePath);
-        Process process = Runtime.getRuntime().exec(
-                "/bin/sh mysqldump -u root -p1234 " + dbName + " > " + filePath
-        );
+        try {
+            Process pr = Runtime.getRuntime().exec(
+                    "/bin/sh mysqldump -u root -p1234 " + dbName + " > " + filePath
+            );
+            // 获取进程的输出流（相对于内存是输入流）
+            InputStream is = pr.getInputStream();
+            // 获取进程的报错输出流
+            InputStream isError = pr.getErrorStream();
+            // 编码格式设定
+            InputStreamReader isr = new InputStreamReader(is, "GBK");
+            InputStreamReader isrError = new InputStreamReader(isError, "GBK");
+            // 读取进程输出的信息
+            BufferedReader br = new BufferedReader(isr);
+            BufferedReader brError = new BufferedReader(isrError);
+            // 控制台打印信息
+            String info = "";
+            while ((info = br.readLine()) != null) {
+                System.out.println(info);
+            }
+            // 控制台打印报错信息
+            String error = "";
+            while ((error = brError.readLine()) != null) {
+                System.out.println(error);
+            }
+            // 关闭流
+            br.close();
+            brError.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("success dump sql.");
         return ResultUtil.success();
 
