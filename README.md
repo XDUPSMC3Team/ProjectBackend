@@ -19,14 +19,6 @@ Warning: Add the above command to the global environment path!!!
 3. Go into the target directory，input `java -jar {the name of project jar}.jar`,Do not close the console.
 ## 五、Visiting
 Open a browser, Visit `localhost:8080`.
-# ProjectBackend
-## 1. LocalDateTime 与  sql 的映射问题
-https://blog.csdn.net/mn960mn/article/details/53141366
-## 2. 邮件发送问题
-https://blog.csdn.net/u013938484/article/details/51939587
-https://blog.csdn.net/lovelichao12/article/details/80097571
-## 3. 对于图片保存问题
-https://blog.csdn.net/zahngjialiang/article/details/78614739
 
 # Frontend
 # ParkNshop_C3_Frontend_README
@@ -103,3 +95,12 @@ enter the project directory
 ##### step5
 
 > npm run build && npm run serve
+
+# ProjectBackend
+## 1. LocalDateTime 与  sql 的映射问题
+https://blog.csdn.net/mn960mn/article/details/53141366
+## 2. 邮件发送问题
+https://blog.csdn.net/u013938484/article/details/51939587
+https://blog.csdn.net/lovelichao12/article/details/80097571
+## 3. 对于图片保存问题
+https://blog.csdn.net/zahngjialiang/article/details/78614739
