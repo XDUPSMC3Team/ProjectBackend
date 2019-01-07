@@ -69,7 +69,7 @@ public class OrderMasterServiceImpl implements OrderMasterService{
 
     @Override
     public List<OrderMaster> findByShopIdAndPayStatus(Integer shopId, int payStatus) {
-        return orderMasterDAO.findAllByShopIdAndPayStatusAndStatusLessThan(shopId,payStatus,2);
+        return orderMasterDAO.findAllByShopIdAndPayStatusAndStatusLessThan(shopId,payStatus,3);
     }
 
     /**
