@@ -34,7 +34,7 @@ public class OrderMasterServiceImpl implements OrderMasterService{
      */
     @Override
     public List<OrderMaster> findByShopIdAndStatus(Integer id,int status) {
-       return orderMasterDAO.findByShopIdAndStatus(id,status);
+       return orderMasterDAO.findByShopIdAndStatusGreaterThanEqual(id,status);
     }
 
     /**
