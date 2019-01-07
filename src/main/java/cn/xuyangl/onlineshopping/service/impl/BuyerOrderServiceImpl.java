@@ -35,6 +35,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
     private ShopDao shopDao;
     private ShopCartDao shopCartDao;
     private CommentDao commentDao;
+    private BalanceDAO balanceDAO;
+    private ExchangeRateDAO exchangeRateDAO;
 
     public BuyerOrderServiceImpl(ProductDao productDao,
                                  ProductSpecsDao productSpecsDao,
@@ -43,8 +45,9 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
                                  BuyerDao buyerDao,
                                  ShopDao shopDao,
                                  ShopCartDao shopCartDao,
-                                 CommentDao commentDao
-                                 ) {
+                                 CommentDao commentDao,
+                                 ExchangeRateDAO exchangeRateDAO,
+                                 BalanceDAO balanceDAO) {
         this.productDao = productDao;
         this.productSpecsDao = productSpecsDao;
         this.orderMasterDao = orderMasterDao;
@@ -53,6 +56,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
         this.shopDao = shopDao;
         this.shopCartDao = shopCartDao;
         this.commentDao = commentDao;
+        this.balanceDAO = balanceDAO;
+        this.exchangeRateDAO = exchangeRateDAO;
     }
 
     @Override
@@ -204,6 +209,28 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
     public void  payOrder(Integer orderId) {
         OrderMaster om = orderMasterDao.findById(orderId);
         om.setPayStatus(1);
+
+        // 更新balance
+        List<Balance> balances = balanceDAO.findAll();
+        if (balances != null && balances.size() > 0) {
+            // 需要更新，如果是0证明还未初始化
+            Balance balance = balances.get(0);
+            List<ExchangeRate> exchangeRates = exchangeRateDAO.findAll();
+            ExchangeRate exchangeRate;
+            if (exchangeRates != null && exchangeRates.size() > 0) {
+                exchangeRate = exchangeRates.get(0);
+            } else {
+                exchangeRate = new ExchangeRate();
+                exchangeRate.setExchangeRate("2%");
+                exchangeRateDAO.saveAndFlush(exchangeRate);
+            }
+
+            String substring = exchangeRate.getExchangeRate().substring(0, exchangeRate.getExchangeRate().indexOf("%"));
+            double exchangeRateDoubleValue = Double.parseDouble(substring) / 100;
+            int oldBalance = balance.getBalance();
+            balance.setBalance(oldBalance + (int) (om.getMoney() * exchangeRateDoubleValue));
+            balanceDAO.saveAndFlush(balance);
+        }
 
         om.setUpdateTime(LocalDateTime.now());
         orderMasterDao.saveAndFlush(om);

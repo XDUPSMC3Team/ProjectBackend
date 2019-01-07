@@ -3,6 +3,7 @@ package cn.xuyangl.onlineshopping.service.impl;
 import cn.xuyangl.onlineshopping.VO.BiddingInfoVO;
 import cn.xuyangl.onlineshopping.VO.BuyerOrderDetailVO;
 import cn.xuyangl.onlineshopping.VO.OrderVO;
+import cn.xuyangl.onlineshopping.VO.StatusEnum;
 import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.IncomeHistoryData;
@@ -171,7 +172,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<OrderVO> saleHistory() {
-        List<OrderMaster> orderMasters = orderMasterDAO.findAllByStatus(3);
+        List<OrderMaster> orderMasters = new ArrayList<>(orderMasterDAO.findAllByStatus(StatusEnum.Received.code));
+        orderMasters.addAll(orderMasterDAO.findAllByStatus(StatusEnum.Reviewed.code));
         List<OrderVO> result = new ArrayList<>(orderMasters.size());
         for (OrderMaster om : orderMasters) {
             result.add(buildOrderVO(om));
