@@ -115,7 +115,7 @@ public class OrderMasterServiceImpl implements OrderMasterService{
         LocalDateTime yearEndTime = DateUtil.getEndDayOfYear(date);
         List<OrderMaster> yearly = orderMasterDAO.findAllByShopIdAndStatusGreaterThanEqualAndReceiveTimeBetween(shopId, status, yearStartTime, yearEndTime);
 
-        List<OrderMaster> all = orderMasterDAO.findByShopIdAndStatus(shopId, status);
+        List<OrderMaster> all = orderMasterDAO.findByShopIdAndStatusGreaterThanEqual(shopId, status);
 
         List<List<OrderMaster>> result = new ArrayList<>();
         result.add(daily);
