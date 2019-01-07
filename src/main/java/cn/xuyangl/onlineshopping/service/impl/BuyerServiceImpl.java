@@ -50,6 +50,14 @@ public class BuyerServiceImpl implements BuyerService {
         if (buyerDao.findByUsername(buyer.getUsername()) != null) return ResultEnum.RegisterUsernameAlreadyExist;
         if (buyerDao.findByEmail(buyer.getEmail()) != null) return ResultEnum.RegisterEmailAlreadyExist;
         buyerDao.saveAndFlush(buyer);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SimpleMailMessage register_success = MailUtil.createMessage(buyer.getEmail(), "【注册成功】", "Congratulations\n. You have successfully registered us. Have a shopping experience.");
+                javaMailSender.send(register_success);
+            }
+        }).start();
+
         return ResultEnum.Success;
     }
 
