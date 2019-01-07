@@ -204,10 +204,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
     public void  payOrder(Integer orderId) {
         OrderMaster om = orderMasterDao.findById(orderId);
         om.setPayStatus(1);
-        /**
-         *  给shop 账户增加相关money
-         */
-        shopDao.addAccount(om.getShopId(),om.getMoney());
+
         om.setUpdateTime(LocalDateTime.now());
         orderMasterDao.saveAndFlush(om);
     }
@@ -225,6 +222,12 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
         OrderMaster om = orderMasterDao.findById(orderId);
         om.setStatus(StatusEnum.Received.code);
         om.setUpdateTime(LocalDateTime.now());
+        om.setReceiveTime(LocalDateTime.now());
+
+        /**
+         *  给shop 账户增加相关money
+         */
+        shopDao.addAccount(om.getShopId(),om.getMoney());
         orderMasterDao.saveAndFlush(om);
     }
 

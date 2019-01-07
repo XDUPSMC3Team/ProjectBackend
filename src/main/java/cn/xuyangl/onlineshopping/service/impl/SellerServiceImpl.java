@@ -114,6 +114,7 @@ public class SellerServiceImpl implements SellerService{
         shop.setStatus(0);  // 设置为受理中
         shop.setCreateTime(LocalDateTime.now());
         shop.setUpdateTime(LocalDateTime.now());
+        shop.setAccount(0.0);
         try{
             shopDao.save(shop);
             return ResultEnum.Success;

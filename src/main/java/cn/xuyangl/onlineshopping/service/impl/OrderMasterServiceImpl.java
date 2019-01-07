@@ -34,7 +34,7 @@ public class OrderMasterServiceImpl implements OrderMasterService{
      */
     @Override
     public List<OrderMaster> findByShopIdAndStatus(Integer id,int status) {
-       return orderMasterDAO.findByShopIdAndStatus(id,status);
+       return orderMasterDAO.findByShopIdAndStatusGreaterThanEqual(id,status);
     }
 
     /**
@@ -89,7 +89,7 @@ public class OrderMasterServiceImpl implements OrderMasterService{
         // 获得起始时间
         LocalDateTime dateStartTime = DateUtil.getDateStartTime(date);
         LocalDateTime dateEndTime = DateUtil.getDateEndTime(date);
-        List<OrderMaster> daily = orderMasterDAO.findAllByShopIdAndStatusAndReceiveTimeBetween(shopId, status, dateStartTime, dateEndTime);
+        List<OrderMaster> daily = orderMasterDAO.findAllByShopIdAndStatusGreaterThanEqualAndReceiveTimeBetween(shopId, status, dateStartTime, dateEndTime);
 
         /**
          *  查询每周
@@ -97,7 +97,7 @@ public class OrderMasterServiceImpl implements OrderMasterService{
         // 获得起始时间
         LocalDateTime weekStartTime = DateUtil.getBeginDayOfWeek(date);
         LocalDateTime weekEndTime = DateUtil.getEndDayOfWeek(date);
-        List<OrderMaster> weekly = orderMasterDAO.findAllByShopIdAndStatusAndReceiveTimeBetween(shopId, status, weekStartTime, weekEndTime);
+        List<OrderMaster> weekly = orderMasterDAO.findAllByShopIdAndStatusGreaterThanEqualAndReceiveTimeBetween(shopId, status, weekStartTime, weekEndTime);
 
         /**
          *  查询每月
@@ -105,7 +105,7 @@ public class OrderMasterServiceImpl implements OrderMasterService{
         // 获得起始时间
         LocalDateTime monthStartTime = DateUtil.getBeginDayOfWeek(date);
         LocalDateTime monthEndTime = DateUtil.getEndDayOfMonth(date);
-        List<OrderMaster> monthly = orderMasterDAO.findAllByShopIdAndStatusAndReceiveTimeBetween(shopId, status, monthStartTime, monthEndTime);
+        List<OrderMaster> monthly = orderMasterDAO.findAllByShopIdAndStatusGreaterThanEqualAndReceiveTimeBetween(shopId, status, monthStartTime, monthEndTime);
 
         /**
          *  查询每年
@@ -113,9 +113,9 @@ public class OrderMasterServiceImpl implements OrderMasterService{
         // 获得起始时间
         LocalDateTime yearStartTime = DateUtil.getStartDayOfYear(date);
         LocalDateTime yearEndTime = DateUtil.getEndDayOfYear(date);
-        List<OrderMaster> yearly = orderMasterDAO.findAllByShopIdAndStatusAndReceiveTimeBetween(shopId, status, yearStartTime, yearEndTime);
+        List<OrderMaster> yearly = orderMasterDAO.findAllByShopIdAndStatusGreaterThanEqualAndReceiveTimeBetween(shopId, status, yearStartTime, yearEndTime);
 
-        List<OrderMaster> all = orderMasterDAO.findByShopIdAndStatus(shopId, status);
+        List<OrderMaster> all = orderMasterDAO.findByShopIdAndStatusGreaterThanEqual(shopId, status);
 
         List<List<OrderMaster>> result = new ArrayList<>();
         result.add(daily);
