@@ -243,8 +243,18 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
         comment.setOrderDetailId(od.getId());
         comment.setContent(commentForm.getContent());
         commentDao.saveAndFlush(comment);
-        // 简单设置
-        om.setStatus(StatusEnum.Reviewed.code);
+        // 复杂设置
+        List<OrderDetail> orderDetails = orderDetailDao.findAllByMasterId(od.getMasterId());
+        Integer allComment = 1;
+        for (OrderDetail orderDetail : orderDetails) {
+            Comment comment1 = commentDao.findByBuyerIdAndOrderDetailId(buyerId, od.getId());
+            if (comment1 == null) {
+                allComment = 0;
+            }
+        }
+        if (allComment == 1) {
+            om.setStatus(StatusEnum.Reviewed.code);
+        }
         orderMasterDao.saveAndFlush(om);
 
         return ResultUtil.success();
