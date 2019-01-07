@@ -3,6 +3,7 @@ package cn.xuyangl.onlineshopping.service.impl;
 import cn.xuyangl.onlineshopping.VO.BiddingInfoVO;
 import cn.xuyangl.onlineshopping.VO.BuyerOrderDetailVO;
 import cn.xuyangl.onlineshopping.VO.OrderVO;
+import cn.xuyangl.onlineshopping.VO.StatusEnum;
 import cn.xuyangl.onlineshopping.dao.*;
 import cn.xuyangl.onlineshopping.entity.*;
 import cn.xuyangl.onlineshopping.model.IncomeHistoryData;
@@ -12,9 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -171,7 +170,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<OrderVO> saleHistory() {
-        List<OrderMaster> orderMasters = orderMasterDAO.findAllByStatus(3);
+        List<OrderMaster> orderMasters = new ArrayList<>(orderMasterDAO.findAllByStatus(StatusEnum.Received.code));
+        orderMasters.addAll(orderMasterDAO.findAllByStatus(StatusEnum.Reviewed.code));
+        orderMasters.sort(Comparator.comparingInt(OrderMaster::getId));
         List<OrderVO> result = new ArrayList<>(orderMasters.size());
         for (OrderMaster om : orderMasters) {
             result.add(buildOrderVO(om));
